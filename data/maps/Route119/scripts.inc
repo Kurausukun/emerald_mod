@@ -1,6 +1,7 @@
 Route119_MapScripts:: @ 81F4424
 	map_script 5, Route119_MapScript1_1F442F
 	map_script 3, Route119_MapScript1_1F444D
+	map_script 1, Route119_MapScript1_FeebasTest
 	.byte 0
 
 Route119_MapScript1_1F442F: @ 81F442F
@@ -494,6 +495,10 @@ Route119_EventScript_1F49EC:: @ 81F49EC
 	clearflag FLAG_0x08A
 	addvar VAR_0x40D1, 1
 	releaseall
+	end
+
+Route119_MapScript1_FeebasTest::
+	callnative HighlightFeebasSpots
 	end
 
 Route119_Text_1F49FD: @ 81F49FD
