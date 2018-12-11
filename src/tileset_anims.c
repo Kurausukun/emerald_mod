@@ -130,6 +130,19 @@ const u16 *const gTilesetAnims_General4[] = {
     gTilesetAnims_General4_Frame3
 };
 
+const u16 gTilesetAnims_Fortree0_Frame0[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/0.4bpp");
+
+const u16 gTilesetAnims_Fortree0_Frame1[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/1.4bpp");
+
+const u16 gTilesetAnims_Fortree0_Frame2[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/2.4bpp");
+
+const u16 *const gTilesetAnims_Fortree0[] = {
+    gTilesetAnims_Fortree0_Frame0,
+    gTilesetAnims_Fortree0_Frame1,
+	gTilesetAnims_Fortree0_Frame2,
+	gTilesetAnims_Fortree0_Frame1
+};
+
 const u16 gTilesetAnims_Lavaridge0_Frame0[] = INCBIN_U16("data/tilesets/secondary/lavaridge/anim/0.4bpp");
 
 const u16 gTilesetAnims_Lavaridge0_Frame1[] = INCBIN_U16("data/tilesets/secondary/lavaridge/anim/1.4bpp");
@@ -734,7 +747,7 @@ static void sub_80A0B70(u16 timer)
     if ((timer & 0x0F) == 3)
         gTilesetAnims_Waterfall(timer >> 4);
     if ((timer & 0x0F) == 4)
-        gTilesetAnims_LandWaterEdge (timer >> 4);
+        gTilesetAnims_LandWaterEdge(timer >> 4);
 }
 
 static void sub_80A0BB4(u16 timer)
@@ -838,9 +851,10 @@ void TilesetCb_Fallarbor(void)
 
 void TilesetCb_Fortree(void)
 {
+	static void fortreeCB(u16);
     sSecondaryTilesetCBCounter = 0;
     sSecondaryTilesetCBBufferSize = sPrimaryTilesetCBBufferSize;
-    sSecondaryTilesetCB = NULL;
+    sSecondaryTilesetCB = fortreeCB;
 }
 
 void TilesetCb_Lilycove(void)
@@ -972,6 +986,14 @@ void TilesetCb_BattleDome(void)
     sSecondaryTilesetCBCounter = 0;
     sSecondaryTilesetCBBufferSize = sPrimaryTilesetCBBufferSize;
     sSecondaryTilesetCB = sub_80A1658;
+}
+
+static void fortreeCB(u16 timer)
+{
+    static void fortree_AppendAnim(u16);
+	
+	if ((timer & 7) == 0)
+		fortree_AppendAnim(timer >> 3);
 }
 
 static void sub_80A103C(u16 timer)
@@ -1252,6 +1274,14 @@ static void sub_80A1598(u16 timer)
 
     idx = timer % 4;
     AppendTilesetAnimToBuffer(gTilesetAnims_Slateport0[idx], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 224)), 0x80);
+}
+
+static void fortree_AppendAnim(u16 timer)
+{
+    u16 idx;
+
+    idx = timer % 4;
+    AppendTilesetAnimToBuffer(gTilesetAnims_Fortree0[idx], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 240)), 0x80);
 }
 
 static void sub_80A15C0(u16 timer)

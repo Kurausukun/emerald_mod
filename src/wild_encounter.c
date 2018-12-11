@@ -4718,7 +4718,64 @@ void HighlightFeebasSpots() {
                 if(nFeebasHighlighted < NUM_FEEBAS_SPOTS) {
                     for(index = 0; index < NUM_FEEBAS_SPOTS; index++) {
                         if(currentWaterTile == feebasTiles[index]) {
-                            MapGridSetMetatileIdAt(x, y, 0x147);
+							switch (MapGridGetMetatileIdAt(x, y))
+							{
+							case 0x02C:
+							    MapGridSetMetatileIdAt(x, y, 0x2A9);
+							    break;
+							case 0x034:
+							    MapGridSetMetatileIdAt(x, y, 0x2CB);
+							    break;
+							case 0x03C:
+							    MapGridSetMetatileIdAt(x, y, 0x2AA);
+							    break;
+							case 0x11D:
+							    MapGridSetMetatileIdAt(x, y, 0x31B);
+							    break;
+							case 0x125:
+							    MapGridSetMetatileIdAt(x, y, 0x31A);
+							    break;
+							case 0x12C:
+							    MapGridSetMetatileIdAt(x, y, 0x318);
+							    break;
+							case 0x12D:
+							    MapGridSetMetatileIdAt(x, y, 0x319);
+							    break;
+							case 0x170:
+							    MapGridSetMetatileIdAt(x, y, 0x308);
+							    break;
+							case 0x178:
+							    MapGridSetMetatileIdAt(x, y, 0x2FD);
+							    break;
+							case 0x179:
+							    MapGridSetMetatileIdAt(x, y, 0x305);
+							    break;
+							case 0x189:
+							    MapGridSetMetatileIdAt(x, y, 0x31F);
+							    break;
+							case 0x190:
+							    MapGridSetMetatileIdAt(x, y, 0x310);
+								break;
+							case 0x192:
+							    MapGridSetMetatileIdAt(x, y, 0x31E);
+							    break;
+							case 0x198:
+							    MapGridSetMetatileIdAt(x, y, 0x311);
+							    break;
+							case 0x19A:
+							    MapGridSetMetatileIdAt(x, y, 0x30D);
+							    break;
+							case 0x20F:
+							    MapGridSetMetatileIdAt(x, y, 0x2D3);
+							    break;
+							case 0x266:
+							    MapGridSetMetatileIdAt(x, y, 0x312);
+							    break;
+							case 0x267:
+							    MapGridSetMetatileIdAt(x, y, 0x315);
+							default:
+								break;
+							}
                             nFeebasHighlighted++;
                         }
                     }
