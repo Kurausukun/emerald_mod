@@ -4,6 +4,7 @@
 #include "battle_arena.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
+#include "battle_main.h"
 #include "battle_message.h"
 #include "battle_pyramid.h"
 #include "battle_scripts.h"
@@ -56,20 +57,6 @@
 #include "constants/species.h"
 #include "constants/trainers.h"
 
-struct UnknownPokemonStruct4
-{
-    /*0x00*/ u16 species;
-    /*0x02*/ u16 heldItem;
-    /*0x04*/ u8 nickname[POKEMON_NAME_LENGTH + 1];
-    /*0x0F*/ u8 level;
-    /*0x10*/ u16 hp;
-    /*0x12*/ u16 maxhp;
-    /*0x14*/ u32 status;
-    /*0x18*/ u32 personality;
-    /*0x1C*/ u8 gender;
-    /*0x1D*/ u8 language;
-};
-
 extern struct MusicPlayerInfo gMPlayInfo_SE1;
 extern struct MusicPlayerInfo gMPlayInfo_SE2;
 extern u8 gUnknown_0203CF00[];
@@ -82,7 +69,7 @@ extern const u8 *const gBattlescriptsForBallThrow[];
 extern const u8 *const gBattlescriptsForRunningByItem[];
 extern const u8 *const gBattlescriptsForUsingItem[];
 extern const u8 *const gBattlescriptsForSafariActions[];
-extern const struct ScanlineEffectParams gUnknown_0831AC70;
+extern const struct ScanlineEffectParams gBattleIntroSlideScanlineEffectParams;
 
 // strings
 extern const u8 gText_LinkStandby3[];
@@ -639,7 +626,7 @@ static void CB2_InitBattleInternal(void)
             gScanlineEffectRegBuffers[1][i] = 0xFF10;
         }
 
-        ScanlineEffect_SetParams(gUnknown_0831AC70);
+        ScanlineEffect_SetParams(gBattleIntroSlideScanlineEffectParams);
     }
 
     ResetPaletteFade();
@@ -2128,12 +2115,12 @@ static void sub_8038B94(u8 taskId)
         if (species != SPECIES_EGG && hp != 0 && status == 0)
             r7 |= 1 << i * 2;
 
-        if (species == 0)
+        if (species == SPECIES_NONE)
             continue;
         if (hp != 0 && (species == SPECIES_EGG || status != 0))
             r7 |= 2 << i * 2;
 
-        if (species == 0)
+        if (species == SPECIES_NONE)
             continue;
         if (species != SPECIES_EGG && hp == 0)
             r7 |= 3 << i * 2;
@@ -3251,8 +3238,6 @@ void FaintClearSetData(void)
         ptr[i] = 0;
 
     gProtectStructs[gActiveBattler].protected = 0;
-    gProtectStructs[gActiveBattler].wideGuarded = 0;
-    gProtectStructs[gActiveBattler].quickGuarded = 0;
     gProtectStructs[gActiveBattler].spikyShielded = 0;
     gProtectStructs[gActiveBattler].kingsShielded = 0;
     gProtectStructs[gActiveBattler].banefulBunkered = 0;
@@ -4724,8 +4709,9 @@ u32 GetBattlerTotalSpeedStat(u8 battlerId)
     return speed;
 }
 
-static s8 GetMovePriority(u8 battlerId)
+s8 GetMovePriority(u8 battlerId)
 {
+    s8 priority;
     u16 move;
 
     if (gProtectStructs[battlerId].noValidMoves)
@@ -4733,17 +4719,17 @@ static s8 GetMovePriority(u8 battlerId)
     else
         move = gBattleMons[battlerId].moves[*(gBattleStruct->chosenMovePositions + battlerId)];
 
-    gBattleStruct->movePriorities[battlerId] = gBattleMoves[move].priority;
+    priority = gBattleMoves[move].priority;
     if (GetBattlerAbility(battlerId) == ABILITY_GALE_WINGS
         && gBattleMoves[move].type == TYPE_FLYING
         && (B_GALE_WINGS == GEN_6 || BATTLER_MAX_HP(battlerId)))
     {
-        gBattleStruct->movePriorities[battlerId]++;
+        priority++;
     }
     else if (GetBattlerAbility(battlerId) == ABILITY_PRANKSTER
         && gBattleMoves[move].split == SPLIT_STATUS)
     {
-        gBattleStruct->movePriorities[battlerId]++;
+        priority++;
     }
     else if (GetBattlerAbility(battlerId) == ABILITY_TRIAGE)
     {
@@ -4761,12 +4747,12 @@ static s8 GetMovePriority(u8 battlerId)
         case EFFECT_SOFTBOILED:
         case EFFECT_ABSORB:
         case EFFECT_ROOST:
-            gBattleStruct->movePriorities[battlerId] += 3;
+            priority += 3;
             break;
         }
     }
 
-    return gBattleStruct->movePriorities[battlerId];
+    return priority;
 }
 
 u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
@@ -4962,9 +4948,6 @@ static void TurnValuesCleanUp(bool8 var0)
         if (var0)
         {
             gProtectStructs[gActiveBattler].protected = 0;
-            gProtectStructs[gActiveBattler].endured = 0;
-            gProtectStructs[gActiveBattler].wideGuarded = 0;
-            gProtectStructs[gActiveBattler].quickGuarded = 0;
             gProtectStructs[gActiveBattler].spikyShielded = 0;
             gProtectStructs[gActiveBattler].kingsShielded = 0;
             gProtectStructs[gActiveBattler].banefulBunkered = 0;
@@ -4990,6 +4973,8 @@ static void TurnValuesCleanUp(bool8 var0)
             gBattleMons[gActiveBattler].status2 &= ~(STATUS2_SUBSTITUTE);
     }
 
+    gSideStatuses[0] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD);
+    gSideStatuses[1] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD);
     gSideTimers[0].followmeTimer = 0;
     gSideTimers[1].followmeTimer = 0;
 }
