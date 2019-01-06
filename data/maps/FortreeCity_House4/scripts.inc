@@ -7,15 +7,12 @@ FortreeCity_House4_EventScript_217C81:: @ 8217C81
 
 FortreeCity_House4_EventScript_217C8A:: @ 8217C8A
 	lockall
-	checkflag FLAG_0x0DF
-	goto_eq FortreeCity_House4_EventScript_217D06
-	checkflag FLAG_0x0E0
-	goto_eq FortreeCity_House4_EventScript_217CD8
-	checkflag FLAG_0x0DE
-	goto_eq FortreeCity_House4_EventScript_217CC4
+	goto_if_set FLAG_RECEIVED_MENTAL_HERB, FortreeCity_House4_EventScript_217D06
+	goto_if_set FLAG_WINGULL_DELIVERED_MAIL, FortreeCity_House4_EventScript_217CD8
+	goto_if_set FLAG_WINGULL_SENT_ON_ERRAND, FortreeCity_House4_EventScript_217CC4
 	msgbox FortreeCity_House4_Text_217DB9, MSGBOX_DEFAULT
 	closemessage
-	setflag FLAG_0x0DE
+	setflag FLAG_WINGULL_SENT_ON_ERRAND
 	clearflag FLAG_HIDE_MOSSDEEP_CITY_HOUSE_2_WINGULL
 	applymovement 3, FortreeCity_House4_Movement_217D1A
 	waitmovement 0
@@ -36,8 +33,8 @@ FortreeCity_House4_EventScript_217CD8:: @ 8217CD8
 	msgbox FortreeCity_House4_Text_217E05, MSGBOX_DEFAULT
 	giveitem_std ITEM_MENTAL_HERB
 	compare VAR_RESULT, 0
-	goto_eq FortreeCity_House4_EventScript_272054
-	setflag FLAG_0x0DF
+	goto_if_eq FortreeCity_House4_EventScript_272054
+	setflag FLAG_RECEIVED_MENTAL_HERB
 	releaseall
 	end
 

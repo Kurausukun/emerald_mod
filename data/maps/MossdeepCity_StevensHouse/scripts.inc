@@ -5,8 +5,7 @@ MossdeepCity_StevensHouse_MapScripts:: @ 8222784
 	.byte 0
 
 MossdeepCity_StevensHouse_MapScript1_222794: @ 8222794
-	checkflag FLAG_SYS_GAME_CLEAR
-	call_if 0, MossdeepCity_StevensHouse_EventScript_22279E
+	call_if_unset FLAG_SYS_GAME_CLEAR, MossdeepCity_StevensHouse_EventScript_22279E
 	end
 
 MossdeepCity_StevensHouse_EventScript_22279E:: @ 822279E
@@ -15,7 +14,7 @@ MossdeepCity_StevensHouse_EventScript_22279E:: @ 822279E
 
 MossdeepCity_StevensHouse_MapScript1_2227A8: @ 82227A8
 	compare VAR_0x40C6, 2
-	call_if 1, MossdeepCity_StevensHouse_EventScript_2227B4
+	call_if_eq MossdeepCity_StevensHouse_EventScript_2227B4
 	end
 
 MossdeepCity_StevensHouse_EventScript_2227B4:: @ 82227B4
@@ -40,8 +39,8 @@ MossdeepCity_StevensHouse_EventScript_2227CA:: @ 82227CA
 	waitmovement 0
 	msgbox MossdeepCity_StevensHouse_Text_222936, MSGBOX_DEFAULT
 	giveitem_std ITEM_HM08
-	setflag FLAG_0x07B
-	setflag FLAG_0x12E
+	setflag FLAG_RECEIVED_HM08
+	setflag FLAG_OMIT_DIVE_FROM_STEVEN_LETTER
 	msgbox MossdeepCity_StevensHouse_Text_222A0E, MSGBOX_DEFAULT
 	closemessage
 	delay 20
@@ -75,7 +74,7 @@ MossdeepCity_StevensHouse_EventScript_222841:: @ 8222841
 	lockall
 	msgbox MossdeepCity_StevensHouse_Text_222B9E, MSGBOX_YESNO
 	compare VAR_RESULT, 0
-	goto_eq MossdeepCity_StevensHouse_EventScript_22285B
+	goto_if_eq MossdeepCity_StevensHouse_EventScript_22285B
 	goto MossdeepCity_StevensHouse_EventScript_222865
 	end
 
@@ -88,9 +87,9 @@ MossdeepCity_StevensHouse_EventScript_222865:: @ 8222865
 	setvar VAR_TEMP_1, 398
 	givemon SPECIES_BELDUM, 5, ITEM_NONE, 0x0, 0x0, 0
 	compare VAR_RESULT, 0
-	goto_eq MossdeepCity_StevensHouse_EventScript_222895
+	goto_if_eq MossdeepCity_StevensHouse_EventScript_222895
 	compare VAR_RESULT, 1
-	goto_eq MossdeepCity_StevensHouse_EventScript_2228BD
+	goto_if_eq MossdeepCity_StevensHouse_EventScript_2228BD
 	goto MossdeepCity_StevensHouse_EventScript_273811
 	end
 
@@ -98,7 +97,7 @@ MossdeepCity_StevensHouse_EventScript_222895:: @ 8222895
 	call MossdeepCity_StevensHouse_EventScript_2228EB
 	msgbox gUnknown_08273374, MSGBOX_YESNO
 	compare VAR_RESULT, 0
-	goto_eq MossdeepCity_StevensHouse_EventScript_222901
+	goto_if_eq MossdeepCity_StevensHouse_EventScript_222901
 	call MossdeepCity_StevensHouse_EventScript_27378B
 	call MossdeepCity_StevensHouse_EventScript_2723DD
 	goto MossdeepCity_StevensHouse_EventScript_222901
@@ -108,7 +107,7 @@ MossdeepCity_StevensHouse_EventScript_2228BD:: @ 82228BD
 	call MossdeepCity_StevensHouse_EventScript_2228EB
 	msgbox gUnknown_08273374, MSGBOX_YESNO
 	compare VAR_RESULT, 0
-	goto_eq MossdeepCity_StevensHouse_EventScript_2228E0
+	goto_if_eq MossdeepCity_StevensHouse_EventScript_2228E0
 	call MossdeepCity_StevensHouse_EventScript_273797
 	goto MossdeepCity_StevensHouse_EventScript_2228E0
 	end
@@ -130,7 +129,7 @@ MossdeepCity_StevensHouse_EventScript_2228EB:: @ 82228EB
 
 MossdeepCity_StevensHouse_EventScript_222901:: @ 8222901
 	setflag FLAG_HIDE_MOSSDEEP_CITY_STEVENS_HOUSE_BELDUM_POKEBALL
-	setflag FLAG_0x12A
+	setflag FLAG_RECEIVED_BELDUM
 	releaseall
 	end
 
@@ -150,7 +149,7 @@ MossdeepCity_StevensHouse_EventScript_22291B:: @ 822291B
 
 MossdeepCity_StevensHouse_EventScript_222926:: @ 8222926
 	giveitem_std ITEM_HM08, 1, 1
-	setflag FLAG_0x07B
+	setflag FLAG_RECEIVED_HM08
 	end
 
 MossdeepCity_StevensHouse_Text_222936: @ 8222936

@@ -5,9 +5,8 @@ Route104_MrBrineysHouse_MapScripts:: @ 8229D2E
 Route104_MrBrineysHouse_MapScript1_229D34: @ 8229D34
 	setflag FLAG_LANDMARK_MR_BRINEY_HOUSE
 	compare VAR_0x4090, 1
-	call_if 1, Route104_MrBrineysHouse_EventScript_229D50
-	checkflag FLAG_0x0BC
-	call_if 1, Route104_MrBrineysHouse_EventScript_229D4C
+	call_if_eq Route104_MrBrineysHouse_EventScript_229D50
+	call_if_set FLAG_RECEIVED_POKENAV, Route104_MrBrineysHouse_EventScript_229D4C
 	end
 
 Route104_MrBrineysHouse_EventScript_229D4C:: @ 8229D4C
@@ -24,21 +23,18 @@ Route104_MrBrineysHouse_EventScript_229D50:: @ 8229D50
 Route104_MrBrineysHouse_EventScript_229D67:: @ 8229D67
 	lock
 	faceplayer
-	checkflag FLAG_0x093
-	call_if 0, Route104_MrBrineysHouse_EventScript_229D8A
-	checkflag FLAG_0x0BD
-	goto_if 0, Route104_MrBrineysHouse_EventScript_229DE1
-	checkflag FLAG_0x095
-	goto_if 0, Route104_MrBrineysHouse_EventScript_229DFA
+	call_if_unset FLAG_MR_BRINEY_SAILING_INTRO, Route104_MrBrineysHouse_EventScript_229D8A
+	goto_if_unset FLAG_DELIVERED_STEVEN_LETTER, Route104_MrBrineysHouse_EventScript_229DE1
+	goto_if_unset FLAG_DELIVERED_DEVON_GOODS, Route104_MrBrineysHouse_EventScript_229DFA
 	goto Route104_MrBrineysHouse_EventScript_229DAE
 	end
 
 Route104_MrBrineysHouse_EventScript_229D8A:: @ 8229D8A
-	setflag FLAG_0x093
+	setflag FLAG_MR_BRINEY_SAILING_INTRO
 	msgbox Route104_MrBrineysHouse_Text_229E70, MSGBOX_DEFAULT
 	msgbox Route104_MrBrineysHouse_Text_229E9B, MSGBOX_YESNO
 	compare VAR_RESULT, 0
-	goto_eq Route104_MrBrineysHouse_EventScript_229E13
+	goto_if_eq Route104_MrBrineysHouse_EventScript_229E13
 	goto Route104_MrBrineysHouse_EventScript_229E27
 	end
 
@@ -55,14 +51,14 @@ Route104_MrBrineysHouse_EventScript_229DAE:: @ 8229DAE
 Route104_MrBrineysHouse_EventScript_229DE1:: @ 8229DE1
 	msgbox Route104_MrBrineysHouse_Text_22A0AD, MSGBOX_YESNO
 	compare VAR_RESULT, 0
-	goto_eq Route104_MrBrineysHouse_EventScript_229E13
+	goto_if_eq Route104_MrBrineysHouse_EventScript_229E13
 	goto Route104_MrBrineysHouse_EventScript_229E27
 	end
 
 Route104_MrBrineysHouse_EventScript_229DFA:: @ 8229DFA
 	msgbox Route104_MrBrineysHouse_Text_22A18F, MSGBOX_YESNO
 	compare VAR_RESULT, 0
-	goto_eq Route104_MrBrineysHouse_EventScript_229E13
+	goto_if_eq Route104_MrBrineysHouse_EventScript_229E13
 	goto Route104_MrBrineysHouse_EventScript_229E27
 	end
 

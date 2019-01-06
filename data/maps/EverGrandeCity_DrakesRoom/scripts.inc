@@ -9,7 +9,7 @@ EverGrandeCity_DrakesRoom_MapScript2_2286AC: @ 82286AC
 	.2byte 0
 
 EverGrandeCity_DrakesRoom_EventScript_2286B6:: @ 82286B6
-	turnobject 255, 2
+	turnobject EVENT_OBJ_ID_PLAYER, 2
 	end
 
 EverGrandeCity_DrakesRoom_MapScript2_2286BB: @ 82286BB
@@ -24,10 +24,9 @@ EverGrandeCity_DrakesRoom_EventScript_2286C5:: @ 82286C5
 	end
 
 EverGrandeCity_DrakesRoom_MapScript1_2286D2: @ 82286D2
-	checkflag FLAG_0x4FE
-	call_if 1, EverGrandeCity_DrakesRoom_EventScript_2286E7
+	call_if_set FLAG_DEFEATED_ELITE_4_DRAKE, EverGrandeCity_DrakesRoom_EventScript_2286E7
 	compare VAR_0x409C, 4
-	call_if 1, EverGrandeCity_DrakesRoom_EventScript_2286ED
+	call_if_eq EverGrandeCity_DrakesRoom_EventScript_2286ED
 	end
 
 EverGrandeCity_DrakesRoom_EventScript_2286E7:: @ 82286E7
@@ -41,8 +40,7 @@ EverGrandeCity_DrakesRoom_EventScript_2286ED:: @ 82286ED
 EverGrandeCity_DrakesRoom_EventScript_2286F3:: @ 82286F3
 	lock
 	faceplayer
-	checkflag FLAG_0x4FE
-	goto_eq EverGrandeCity_DrakesRoom_EventScript_22871A
+	goto_if_set FLAG_DEFEATED_ELITE_4_DRAKE, EverGrandeCity_DrakesRoom_EventScript_22871A
 	playbgm MUS_SITENNOU, 0
 	msgbox EverGrandeCity_DrakesRoom_Text_22873E, MSGBOX_DEFAULT
 	trainerbattle_no_intro TRAINER_DRAKE, EverGrandeCity_DrakesRoom_Text_228895
@@ -57,7 +55,7 @@ EverGrandeCity_DrakesRoom_EventScript_22871A:: @ 822871A
 EverGrandeCity_DrakesRoom_EventScript_228724:: @ 8228724
 	setvar VAR_0x8004, 0
 	special sub_813BF7C
-	setflag FLAG_0x4FE
+	setflag FLAG_DEFEATED_ELITE_4_DRAKE
 	call EverGrandeCity_DrakesRoom_EventScript_2723F8
 	msgbox EverGrandeCity_DrakesRoom_Text_2288B0, MSGBOX_DEFAULT
 	release

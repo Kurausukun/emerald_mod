@@ -1,13 +1,11 @@
 #ifndef GUARD_DATA2_H
 #define GUARD_DATA2_H
 
-#define MOVE_NAME_LENGTH 12
-
 struct MonCoords
 {
     // This would use a bitfield, but some function
     // uses it as a u8 and casting won't match.
-    u8 coords; // u8 x:4, y:4;
+    u8 size; // u8 width:4, height:4;
     u8 y_offset;
 };
 

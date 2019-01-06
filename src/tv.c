@@ -6,6 +6,8 @@
 #include "event_data.h"
 #include "fieldmap.h"
 #include "field_camera.h"
+#include "field_specials.h"
+#include "fldeff.h"
 #include "strings.h"
 #include "string_util.h"
 #include "international_string_util.h"
@@ -24,7 +26,6 @@
 #include "event_scripts.h"
 #include "shop.h"
 #include "lilycove_lady.h"
-#include "rom6.h"
 #include "pokedex.h"
 #include "event_object_movement.h"
 #include "text.h"
@@ -861,13 +862,13 @@ void SetTVMetatilesOnMap(int width, int height, u16 tileId)
 
 void TurnOffTVScreen(void)
 {
-    SetTVMetatilesOnMap(gUnknown_03005DC0.width, gUnknown_03005DC0.height, 0x0002);
+    SetTVMetatilesOnMap(gBackupMapLayout.width, gBackupMapLayout.height, 0x0002);
     DrawWholeMapView();
 }
 
 void TurnOnTVScreen(void)
 {
-    SetTVMetatilesOnMap(gUnknown_03005DC0.width, gUnknown_03005DC0.height, 0x0003);
+    SetTVMetatilesOnMap(gBackupMapLayout.width, gBackupMapLayout.height, 0x0003);
     DrawWholeMapView();
 }
 
@@ -1261,7 +1262,7 @@ static void InterviewAfter_ContestLiveUpdates(void)
         show2->contestLiveUpdates.active = TRUE;
         StringCopy(show2->contestLiveUpdates.playerName, gSaveBlock2Ptr->playerName);
         show2->contestLiveUpdates.category = gSpecialVar_ContestCategory;
-        show2->contestLiveUpdates.species = GetMonData(&gPlayerParty[gUnknown_02039F24], MON_DATA_SPECIES, NULL);
+        show2->contestLiveUpdates.species = GetMonData(&gPlayerParty[gContestMonPartyIndex], MON_DATA_SPECIES, NULL);
         show2->contestLiveUpdates.winningSpecies = show->contestLiveUpdates.winningSpecies;
         show2->contestLiveUpdates.appealFlags2 = show->contestLiveUpdates.appealFlags2;
         show2->contestLiveUpdates.round1Rank = show->contestLiveUpdates.round1Rank;
@@ -1452,7 +1453,7 @@ void ContestLiveUpdates_BeforeInterview_5(u8 a0, u8 a1)
         StringCopy(show->contestLiveUpdates.winningTrainerName, gContestMons[a1].trainerName);
         StripExtCtrlCodes(show->contestLiveUpdates.winningTrainerName);
         show->contestLiveUpdates.appealFlags2 = a0;
-        if (a1 + 1 > gUnknown_02039F30)
+        if (a1 + 1 > gNumLinkContestPlayers)
         {
             show->contestLiveUpdates.winningTrainerLanguage = gLinkPlayers[0].language;
         }
@@ -1515,7 +1516,7 @@ void BravoTrainerPokemonProfile_BeforeInterview1(u16 a0)
     }
 }
 
-void BravoTrainerPokemonProfile_BeforeInterview2(u8 a0)
+void BravoTrainerPokemonProfile_BeforeInterview2(u8 contestStandingPlace)
 {
     TVShow *show;
 
@@ -1523,13 +1524,13 @@ void BravoTrainerPokemonProfile_BeforeInterview2(u8 a0)
     sCurTVShowSlot = FindEmptyTVSlotWithinFirstFiveShowsOfArray(gSaveBlock1Ptr->tvShows);
     if (sCurTVShowSlot != -1)
     {
-        show->bravoTrainer.contestResult = a0;
+        show->bravoTrainer.contestResult = contestStandingPlace;
         show->bravoTrainer.contestCategory = gSpecialVar_ContestCategory;
         show->bravoTrainer.contestRank = gSpecialVar_ContestRank;
-        show->bravoTrainer.species = GetMonData(&gPlayerParty[gUnknown_02039F24], MON_DATA_SPECIES, NULL);
-        GetMonData(&gPlayerParty[gUnknown_02039F24], MON_DATA_NICKNAME, show->bravoTrainer.pokemonNickname);
+        show->bravoTrainer.species = GetMonData(&gPlayerParty[gContestMonPartyIndex], MON_DATA_SPECIES, NULL);
+        GetMonData(&gPlayerParty[gContestMonPartyIndex], MON_DATA_NICKNAME, show->bravoTrainer.pokemonNickname);
         StripExtCtrlCodes(show->bravoTrainer.pokemonNickname);
-        show->bravoTrainer.pokemonNameLanguage = GetMonData(&gPlayerParty[gUnknown_02039F24], MON_DATA_LANGUAGE);
+        show->bravoTrainer.pokemonNameLanguage = GetMonData(&gPlayerParty[gContestMonPartyIndex], MON_DATA_LANGUAGE);
     }
 }
 
@@ -3537,7 +3538,7 @@ u8 CheckForBigMovieOrEmergencyNewsOnTV(void)
             return 0;
         }
     }
-    if (FlagGet(FLAG_SYS_TV_LATI) == TRUE)
+    if (FlagGet(FLAG_SYS_TV_LATIAS_LATIOS) == TRUE)
     {
         return 1;
     }

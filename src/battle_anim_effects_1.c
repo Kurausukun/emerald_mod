@@ -78,6 +78,10 @@ void sub_8103164(struct Sprite *);
 void sub_8103208(struct Sprite *);
 void sub_8103284(struct Sprite *);
 void sub_8103390(struct Sprite *);
+void AnimRockPolishStreak(struct Sprite *);
+void AnimRockPolishSparkle(struct Sprite *);
+void AnimPoisonJabProjectile(struct Sprite *);
+void AnimNightSlash(struct Sprite *);
 static void AnimMovePowderParticleStep(struct Sprite *);
 static void AnimSolarbeamSmallOrbStep(struct Sprite *);
 static void AnimAbsorptionOrbStep(struct Sprite *);
@@ -2186,6 +2190,250 @@ const struct SpriteTemplate gPowerOrbs_Float =
 	.callback = AnimSporeParticle,
 };
 
+const union AnimCmd gRockPolishStreak_AnimCmd[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_FRAME(4, 2),
+    ANIMCMD_FRAME(8, 3),
+    ANIMCMD_FRAME(12, 15),
+    ANIMCMD_FRAME(8, 3),
+    ANIMCMD_FRAME(4, 2),
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+const union AnimCmd *const gRockPolishStreak_AnimCmds[] =
+{
+    gRockPolishStreak_AnimCmd,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd0[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x0, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd1[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x10, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd2[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x20, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd3[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x30, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd4[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x40, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd5[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x50, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd6[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x60, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd7[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x70, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd8[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x80, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd9[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x90, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdA[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xA0, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdB[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xB0, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdC[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xC0, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdD[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xD0, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdE[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xE0, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdF[] =
+{
+    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xF0, 0),
+    AFFINEANIMCMD_END,
+};
+
+const union AffineAnimCmd *const gRockPolishStreak_AffineAnimCmds[] =
+{
+    gRockPolishStreak_AffineAnimCmd0,
+    gRockPolishStreak_AffineAnimCmd1,
+    gRockPolishStreak_AffineAnimCmd2,
+    gRockPolishStreak_AffineAnimCmd3,
+    gRockPolishStreak_AffineAnimCmd4,
+    gRockPolishStreak_AffineAnimCmd5,
+    gRockPolishStreak_AffineAnimCmd6,
+    gRockPolishStreak_AffineAnimCmd7,
+    gRockPolishStreak_AffineAnimCmd8,
+    gRockPolishStreak_AffineAnimCmd9,
+    gRockPolishStreak_AffineAnimCmdA,
+    gRockPolishStreak_AffineAnimCmdB,
+    gRockPolishStreak_AffineAnimCmdC,
+    gRockPolishStreak_AffineAnimCmdD,
+    gRockPolishStreak_AffineAnimCmdE,
+    gRockPolishStreak_AffineAnimCmdF,
+};
+
+const struct SpriteTemplate gRockPolishStreakSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_WHITE_STREAK,
+    .paletteTag = ANIM_TAG_WHITE_STREAK,
+    .oam = &gUnknown_08524B0C,
+    .anims = gRockPolishStreak_AnimCmds,
+    .images = NULL,
+    .affineAnims = gRockPolishStreak_AffineAnimCmds,
+    .callback = AnimRockPolishStreak,
+};
+
+const union AnimCmd gRockPolishSparkle_AnimCmd1[] =
+{
+    ANIMCMD_FRAME(0, 7),
+    ANIMCMD_FRAME(4, 7),
+    ANIMCMD_FRAME(8, 7),
+    ANIMCMD_FRAME(12, 7),
+    ANIMCMD_END,
+};
+
+const union AnimCmd *const gRockPolishSparkle_AnimCmds[] =
+{
+    gRockPolishSparkle_AnimCmd1,
+};
+
+const struct SpriteTemplate gRockPolishSparkleSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_SPARKLE_3,
+    .paletteTag = ANIM_TAG_SPARKLE_3,
+    .oam = &gUnknown_0852490C,
+    .anims = gRockPolishSparkle_AnimCmds,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimRockPolishSparkle,
+};
+
+const struct SpriteTemplate gPoisonJabProjectileSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_PURPLE_JAB,
+    .paletteTag = ANIM_TAG_PURPLE_JAB,
+    .oam = &gUnknown_08524B14,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimPoisonJabProjectile,
+};
+
+const union AnimCmd gNightSlashLeftAnimCmd0[] =
+{
+    ANIMCMD_FRAME(0, 4),
+    ANIMCMD_FRAME(16, 4),
+    ANIMCMD_FRAME(32, 4),
+    ANIMCMD_FRAME(48, 4),
+    ANIMCMD_END,
+};
+
+const union AnimCmd gNightSlashLeftAnimCmd1[] =
+{
+    ANIMCMD_FRAME(48, 4),
+    ANIMCMD_END,
+};
+
+const union AnimCmd *const gNightSlashLeftAnimTable[] =
+{
+    gNightSlashLeftAnimCmd0,
+    gNightSlashLeftAnimCmd1,
+};
+
+const struct SpriteTemplate gNightSlashLeftSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_SLASH,
+    .paletteTag = ANIM_TAG_SLASH,
+    .oam = &gUnknown_08524914,
+    .anims = gNightSlashLeftAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimNightSlash,
+};
+
+const union AnimCmd gNightSlashRightAnimCmd0[] =
+{
+    ANIMCMD_FRAME(0, 4, .vFlip = TRUE, .hFlip = TRUE),
+    ANIMCMD_FRAME(16, 4, .vFlip = TRUE, .hFlip = TRUE),
+    ANIMCMD_FRAME(32, 4, .vFlip = TRUE, .hFlip = TRUE),
+    ANIMCMD_FRAME(48, 4, .vFlip = TRUE, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+const union AnimCmd gNightSlashRightAnimCmd1[] =
+{
+    ANIMCMD_FRAME(48, 4, .vFlip = TRUE, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+const union AnimCmd *const gNightSlashRightAnimTable[] =
+{
+    gNightSlashRightAnimCmd0,
+    gNightSlashRightAnimCmd1,
+};
+
+const struct SpriteTemplate gNightSlashRightSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_SLASH,
+    .paletteTag = ANIM_TAG_SLASH,
+    .oam = &gUnknown_08524914,
+    .anims = gNightSlashRightAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimNightSlash,
+};
+
 // Animates the falling particles that horizontally wave back and forth.
 // Used by Sleep Powder, Stun Spore, and Poison Powder.
 // arg 0: initial x pixel offset
@@ -3308,8 +3556,8 @@ void sub_80FFFC0(u8 taskId)
     task->data[4] = GetBattlerSpriteSubpriority(gBattleAnimTarget) - 1;
     task->data[6] = GetBattlerSpriteCoord(gBattleAnimTarget, 2);
     task->data[7] = GetBattlerSpriteCoord(gBattleAnimTarget, 3);
-    task->data[10] = sub_80A861C(gBattleAnimTarget, 1);
-    task->data[11] = sub_80A861C(gBattleAnimTarget, 0);
+    task->data[10] = GetBattlerSpriteCoordAttr(gBattleAnimTarget, BATTLER_COORD_ATTR_WIDTH);
+    task->data[11] = GetBattlerSpriteCoordAttr(gBattleAnimTarget, BATTLER_COORD_ATTR_HEIGHT);
     task->data[5] = (GetBattlerSide(gBattleAnimTarget) == B_SIDE_OPPONENT) ? 1 : -1;
     task->data[9] = 56 - (task->data[5] * 64);
     task->data[8] = task->data[7] - task->data[9] + task->data[6];
@@ -5463,11 +5711,11 @@ static void sub_81030B0(struct Sprite* sprite)
 void sub_810310C(u8 battler, struct Sprite* sprite)
 {
     if (GetBattlerSide(battler) == B_SIDE_PLAYER)
-        sprite->pos1.x = sub_80A861C(battler, 5) + 8;
+        sprite->pos1.x = GetBattlerSpriteCoordAttr(battler, BATTLER_COORD_ATTR_RIGHT) + 8;
     else
-        sprite->pos1.x = sub_80A861C(battler, 4) - 8;
+        sprite->pos1.x = GetBattlerSpriteCoordAttr(battler, BATTLER_COORD_ATTR_LEFT) - 8;
 
-    sprite->pos1.y = GetBattlerSpriteCoord(battler, 3) - (s16)sub_80A861C(battler, 0) / 4;
+    sprite->pos1.y = GetBattlerSpriteCoord(battler, 3) - (s16)GetBattlerSpriteCoordAttr(battler, BATTLER_COORD_ATTR_HEIGHT) / 4;
 }
 
 void sub_8103164(struct Sprite* sprite)
@@ -5531,7 +5779,7 @@ void sub_8103284(struct Sprite* sprite)
         battler = gBattleAnimTarget;
 
     sprite->pos1.x = GetBattlerSpriteCoord(battler, 0);
-    sprite->pos1.y = sub_80A861C(battler, 2);
+    sprite->pos1.y = GetBattlerSpriteCoordAttr(battler, BATTLER_COORD_ATTR_TOP);
     if (sprite->pos1.y <= 9)
         sprite->pos1.y = 10;
 
@@ -5617,4 +5865,62 @@ static void sub_810342C(struct Sprite* sprite)
 {
     if (++sprite->data[1] > 5)
         DestroyAnimSprite(sprite);
+}
+
+// Animates a white streak by giving it a random rotation.
+// arg 0: initial x pixel offset
+// arg 1: initial y pixel offset
+void AnimRockPolishStreak(struct Sprite *sprite)
+{
+    int affineAnimNum = Random2() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
+    InitSpritePosToAnimAttacker(sprite, TRUE);
+    StartSpriteAffineAnim(sprite, affineAnimNum);
+    StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
+    sprite->callback = RunStoredCallbackWhenAnimEnds;
+}
+
+// Places a blue sparkle that plays its default animation.
+// arg 0: initial x pixel offset
+// arg 1: initial y pixel offset
+void AnimRockPolishSparkle(struct Sprite *sprite)
+{
+    InitSpritePosToAnimAttacker(sprite, TRUE);
+    StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
+    sprite->callback = RunStoredCallbackWhenAnimEnds;
+}
+
+// Moves a projectile towards the center of the target mon.  The sprite is rotated to look
+// like it's traveling along that path.
+// arg 0: initial x pixel offset
+// arg 1: initial y pixel offset
+// arg 2: duration
+void AnimPoisonJabProjectile(struct Sprite *sprite)
+{
+    s16 targetXPos;
+    s16 targetYPos;
+    u16 rotation;
+
+    InitSpritePosToAnimTarget(sprite, TRUE);
+    targetXPos = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2);
+    targetYPos = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
+    rotation = ArcTan2Neg(targetXPos - sprite->pos1.x, targetYPos - sprite->pos1.y);
+    TrySetSpriteRotScale(sprite, FALSE, 0x100, 0x100, rotation);
+    sprite->data[0] = gBattleAnimArgs[2];
+    sprite->data[2] = targetXPos;
+    sprite->data[4] = targetYPos;
+    sprite->callback = StartAnimLinearTranslation;
+    StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
+}
+
+void AnimTask_BlendNightSlash(u8 taskId)
+{
+    int paletteOffset = IndexOfSpritePaletteTag(ANIM_TAG_SLASH) * 16 + 256;
+    BlendPalette(paletteOffset, 16, 6, RGB_RED);
+    DestroyAnimVisualTask(taskId);
+}
+
+void AnimNightSlash(struct Sprite *sprite)
+{
+    sprite->callback = sub_8101F40;
+    sprite->callback(sprite);
 }

@@ -5,6 +5,7 @@
 #include "frontier_util.h"
 #include "battle_message.h"
 #include "battle_tent.h"
+#include "battle_factory.h"
 #include "bg.h"
 #include "contest.h"
 #include "contest_effect.h"
@@ -44,8 +45,6 @@
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
 #include "constants/species.h"
-
-extern bool8 sub_81A6BF4(void);
 
 static EWRAM_DATA struct UnkSummaryStruct
 {
@@ -130,7 +129,6 @@ struct UnkStruct_61CC04
 };
 
 // forward declarations
-bool8 IsMultiBattle(void);
 static bool8 SummaryScreen_LoadGraphics(void);
 static void SummaryScreen_LoadingCB2(void);
 static void InitBGs(void);
@@ -239,8 +237,6 @@ static void sub_81C4568(u8 a, u8 b);
 static u8 sub_81C45F4(struct Pokemon *a, s16 *b);
 static u8 sub_81C47B4(struct Pokemon *unused);
 static void sub_81C4844(struct Sprite *);
-void SummaryScreen_SetUnknownTaskId(u8 a);
-void SummaryScreen_DestroyUnknownTask(void);
 static void sub_81C48F0(void);
 static void CreateMonMarkingsSprite(struct Pokemon *mon);
 static void RemoveAndCreateMonMarkingsSprite(struct Pokemon *mon);
@@ -387,7 +383,7 @@ static const struct UnkStruct_61CC04 gUnknown_0861CC10 =
 static const s8 gUnknown_0861CC1C[] = {0, 2, 3, 1, 4, 5};
 static const struct WindowTemplate gUnknown_0861CC24[] =
 {
-    {
+    {//Text for Pokemon Info
         .bg = 0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
@@ -396,7 +392,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 1,
     },
-    {
+    {//Text for Pokemon Skills
         .bg = 0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
@@ -405,7 +401,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 23,
     },
-    {
+    {//Text for Battle Moves
         .bg = 0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
@@ -414,7 +410,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 45,
     },
-    {
+    {//Text for Contest Moves
         .bg = 0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
@@ -423,7 +419,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 67,
     },
-    {
+    { //Text on Pokemon Info: Button prompt: Cancel
         .bg = 0,
         .tilemapLeft = 22,
         .tilemapTop = 0,
@@ -432,7 +428,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 7,
         .baseBlock = 89,
     },
-    {
+    {//Info button found under moves
         .bg = 0,
         .tilemapLeft = 22,
         .tilemapTop = 0,
@@ -441,7 +437,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 7,
         .baseBlock = 105,
     },
-    {
+    {//Switch button under moves when viewing moves
         .bg = 0,
         .tilemapLeft = 22,
         .tilemapTop = 0,
@@ -450,7 +446,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 7,
         .baseBlock = 121,
     },
-    {
+    {//Unknown
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 4,
@@ -459,7 +455,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 137,
     },
-    {
+    {//Unknown
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 4,
@@ -468,7 +464,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 137,
     },
-    {
+    {//Type on pokemon info page
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 6,
@@ -477,7 +473,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 173,
     },
-    {
+    {//HP, Attack and Defense text
         .bg = 0,
         .tilemapLeft = 10,
         .tilemapTop = 7,
@@ -486,7 +482,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 209,
     },
-    {
+    {//Sp. atk, Sp. Def and Speed texxt
         .bg = 0,
         .tilemapLeft = 22,
         .tilemapTop = 7,
@@ -495,7 +491,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 245,
     },
-    {
+    {//EXP and next lvl.
         .bg = 0,
         .tilemapLeft = 10,
         .tilemapTop = 14,
@@ -504,7 +500,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 275,
     },
-    {
+    {//Unknown
         .bg = 0,
         .tilemapLeft = 0,
         .tilemapTop = 18,
@@ -513,7 +509,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 319,
     },
-    {
+    {//move text: Power, Accuracy and their numeric values.
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 15,
@@ -522,7 +518,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 331,
     },
-    {
+    {//contest text: appeal and jam
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 15,
@@ -531,7 +527,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 367,
     },
-    {
+    {//Unknown
         .bg = 0,
         .tilemapLeft = 22,
         .tilemapTop = 4,
@@ -540,7 +536,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 387,
     },
-    {
+    {//No.
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 2,
@@ -549,7 +545,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 7,
         .baseBlock = 387,
     },
-    {
+    {//Upper name
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 12,
@@ -558,7 +554,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
         .paletteNum = 6,
         .baseBlock = 395,
     },
-    {
+    {//Lower name
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 14,
@@ -571,7 +567,7 @@ static const struct WindowTemplate gUnknown_0861CC24[] =
 };
 static const struct WindowTemplate gUnknown_0861CCCC[] =
 {
-    {
+    {//Original Trainer
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 4,
@@ -580,7 +576,7 @@ static const struct WindowTemplate gUnknown_0861CCCC[] =
         .paletteNum = 6,
         .baseBlock = 449,
     },
-    {
+    {//ID numbers
         .bg = 0,
         .tilemapLeft = 22,
         .tilemapTop = 4,
@@ -589,7 +585,7 @@ static const struct WindowTemplate gUnknown_0861CCCC[] =
         .paletteNum = 6,
         .baseBlock = 471,
     },
-    {
+    {//Ability
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 9,
@@ -598,7 +594,7 @@ static const struct WindowTemplate gUnknown_0861CCCC[] =
         .paletteNum = 6,
         .baseBlock = 485,
     },
-    {
+    {//Trainer Memo
         .bg = 0,
         .tilemapLeft = 11,
         .tilemapTop = 14,
@@ -610,7 +606,7 @@ static const struct WindowTemplate gUnknown_0861CCCC[] =
 };
 static const struct WindowTemplate gUnknown_0861CCEC[] =
 {
-    {
+    {//Held Item string
         .bg = 0,
         .tilemapLeft = 10,
         .tilemapTop = 4,
@@ -619,7 +615,7 @@ static const struct WindowTemplate gUnknown_0861CCEC[] =
         .paletteNum = 6,
         .baseBlock = 449,
     },
-    {
+    {//Ribbon string
         .bg = 0,
         .tilemapLeft = 20,
         .tilemapTop = 4,
@@ -628,7 +624,7 @@ static const struct WindowTemplate gUnknown_0861CCEC[] =
         .paletteNum = 6,
         .baseBlock = 469,
     },
-    {
+    {//Stat numbers left (HP, ATK & DEF)
         .bg = 0,
         .tilemapLeft = 16,
         .tilemapTop = 7,
@@ -637,7 +633,7 @@ static const struct WindowTemplate gUnknown_0861CCEC[] =
         .paletteNum = 6,
         .baseBlock = 489,
     },
-    {
+    {//Stat numbers right (SP.ATK, SP.DEF & SPEED)
         .bg = 0,
         .tilemapLeft = 27,
         .tilemapTop = 7,
@@ -646,7 +642,7 @@ static const struct WindowTemplate gUnknown_0861CCEC[] =
         .paletteNum = 6,
         .baseBlock = 525,
     },
-    {
+    {//Exp numbers
         .bg = 0,
         .tilemapLeft = 24,
         .tilemapTop = 14,
@@ -658,7 +654,7 @@ static const struct WindowTemplate gUnknown_0861CCEC[] =
 };
 static const struct WindowTemplate gUnknown_0861CD14[] =
 {
-    {
+    {//Move names?
         .bg = 0,
         .tilemapLeft = 15,
         .tilemapTop = 4,
@@ -667,7 +663,7 @@ static const struct WindowTemplate gUnknown_0861CD14[] =
         .paletteNum = 6,
         .baseBlock = 449,
     },
-    {
+    {//PP Numbers
         .bg = 0,
         .tilemapLeft = 24,
         .tilemapTop = 4,
@@ -676,7 +672,7 @@ static const struct WindowTemplate gUnknown_0861CD14[] =
         .paletteNum = 8,
         .baseBlock = 539,
     },
-    {
+    {//Move description text
         .bg = 0,
         .tilemapLeft = 10,
         .tilemapTop = 15,
@@ -1378,7 +1374,7 @@ static bool8 SummaryScreen_DecompressGraphics(void)
         pssData->unk40F0++;
         break;
     case 12:
-        LoadCompressedPalette(&gMoveTypes_Pal, 0x1D0, 0x60);
+        LoadCompressedPalette(gMoveTypes_Pal, 0x1D0, 0x60);
         pssData->unk40F0 = 0;
         return TRUE;
     }
@@ -1422,7 +1418,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *a)
 
         break;
     case 1:
-        for (i = 0; i < 4; i++)
+        for (i = 0; i < MAX_MON_MOVES; i++)
         {
             sum->moves[i] = GetMonData(a, MON_DATA_MOVE1+i);
             sum->pp[i] = GetMonData(a, MON_DATA_PP1+i);
@@ -1795,15 +1791,15 @@ static void sub_81C0B8C(u8 taskId)
         if (pssData->unk40C9 == 0)
         {
             data[1] = 1;
-            SetBgAttribute(1, 7, 1);
-            SetBgAttribute(2, 7, 2);
+            SetBgAttribute(1, BG_ATTR_PRIORITY, 1);
+            SetBgAttribute(2, BG_ATTR_PRIORITY, 2);
             schedule_bg_copy_tilemap_to_vram(1);
         }
         else
         {
             data[1] = 2;
-            SetBgAttribute(2, 7, 1);
-            SetBgAttribute(1, 7, 2);
+            SetBgAttribute(2, BG_ATTR_PRIORITY, 1);
+            SetBgAttribute(1, BG_ATTR_PRIORITY, 2);
             schedule_bg_copy_tilemap_to_vram(2);
         }
         ChangeBgX(data[1], 0, 0);
@@ -1852,14 +1848,14 @@ static void sub_81C0D44(u8 taskId)
     s16 *data = gTasks[taskId].data;
     if (pssData->unk40C9 == 0)
     {
-        SetBgAttribute(1, 7, 1);
-        SetBgAttribute(2, 7, 2);
+        SetBgAttribute(1, BG_ATTR_PRIORITY, 1);
+        SetBgAttribute(2, BG_ATTR_PRIORITY, 2);
         schedule_bg_copy_tilemap_to_vram(2);
     }
     else
     {
-        SetBgAttribute(2, 7, 1);
-        SetBgAttribute(1, 7, 2);
+        SetBgAttribute(2, BG_ATTR_PRIORITY, 1);
+        SetBgAttribute(1, BG_ATTR_PRIORITY, 2);
         schedule_bg_copy_tilemap_to_vram(1);
     }
     if (pssData->currPageIndex > 1)
@@ -1958,7 +1954,7 @@ static void sub_81C0F44(u8 taskId)
 static bool8 sub_81C1040(void)
 {
     u8 i;
-    for (i = 1; i < 4; i++)
+    for (i = 1; i < MAX_MON_MOVES; i++)
     {
         if (pssData->summary.moves[i] != 0)
             return TRUE;
@@ -1974,14 +1970,14 @@ static void sub_81C1070(s16 *a, s8 b, u8 *c)
 
     PlaySE(SE_SELECT);
     moveIndex = *c;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
         moveIndex += b;
         if (moveIndex > a[0])
             moveIndex = 0;
         else if (moveIndex < 0)
             moveIndex = a[0];
-        if (moveIndex == 4)
+        if (moveIndex == MAX_MON_MOVES)
         {
             move = pssData->newMove;
             break;
@@ -2252,7 +2248,7 @@ static void sub_81C174C(u8 taskId)
 
 static bool8 sub_81C18A8(void)
 {
-    if (pssData->firstMoveIndex == MAX_MON_MOVES || pssData->newMove == MOVE_NONE || sub_81B6D14(pssData->summary.moves[pssData->firstMoveIndex]) != 1)
+    if (pssData->firstMoveIndex == MAX_MON_MOVES || pssData->newMove == MOVE_NONE || IsMoveHm(pssData->summary.moves[pssData->firstMoveIndex]) != 1)
         return TRUE;
     else
         return FALSE;
@@ -3658,7 +3654,7 @@ static void PrintContestMoveDescription(u8 moveSlot)
 {
     u16 move;
 
-    if (moveSlot == 4)
+    if (moveSlot == MAX_MON_MOVES)
         move = pssData->newMove;
     else
         move = pssData->summary.moves[moveSlot];
@@ -3856,7 +3852,7 @@ static void sub_81C4420(void)
 {
     u8 i;
     struct PokeSummary *summary = &pssData->summary;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (summary->moves[i] != MOVE_NONE)
             SetMoveTypeSpritePosAndType(gBattleMoves[summary->moves[i]].type, 0x55, 0x20 + (i * 0x10), i + 3);
@@ -3869,7 +3865,7 @@ static void sub_81C4484(void)
 {
     u8 i;
     struct PokeSummary *summary = &pssData->summary;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (summary->moves[i] != MOVE_NONE)
             SetMoveTypeSpritePosAndType(NUMBER_OF_MON_TYPES + gContestMoves[summary->moves[i]].contestCategory, 0x55, 0x20 + (i * 0x10), i + 3);

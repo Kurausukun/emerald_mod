@@ -14,22 +14,22 @@ LavaridgeTown_Gym_1F_EventScript_1FE705:: @ 81FE705
 	setvar VAR_TEMP_E, 0
 	setvar VAR_TEMP_F, 0
 	checktrainerflag TRAINER_COLE
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE72C
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE72C
 	setvar VAR_TEMP_B, 1
 
 LavaridgeTown_Gym_1F_EventScript_1FE72C:: @ 81FE72C
 	checktrainerflag TRAINER_GERALD
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE73A
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE73A
 	setvar VAR_TEMP_C, 1
 
 LavaridgeTown_Gym_1F_EventScript_1FE73A:: @ 81FE73A
 	checktrainerflag TRAINER_AXLE
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE748
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE748
 	setvar VAR_TEMP_D, 1
 
 LavaridgeTown_Gym_1F_EventScript_1FE748:: @ 81FE748
 	checktrainerflag TRAINER_DANIELLE
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE756
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE756
 	setvar VAR_TEMP_E, 1
 
 LavaridgeTown_Gym_1F_EventScript_1FE756:: @ 81FE756
@@ -37,22 +37,22 @@ LavaridgeTown_Gym_1F_EventScript_1FE756:: @ 81FE756
 
 LavaridgeTown_Gym_1F_EventScript_1FE757:: @ 81FE757
 	checktrainerflag TRAINER_COLE
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE764
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE764
 	setobjectmovementtype 2, 63
 
 LavaridgeTown_Gym_1F_EventScript_1FE764:: @ 81FE764
 	checktrainerflag TRAINER_GERALD
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE771
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE771
 	setobjectmovementtype 3, 63
 
 LavaridgeTown_Gym_1F_EventScript_1FE771:: @ 81FE771
 	checktrainerflag TRAINER_AXLE
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE77E
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE77E
 	setobjectmovementtype 4, 63
 
 LavaridgeTown_Gym_1F_EventScript_1FE77E:: @ 81FE77E
 	checktrainerflag TRAINER_DANIELLE
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE78B
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE78B
 	setobjectmovementtype 5, 63
 
 LavaridgeTown_Gym_1F_EventScript_1FE78B:: @ 81FE78B
@@ -62,9 +62,8 @@ LavaridgeTown_Gym_1F_EventScript_1FE78C:: @ 81FE78C
 	trainerbattle_single TRAINER_FLANNERY_1, LavaridgeTown_Gym_1F_Text_1FF0DC, LavaridgeTown_Gym_1F_Text_1FF233, LavaridgeTown_Gym_1F_EventScript_1FE7C1, NO_MUSIC
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	compare VAR_RESULT, 1
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE864
-	checkflag FLAG_0x0A8
-	goto_if 0, LavaridgeTown_Gym_1F_EventScript_1FE81D
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_1FE864
+	goto_if_unset FLAG_RECEIVED_TM50, LavaridgeTown_Gym_1F_EventScript_1FE81D
 	msgbox LavaridgeTown_Gym_1F_Text_1FF546, MSGBOX_DEFAULT
 	release
 	end
@@ -74,12 +73,12 @@ LavaridgeTown_Gym_1F_EventScript_1FE7C1:: @ 81FE7C1
 	waitmessage
 	call LavaridgeTown_Gym_1F_EventScript_27207E
 	msgbox LavaridgeTown_Gym_1F_Text_1FF359, MSGBOX_DEFAULT
-	setflag FLAG_0x06C
-	setflag FLAG_0x4F3
+	setflag FLAG_FLANNERY_GIVES_BADGE_INFO
+	setflag FLAG_DEFEATED_LAVARIDGE_GYM
 	setflag FLAG_BADGE04_GET
 	addvar VAR_0x4085, 1
 	compare VAR_0x4085, 6
-	call_if 1, LavaridgeTown_Gym_1F_EventScript_271E84
+	call_if_eq LavaridgeTown_Gym_1F_EventScript_271E84
 	setvar VAR_0x8008, 4
 	call LavaridgeTown_Gym_1F_EventScript_271F43
 	setflag FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WALLY
@@ -92,25 +91,25 @@ LavaridgeTown_Gym_1F_EventScript_1FE7C1:: @ 81FE7C1
 	waitfanfare
 	closemessage
 	delay 30
-	setflag FLAG_0x1D6
+	setflag FLAG_ENABLE_FLANNERY_MATCH_CALL
 	release
 	end
 
 LavaridgeTown_Gym_1F_EventScript_1FE81D:: @ 81FE81D
 	giveitem_std ITEM_TM50
 	compare VAR_RESULT, 0
-	goto_eq LavaridgeTown_Gym_1F_EventScript_272054
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_272054
 	msgbox LavaridgeTown_Gym_1F_Text_1FF45C, MSGBOX_DEFAULT
-	setflag FLAG_0x0A8
+	setflag FLAG_RECEIVED_TM50
 	release
 	end
 
 LavaridgeTown_Gym_1F_EventScript_1FE841:: @ 81FE841
 	giveitem_std ITEM_TM50
 	compare VAR_RESULT, 0
-	goto_eq LavaridgeTown_Gym_1F_EventScript_27205E
+	goto_if_eq LavaridgeTown_Gym_1F_EventScript_27205E
 	msgbox LavaridgeTown_Gym_1F_Text_1FF45C, MSGBOX_DEFAULT
-	setflag FLAG_0x0A8
+	setflag FLAG_RECEIVED_TM50
 	return
 
 LavaridgeTown_Gym_1F_EventScript_1FE864:: @ 81FE864
@@ -129,7 +128,7 @@ LavaridgeTown_Gym_B1F_EventScript_1FE89A:: @ 81FE89A
 	release
 	special ShouldTryGetTrainerScript
 	compare VAR_RESULT, 1
-	goto_eq EventScript_GotoTrainerScript
+	goto_if_eq EventScript_GotoTrainerScript
 	end
 
 LavaridgeTown_Gym_1F_EventScript_1FE8AF:: @ 81FE8AF
@@ -170,8 +169,7 @@ LavaridgeTown_Gym_B1F_EventScript_1FE951:: @ 81FE951
 LavaridgeTown_Gym_1F_EventScript_1FE96C:: @ 81FE96C
 	lock
 	faceplayer
-	checkflag FLAG_0x4F3
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE981
+	goto_if_set FLAG_DEFEATED_LAVARIDGE_GYM, LavaridgeTown_Gym_1F_EventScript_1FE981
 	msgbox LavaridgeTown_Gym_1F_Text_1FE9BF, MSGBOX_DEFAULT
 	release
 	end
@@ -183,15 +181,13 @@ LavaridgeTown_Gym_1F_EventScript_1FE981:: @ 81FE981
 
 LavaridgeTown_Gym_1F_EventScript_1FE98B:: @ 81FE98B
 	lockall
-	checkflag FLAG_BADGE04_GET
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE9AB
+	goto_if_set FLAG_BADGE04_GET, LavaridgeTown_Gym_1F_EventScript_1FE9AB
 	goto LavaridgeTown_Gym_1F_EventScript_1FE9B5
 	end
 
 LavaridgeTown_Gym_1F_EventScript_1FE99B:: @ 81FE99B
 	lockall
-	checkflag FLAG_BADGE04_GET
-	goto_eq LavaridgeTown_Gym_1F_EventScript_1FE9AB
+	goto_if_set FLAG_BADGE04_GET, LavaridgeTown_Gym_1F_EventScript_1FE9AB
 	goto LavaridgeTown_Gym_1F_EventScript_1FE9B5
 	end
 

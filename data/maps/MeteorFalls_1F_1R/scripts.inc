@@ -3,8 +3,7 @@ MeteorFalls_1F_1R_MapScripts:: @ 822BD2A
 	.byte 0
 
 MeteorFalls_1F_1R_MapScript1_22BD30: @ 822BD30
-	checkflag FLAG_SYS_GAME_CLEAR
-	call_if 1, MeteorFalls_1F_1R_EventScript_22BD3A
+	call_if_set FLAG_SYS_GAME_CLEAR, MeteorFalls_1F_1R_EventScript_22BD3A
 	end
 
 MeteorFalls_1F_1R_EventScript_22BD3A:: @ 822BD3A
@@ -85,7 +84,7 @@ MeteorFalls_1F_1R_EventScript_22BD5F:: @ 822BD5F
 	removeobject 8
 	removeobject 9
 	setflag FLAG_HIDE_ROUTE_112_TEAM_MAGMA
-	setflag FLAG_0x0CF
+	setflag FLAG_MET_ARCHIE_METEOR_FALLS
 	setflag FLAG_HIDE_FALLORBOR_TOWN_BATTLE_TENT_SCOTT
 	setvar VAR_0x40BF, 1
 	releaseall
@@ -221,9 +220,8 @@ MeteorFalls_1F_1R_Movement_22BF1D: @ 822BF1D
 MeteorFalls_1F_1R_EventScript_22BF25:: @ 822BF25
 	lock
 	faceplayer
-	checkflag FLAG_0x0F4
-	goto_eq MeteorFalls_1F_1R_EventScript_22BF3D
-	setflag FLAG_0x0F4
+	goto_if_set FLAG_MET_PROF_COSMO, MeteorFalls_1F_1R_EventScript_22BF3D
+	setflag FLAG_MET_PROF_COSMO
 	msgbox MeteorFalls_1F_1R_Text_22C342, MSGBOX_DEFAULT
 	release
 	end
@@ -309,4 +307,3 @@ MeteorFalls_1F_1R_Text_22C47D: @ 822C47D
 	.string "PROF. COZMO: But that TEAM MAGMA…\p"
 	.string "What are they going to do with that\n"
 	.string "METEORITE at MT. CHIMNEY?$"
-

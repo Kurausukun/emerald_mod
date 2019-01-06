@@ -538,7 +538,7 @@ extern const u8 EventScript_TV[];
 extern const u8 EventScript_ClosedSootopolisDoor[];
 extern const u8 SkyPillar_Outside_EventScript_2393F9[];
 extern const u8 EventScript_CableBoxResults[];
-extern const u8 EventScript_2A4BAC[];
+extern const u8 EventScript_PokeBlockFeeder[];
 extern const u8 Route110_TrickHouseEntrance_EventScript_26A22A[];
 extern const u8 EventScript_RegionMap[];
 extern const u8 EventScript_RunningShoesManual[];
@@ -578,5 +578,10 @@ extern const u8 gUnknown_082A8350[];
 extern const u8 BattleFrontier_BattlePyramidEmptySquare_EventScript_252C88[];
 extern const u8 BattleFrontier_BattlePyramidEmptySquare_EventScript_252C4F[];
 extern const u8 BattleFrontier_BattlePyramidEmptySquare_EventScript_252C6A[];
+
+// fldeff misc
+extern const u8 EventScript_275A86[];
+extern const u8 EventScript_275ADF[];
+extern const u8 EventScript_275B38[];
 
 #endif // GUARD_EVENT_SCRIPTS_H

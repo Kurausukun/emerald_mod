@@ -98,32 +98,6 @@ static const u8 sAbilitiesAffectedByMoldBreaker[] =
     [ABILITY_WATER_BUBBLE] = 1,
 };
 
-static const u8 sFlailHpScaleToPowerTable[] =
-{
-    1, 200,
-    4, 150,
-    9, 100,
-    16, 80,
-    32, 40,
-    48, 20
-};
-
-// format: min. weight (hectograms), base power
-static const u16 sWeightToDamageTable[] =
-{
-    100, 20,
-    250, 40,
-    500, 60,
-    1000, 80,
-    2000, 100,
-    0xFFFF, 0xFFFF
-};
-
-static const u16 sSpeedDiffToDmgTable[] =
-{
-    40, 60, 80, 120, 150
-};
-
 static const u8 sHoldEffectToType[][2] =
 {
     {HOLD_EFFECT_BUG_POWER, TYPE_BUG},
@@ -336,13 +310,13 @@ void PressurePPLose(u8 defender, u8 attacker, u16 move)
     if (gBattleMons[defender].ability != ABILITY_PRESSURE)
         return;
 
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (gBattleMons[attacker].moves[i] == move)
             break;
     }
 
-    if (i == 4) // mons don't share any moves
+    if (i == MAX_MON_MOVES) // mons don't share any moves
         return;
 
     if (gBattleMons[attacker].pp[i] != 0)
@@ -367,12 +341,12 @@ void PressurePPLoseOnUsingImprision(u8 attacker)
     {
         if (atkSide != GetBattlerSide(i) && gBattleMons[i].ability == ABILITY_PRESSURE)
         {
-            for (j = 0; j < 4; j++)
+            for (j = 0; j < MAX_MON_MOVES; j++)
             {
                 if (gBattleMons[attacker].moves[j] == MOVE_IMPRISON)
                     break;
             }
-            if (j != 4)
+            if (j != MAX_MON_MOVES)
             {
                 imprisionPos = j;
                 if (gBattleMons[attacker].pp[j] != 0)
@@ -400,12 +374,12 @@ void PressurePPLoseOnUsingPerishSong(u8 attacker)
     {
         if (gBattleMons[i].ability == ABILITY_PRESSURE && i != attacker)
         {
-            for (j = 0; j < 4; j++)
+            for (j = 0; j < MAX_MON_MOVES; j++)
             {
                 if (gBattleMons[attacker].moves[j] == MOVE_PERISH_SONG)
                     break;
             }
-            if (j != 4)
+            if (j != MAX_MON_MOVES)
             {
                 perishSongPos = j;
                 if (gBattleMons[attacker].pp[j] != 0)
@@ -414,7 +388,7 @@ void PressurePPLoseOnUsingPerishSong(u8 attacker)
         }
     }
 
-    if (perishSongPos != 4
+    if (perishSongPos != MAX_MON_MOVES
         && !(gBattleMons[attacker].status2 & STATUS2_TRANSFORMED)
         && !(gDisableStructs[attacker].unk18_b & gBitTable[perishSongPos]))
     {
@@ -438,6 +412,14 @@ void MarkAllBattlersForControllerExec(void) // unused
         for (i = 0; i < gBattlersCount; i++)
             gBattleControllerExecFlags |= gBitTable[i];
     }
+}
+
+bool32 IsBattlerMarkedForControllerExec(u8 battlerId)
+{
+    if (gBattleTypeFlags & BATTLE_TYPE_LINK)
+        return (gBattleControllerExecFlags & (gBitTable[battlerId] << 0x1C)) != 0;
+    else
+        return (gBattleControllerExecFlags & (gBitTable[battlerId])) != 0;
 }
 
 void MarkBattlerForControllerExec(u8 battlerId)
@@ -492,6 +474,19 @@ bool8 WasUnableToUseMove(u8 battler)
 
 void PrepareStringBattle(u16 stringId, u8 battler)
 {
+    // Support for Contrary ability.
+    // If a move attempted to raise stat - print "won't increase".
+    // If a move attempted to lower stat - print "won't decrease".
+    if (stringId == STRINGID_STATSWONTDECREASE && !(gBattleScripting.statChanger & STAT_BUFF_NEGATIVE))
+        stringId = STRINGID_STATSWONTINCREASE;
+    else if (stringId == STRINGID_STATSWONTINCREASE && gBattleScripting.statChanger & STAT_BUFF_NEGATIVE)
+        stringId = STRINGID_STATSWONTDECREASE;
+
+    if (stringId == STRINGID_STATSWONTDECREASE2 && GetBattlerAbility(battler) == ABILITY_CONTRARY)
+        stringId = STRINGID_STATSWONTINCREASE2;
+    else if (stringId == STRINGID_STATSWONTINCREASE2 && GetBattlerAbility(battler) == ABILITY_CONTRARY)
+        stringId = STRINGID_STATSWONTDECREASE2;
+
     gActiveBattler = battler;
     BtlController_EmitPrintString(0, stringId);
     MarkBattlerForControllerExec(gActiveBattler);
@@ -608,7 +603,7 @@ static bool32 IsHealBlockPreventingMove(u8 battler, u32 move)
 u8 TrySetCantSelectMoveBattleScript(void)
 {
     u8 limitations = 0;
-	u8 moveId = gBattleBufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION);
+	u8 moveId = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION);
     u32 move = gBattleMons[gActiveBattler].moves[moveId];
     u32 holdEffect = GetBattlerHoldEffect(gActiveBattler, TRUE);
     u16* choicedMove = &gBattleStruct->choicedMove[gActiveBattler];
@@ -758,7 +753,7 @@ u8 CheckMoveLimitations(u8 battlerId, u8 unusableMoves, u8 check)
 
     gPotentialItemEffectBattler = battlerId;
 
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (gBattleMons[battlerId].moves[i] == 0 && check & MOVE_LIMITATION_ZEROMOVE)
             unusableMoves |= gBitTable[i];
@@ -815,12 +810,12 @@ u8 GetImprisonedMovesCount(u8 battlerId, u16 move)
         if (battlerSide != GetBattlerSide(i) && gStatuses3[i] & STATUS3_IMPRISONED_OTHERS)
         {
             s32 j;
-            for (j = 0; j < 4; j++)
+            for (j = 0; j < MAX_MON_MOVES; j++)
             {
                 if (move == gBattleMons[i].moves[j])
                     break;
             }
-            if (j < 4)
+            if (j < MAX_MON_MOVES)
                 imprisionedMoves++;
         }
     }
@@ -1608,12 +1603,12 @@ u8 DoBattlerEndTurnEffects(void)
                 if (gDisableStructs[gActiveBattler].disableTimer != 0)
                 {
                     s32 i;
-                    for (i = 0; i < 4; i++)
+                    for (i = 0; i < MAX_MON_MOVES; i++)
                     {
                         if (gDisableStructs[gActiveBattler].disabledMove == gBattleMons[gActiveBattler].moves[i])
                             break;
                     }
-                    if (i == 4)  // pokemon does not have the disabled move anymore
+                    if (i == MAX_MON_MOVES)  // pokemon does not have the disabled move anymore
                     {
                         gDisableStructs[gActiveBattler].disabledMove = 0;
                         gDisableStructs[gActiveBattler].disableTimer = 0;
@@ -3648,7 +3643,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                         mon = &gPlayerParty[gBattlerPartyIndexes[battlerId]];
                     else
                         mon = &gEnemyParty[gBattlerPartyIndexes[battlerId]];
-                    for (i = 0; i < 4; i++)
+                    for (i = 0; i < MAX_MON_MOVES; i++)
                     {
                         move = GetMonData(mon, MON_DATA_MOVE1 + i);
                         changedPP = GetMonData(mon, MON_DATA_PP1 + i);
@@ -3656,7 +3651,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                         if (move && changedPP == 0)
                             break;
                     }
-                    if (i != 4)
+                    if (i != MAX_MON_MOVES)
                     {
                         u8 maxPP = CalculatePPWithBonus(move, ppBonuses, i);
                         if (changedPP + battlerHoldEffectParam > maxPP)
@@ -4637,6 +4632,31 @@ static u32 ApplyModifier(u16 modifier, u32 val)
     return UQ_4_12_TO_INT((modifier * val) + UQ_4_12_ROUND);
 }
 
+static const u8 sFlailHpScaleToPowerTable[] =
+{
+    1, 200,
+    4, 150,
+    9, 100,
+    16, 80,
+    32, 40,
+    48, 20
+};
+
+// format: min. weight (hectograms), base power
+static const u16 sWeightToDamageTable[] =
+{
+    100, 20,
+    250, 40,
+    500, 60,
+    1000, 80,
+    2000, 100,
+    0xFFFF, 0xFFFF
+};
+
+static const u8 sSpeedDiffPowerTable[] = {40, 60, 80, 120, 150};
+static const u8 sHeatCrushPowerTable[] = {40, 40, 60, 80, 100, 120};
+static const u8 sTrumpCardPowerTable[] = {200, 80, 60, 50, 40};
+
 static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
 {
     u32 i;
@@ -4732,24 +4752,10 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         i = GetBattleMonMoveSlot(&gBattleMons[battlerAtk], move);
         if (i != 4)
         {
-            switch (gBattleMons[battlerAtk].pp[i])
-            {
-            case 0:
-                basePower = 200;
-                break;
-            case 1:
-                basePower = 80;
-                break;
-            case 2:
-                basePower = 60;
-                break;
-            case 3:
-                basePower = 50;
-                break;
-            default:
-                basePower = 40;
-                break;
-            }
+            if (gBattleMons[battlerAtk].pp[i] >= ARRAY_COUNT(sTrumpCardPowerTable))
+                basePower = sTrumpCardPowerTable[ARRAY_COUNT(sTrumpCardPowerTable) - 1];
+            else
+                basePower = sTrumpCardPowerTable[i];
         }
         break;
     case EFFECT_ACROBATICS:
@@ -4770,16 +4776,10 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         break;
     case EFFECT_HEAT_CRASH:
         weight = GetBattlerWeight(battlerAtk) / GetBattlerWeight(battlerDef);
-        if (weight >= 5)
-            basePower = 120;
-        else if (weight == 4)
-            basePower = 100;
-        else if (weight == 3)
-            basePower = 80;
-        else if (weight == 2)
-            basePower = 60;
+        if (weight >= ARRAY_COUNT(sHeatCrushPowerTable))
+            basePower = sHeatCrushPowerTable[ARRAY_COUNT(sHeatCrushPowerTable) - 1];
         else
-            basePower = 40;
+            basePower = sHeatCrushPowerTable[i];
         break;
     case EFFECT_PUNISHMENT:
         basePower = 60 + (CountBattlerStatIncreases(battlerAtk, FALSE) * 20);
@@ -4791,9 +4791,9 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         break;
     case EFFECT_ELECTRO_BALL:
         speed = GetBattlerTotalSpeedStat(battlerAtk) / GetBattlerTotalSpeedStat(battlerDef);
-        if (speed >= ARRAY_COUNT(sSpeedDiffToDmgTable))
-            speed = ARRAY_COUNT(sSpeedDiffToDmgTable) - 1;
-        basePower = sSpeedDiffToDmgTable[speed];
+        if (speed >= ARRAY_COUNT(sSpeedDiffPowerTable))
+            speed = ARRAY_COUNT(sSpeedDiffPowerTable) - 1;
+        basePower = sSpeedDiffPowerTable[speed];
         break;
     case EFFECT_GYRO_BALL:
         basePower = ((25 * GetBattlerTotalSpeedStat(battlerDef)) / GetBattlerTotalSpeedStat(battlerAtk)) + 1;
@@ -5714,7 +5714,7 @@ bool32 CanMegaEvolve(u8 battlerId)
     struct Pokemon *mon;
     u8 battlerPosition = GetBattlerPosition(battlerId);
     u8 partnerPosition = GetBattlerPosition(BATTLE_PARTNER(battlerId));
-    struct MegaEvolutionData *mega = &(((struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]))->mega);
+    struct MegaEvolutionData *mega = &(((struct ChooseMoveStruct*)(&gBattleResources->bufferA[gActiveBattler][4]))->mega);
 
     // Check if trainer already mega evolved a pokemon.
     if (mega->alreadyEvolved[battlerPosition])

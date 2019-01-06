@@ -4,12 +4,11 @@ MauvilleCity_House2_MapScripts:: @ 8210C5C
 MauvilleCity_House2_EventScript_210C5D:: @ 8210C5D
 	lock
 	faceplayer
-	checkflag FLAG_0x102
-	goto_eq MauvilleCity_House2_EventScript_210CDA
+	goto_if_set FLAG_RECEIVED_COIN_CASE, MauvilleCity_House2_EventScript_210CDA
 	msgbox MauvilleCity_House2_Text_210CEE, MSGBOX_DEFAULT
 	checkitem ITEM_HARBOR_MAIL, 1
 	compare VAR_RESULT, 1
-	goto_eq MauvilleCity_House2_EventScript_210C82
+	goto_if_eq MauvilleCity_House2_EventScript_210C82
 	release
 	end
 
@@ -21,16 +20,16 @@ MauvilleCity_House2_EventScript_210C82:: @ 8210C82
 	waitmovement 0
 	msgbox MauvilleCity_House2_Text_210D76, MSGBOX_YESNO
 	compare VAR_RESULT, 1
-	goto_eq MauvilleCity_House2_EventScript_210CB8
+	goto_if_eq MauvilleCity_House2_EventScript_210CB8
 	compare VAR_RESULT, 0
-	goto_eq MauvilleCity_House2_EventScript_210CE4
+	goto_if_eq MauvilleCity_House2_EventScript_210CE4
 	end
 
 MauvilleCity_House2_EventScript_210CB8:: @ 8210CB8
 	msgbox MauvilleCity_House2_Text_210DB3, MSGBOX_DEFAULT
 	takeitem ITEM_HARBOR_MAIL, 1
 	giveitem_std ITEM_COIN_CASE
-	setflag FLAG_0x102
+	setflag FLAG_RECEIVED_COIN_CASE
 	goto MauvilleCity_House2_EventScript_210CDA
 	end
 

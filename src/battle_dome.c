@@ -19,6 +19,7 @@
 #include "window.h"
 #include "palette.h"
 #include "decompress.h"
+#include "party_menu.h"
 #include "menu.h"
 #include "sound.h"
 #include "pokemon_icon.h"
@@ -56,12 +57,6 @@ struct UnkStruct_860DD10
     u8 y;
     u16 src;
 };
-
-extern void sub_81B8558(void);
-
-extern u8 gSelectedOrderFromParty[];
-
-extern const struct SpriteTemplate gUnknown_0860CFA8;
 
 // text
 extern const u8 gTrainerClassNames[][0xD];
@@ -2393,7 +2388,7 @@ static void sub_818E9CC(void)
     if (!(gSaveBlock2Ptr->frontier.field_CDC & gUnknown_0860D0EC[battleMode][lvlMode]))
         gSaveBlock2Ptr->frontier.domeWinStreaks[battleMode][lvlMode] = 0;
 
-    saved_warp2_set(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
+    SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
     gTrainerBattleOpponent_A = 0;
 }
 
@@ -2559,7 +2554,7 @@ static void InitDomeTrainers(void)
     for (i = 0; i < 3; i++)
     {
         gSaveBlock2Ptr->frontier.domeMonIds[0][i] = GetMonData(&gPlayerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_SPECIES, NULL);
-        for (j = 0; j < 4; j++)
+        for (j = 0; j < MAX_MON_MOVES; j++)
             gSaveBlock2Ptr->frontier.field_EFC[i].moves[j] = GetMonData(&gPlayerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_MOVE1 + j, NULL);
         for (j = 0; j < 6; j++)
             gSaveBlock2Ptr->frontier.field_EFC[i].evs[j] = GetMonData(&gPlayerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_HP_EV + j, NULL);
@@ -2819,7 +2814,7 @@ static void CreateDomeMon(u8 monPartyId, u16 tournamentTrainerId, u8 tournamentM
                                          gFacilityTrainerMons[gSaveBlock2Ptr->frontier.domeMonIds[tournamentTrainerId][tournamentMonId]].evSpread, otId);
 
     happiness = 0xFF;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
         SetMonMoveSlot(&gEnemyParty[monPartyId],
                        gFacilityTrainerMons[gSaveBlock2Ptr->frontier.domeMonIds[tournamentTrainerId][tournamentMonId]].moves[i], i);
@@ -2894,7 +2889,7 @@ static s32 sub_818FCBC(u16 tournamentTrainerId, bool8 arg1)
     for (i = 0; i < 3; i++)
     {
         array[i] = 0;
-        for (moveId = 0; moveId < 4; moveId++)
+        for (moveId = 0; moveId < MAX_MON_MOVES; moveId++)
         {
             for (playerMonId = 0; playerMonId < 3; playerMonId++)
             {
@@ -2922,7 +2917,7 @@ static s32 sub_818FDB8(u16 tournamentTrainerId, bool8 arg1)
     for (i = 0; i < 3; i++)
     {
         array[i] = 0;
-        for (moveId = 0; moveId < 4; moveId++)
+        for (moveId = 0; moveId < MAX_MON_MOVES; moveId++)
         {
             for (playerMonId = 0; playerMonId < 3; playerMonId++)
             {
@@ -3015,8 +3010,6 @@ static s32 sub_818FEB4(s32 *arr, bool8 arg1)
 #define TYPE_x2     40
 #define TYPE_x4     80
 
-// Functionally equivalent, while loop is impossible to match.
-#ifdef NONMATCHING
 static s32 GetTypeEffectivenessPoints(s32 move, s32 targetSpecies, s32 arg2)
 {
     s32 defType1, defType2, defAbility, moveType;
@@ -3038,26 +3031,15 @@ static s32 GetTypeEffectivenessPoints(s32 move, s32 targetSpecies, s32 arg2)
     }
     else
     {
-        while (gTypeEffectiveness[i + 0] != TYPE_ENDTABLE)
-        {
-            if (gTypeEffectiveness[i + 0] == TYPE_FORESIGHT)
-            {
-                i += 3;
-            }
-            else
-            {
-                u8 val = gTypeEffectiveness[i + 0];
-                if (val == moveType)
-                {
-                    // BUG: * 2 is not necessary and makes the condition always false if the ability is wonder guard.
-                    if (gTypeEffectiveness[i + 1] == defType1 && (defAbility != ABILITY_WONDER_GUARD || gTypeEffectiveness[i + 2] == TYPE_MUL_SUPER_EFFECTIVE * 2))
-                        typePower = (gTypeEffectiveness[i + 2] * typePower) / 10;
-                    if (gTypeEffectiveness[i + 1] == defType2 && defType1 != defType2 && (defAbility != ABILITY_WONDER_GUARD || gTypeEffectiveness[i + 2] == TYPE_MUL_SUPER_EFFECTIVE * 2))
-                        typePower = (gTypeEffectiveness[i + 2] * typePower) / 10;
-                }
-                i += 3;
-            }
-        }
+        u32 typeEffectiveness1 = UQ_4_12_TO_INT(GetTypeModifier(moveType, defType1) * 2) * 5;
+        u32 typeEffectiveness2 = UQ_4_12_TO_INT(GetTypeModifier(moveType, defType2) * 2) * 5;
+
+        typePower = (typeEffectiveness1 * typePower) / 10;
+        if (defType2 != defType1)
+            typePower = (typeEffectiveness2 * typePower) / 10;
+
+        if (defAbility == ABILITY_WONDER_GUARD && typeEffectiveness1 != 20 && typeEffectiveness2 != 20)
+            typePower = 0;
     }
 
     switch (arg2)
@@ -3134,247 +3116,6 @@ static s32 GetTypeEffectivenessPoints(s32 move, s32 targetSpecies, s32 arg2)
 
     return typePower;
 }
-#else
-NAKED
-static s32 GetTypeEffectivenessPoints(s32 move, s32 species, s32 arg2)
-{
-    asm_unified("\n\
-    push {r4-r7,lr}\n\
-    mov r7, r10\n\
-    mov r6, r9\n\
-    mov r5, r8\n\
-    push {r5-r7}\n\
-    sub sp, 0x8\n\
-    adds r3, r0, 0\n\
-    adds r4, r1, 0\n\
-    str r2, [sp]\n\
-    movs r6, 0\n\
-    movs r2, 0x14\n\
-    cmp r3, 0\n\
-    beq _0818FFF0\n\
-    ldr r0, =0x0000ffff\n\
-    cmp r3, r0\n\
-    beq _0818FFF0\n\
-    ldr r0, =gBattleMoves\n\
-    lsls r1, r3, 1\n\
-    adds r1, r3\n\
-    lsls r1, 2\n\
-    adds r3, r1, r0\n\
-    ldrb r0, [r3, 0x1]\n\
-    cmp r0, 0\n\
-    bne _0818FFFC\n\
-_0818FFF0:\n\
-    movs r0, 0\n\
-    b _08190156\n\
-    .pool\n\
-_0818FFFC:\n\
-    ldr r1, =gBaseStats\n\
-    lsls r0, r4, 3\n\
-    subs r0, r4\n\
-    lsls r0, 2\n\
-    adds r0, r1\n\
-    ldrb r1, [r0, 0x6]\n\
-    mov r10, r1\n\
-    ldrb r1, [r0, 0x7]\n\
-    mov r9, r1\n\
-    ldrb r0, [r0, 0x16]\n\
-    mov r8, r0\n\
-    ldrb r3, [r3, 0x2]\n\
-    str r3, [sp, 0x4]\n\
-    cmp r0, 0x1A\n\
-    bne _0819002C\n\
-    cmp r3, 0x4\n\
-    bne _0819002C\n\
-    ldr r0, [sp]\n\
-    cmp r0, 0x1\n\
-    bne _081900AA\n\
-    movs r2, 0x8\n\
-    b _081900A4\n\
-    .pool\n\
-_0819002C:\n\
-    ldr r0, =gTypeEffectiveness\n\
-    adds r1, r6, r0\n\
-    ldrb r0, [r1]\n\
-    ldr r7, =gTypeEffectiveness\n\
-    cmp r0, 0xFF\n\
-    beq _081900A4\n\
-    adds r4, r1, 0\n\
-_0819003A:\n\
-    ldrb r0, [r4]\n\
-    cmp r0, 0xFE\n\
-    beq _08190096\n\
-    ldrb r0, [r4]\n\
-    ldr r1, [sp, 0x4]\n\
-    cmp r0, r1\n\
-    bne _08190096\n\
-    ldrb r0, [r4, 0x1]\n\
-    adds r5, r6, 0x1\n\
-    cmp r0, r10\n\
-    bne _0819006C\n\
-    adds r1, r6, 0x2\n\
-    mov r0, r8\n\
-    cmp r0, 0x19\n\
-    bne _0819005E\n\
-    ldrb r0, [r4, 0x2]\n\
-    cmp r0, 0x28\n\
-    bne _0819006C\n\
-_0819005E:\n\
-    adds r0, r1, r7\n\
-    ldrb r0, [r0]\n\
-    muls r0, r2\n\
-    movs r1, 0xA\n\
-    bl __divsi3\n\
-    adds r2, r0, 0\n\
-_0819006C:\n\
-    adds r0, r5, r7\n\
-    ldrb r0, [r0]\n\
-    cmp r0, r9\n\
-    bne _08190096\n\
-    cmp r10, r9\n\
-    beq _08190096\n\
-    adds r1, r6, 0x2\n\
-    mov r0, r8\n\
-    cmp r0, 0x19\n\
-    bne _08190088\n\
-    adds r0, r1, r7\n\
-    ldrb r0, [r0]\n\
-    cmp r0, 0x28\n\
-    bne _08190096\n\
-_08190088:\n\
-    adds r0, r1, r7\n\
-    ldrb r0, [r0]\n\
-    muls r0, r2\n\
-    movs r1, 0xA\n\
-    bl __divsi3\n\
-    adds r2, r0, 0\n\
-_08190096:\n\
-    adds r4, 0x3\n\
-    adds r6, 0x3\n\
-    ldr r1, =gTypeEffectiveness\n\
-    adds r0, r6, r1\n\
-    ldrb r0, [r0]\n\
-    cmp r0, 0xFF\n\
-    bne _0819003A\n\
-_081900A4:\n\
-    ldr r0, [sp]\n\
-    cmp r0, 0x1\n\
-    beq _081900E0\n\
-_081900AA:\n\
-    ldr r1, [sp]\n\
-    cmp r1, 0x1\n\
-    bgt _081900BC\n\
-    cmp r1, 0\n\
-    beq _081900C4\n\
-    b _08190154\n\
-    .pool\n\
-_081900BC:\n\
-    ldr r0, [sp]\n\
-    cmp r0, 0x2\n\
-    beq _08190114\n\
-    b _08190154\n\
-_081900C4:\n\
-    cmp r2, 0xA\n\
-    beq _08190146\n\
-    cmp r2, 0xA\n\
-    ble _08190146\n\
-    cmp r2, 0x28\n\
-    beq _0819014A\n\
-    cmp r2, 0x28\n\
-    bgt _081900DA\n\
-    cmp r2, 0x14\n\
-    beq _08190104\n\
-    b _08190146\n\
-_081900DA:\n\
-    cmp r2, 0x50\n\
-    bne _08190146\n\
-    b _08190100\n\
-_081900E0:\n\
-    cmp r2, 0xA\n\
-    beq _08190104\n\
-    cmp r2, 0xA\n\
-    bgt _081900F2\n\
-    cmp r2, 0\n\
-    beq _08190100\n\
-    cmp r2, 0x5\n\
-    beq _0819014A\n\
-    b _08190146\n\
-_081900F2:\n\
-    cmp r2, 0x28\n\
-    beq _08190108\n\
-    cmp r2, 0x28\n\
-    ble _08190146\n\
-    cmp r2, 0x50\n\
-    beq _0819010E\n\
-    b _08190146\n\
-_08190100:\n\
-    movs r2, 0x8\n\
-    b _08190154\n\
-_08190104:\n\
-    movs r2, 0x2\n\
-    b _08190154\n\
-_08190108:\n\
-    movs r2, 0x2\n\
-    negs r2, r2\n\
-    b _08190154\n\
-_0819010E:\n\
-    movs r2, 0x4\n\
-    negs r2, r2\n\
-    b _08190154\n\
-_08190114:\n\
-    cmp r2, 0xA\n\
-    beq _08190146\n\
-    cmp r2, 0xA\n\
-    bgt _08190126\n\
-    cmp r2, 0\n\
-    beq _0819013A\n\
-    cmp r2, 0x5\n\
-    beq _08190140\n\
-    b _08190146\n\
-_08190126:\n\
-    cmp r2, 0x28\n\
-    beq _0819014E\n\
-    cmp r2, 0x28\n\
-    bgt _08190134\n\
-    cmp r2, 0x14\n\
-    beq _0819014A\n\
-    b _08190146\n\
-_08190134:\n\
-    cmp r2, 0x50\n\
-    beq _08190152\n\
-    b _08190146\n\
-_0819013A:\n\
-    movs r2, 0x10\n\
-    negs r2, r2\n\
-    b _08190154\n\
-_08190140:\n\
-    movs r2, 0x8\n\
-    negs r2, r2\n\
-    b _08190154\n\
-_08190146:\n\
-    movs r2, 0\n\
-    b _08190154\n\
-_0819014A:\n\
-    movs r2, 0x4\n\
-    b _08190154\n\
-_0819014E:\n\
-    movs r2, 0xC\n\
-    b _08190154\n\
-_08190152:\n\
-    movs r2, 0x14\n\
-_08190154:\n\
-    adds r0, r2, 0\n\
-_08190156:\n\
-    add sp, 0x8\n\
-    pop {r3-r5}\n\
-    mov r8, r3\n\
-    mov r9, r4\n\
-    mov r10, r5\n\
-    pop {r4-r7}\n\
-    pop {r1}\n\
-    bx r1\n\
-                ");
-}
-#endif // NONMATCHING
 
 static u8 GetDomeTrainerMonIvs(u16 trainerId)
 {
@@ -4853,7 +4594,7 @@ static void DisplayTrainerInfoOnCard(u8 flags, u8 trainerTournamentId)
 
     for (i = 0; i < 3; i++)
     {
-        for (j = 0; j < 4; j++)
+        for (j = 0; j < MAX_MON_MOVES; j++)
         {
             for (k = 0; k < DOME_TOURNAMENT_TRAINERS_COUNT; k++)
             {
@@ -5543,8 +5284,9 @@ static u16 GetWinningMove(s32 winnerTournamentId, s32 loserTournamentId, u8 roun
     // Calc move points of all 4 moves for all 3 pokemon hitting all 3 target mons.
     for (i = 0; i < 3; i++)
     {
-        for (j = 0; j < 4; j++)
+        for (j = 0; j < MAX_MON_MOVES; j++)
         {
+            // TODO: Clean this up, looks like a different data structure
             moveScores[i * 4 + j] = 0;
             if (gSaveBlock2Ptr->frontier.domeTrainers[winnerTournamentId].trainerId == TRAINER_FRONTIER_BRAIN)
                 moveIds[i * 4 + j] = GetFrontierBrainMonMove(i, j);
@@ -5604,7 +5346,7 @@ static u16 GetWinningMove(s32 winnerTournamentId, s32 loserTournamentId, u8 roun
     goto LABEL;
     while (j != 0)
     {
-        for (j = 0, k = 0; k < 4 * 3; k++)
+        for (j = 0, k = 0; k < MAX_MON_MOVES * 3; k++)
         {
             if (bestScore < moveScores[k])
             {
@@ -5631,7 +5373,7 @@ static u16 GetWinningMove(s32 winnerTournamentId, s32 loserTournamentId, u8 roun
             moveScores[j] = 0;
             bestScore = 0;
             j = 0;
-            for (k = 0; k < 4 * 3; k++)
+            for (k = 0; k < MAX_MON_MOVES * 3; k++)
                 j += moveScores[k];
         }
     }
@@ -6063,16 +5805,16 @@ static void sub_8194D68(void)
         s32 playerMonId = gSaveBlock2Ptr->frontier.selectedPartyMons[gSelectedOrderFromParty[i] - 1] - 1;
         s32 count;
 
-        for (moveSlot = 0; moveSlot < 4; moveSlot++)
+        for (moveSlot = 0; moveSlot < MAX_MON_MOVES; moveSlot++)
         {
             count = 0;
-            while (count < 4)
+            while (count < MAX_MON_MOVES)
             {
                 if (GetMonData(&gSaveBlock1Ptr->playerParty[playerMonId], MON_DATA_MOVE1 + count, NULL) == GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + moveSlot, NULL))
                     break;
                 count++;
             }
-            if (count == 4)
+            if (count == MAX_MON_MOVES)
                 SetMonMoveSlot(&gPlayerParty[i], MOVE_SKETCH, moveSlot);
         }
 
@@ -6325,7 +6067,7 @@ static void DecideRoundWinners(u8 roundId)
             // Calculate points for both trainers.
             for (monId1 = 0; monId1 < 3; monId1++)
             {
-                for (moveSlot = 0; moveSlot < 4; moveSlot++)
+                for (moveSlot = 0; moveSlot < MAX_MON_MOVES; moveSlot++)
                 {
                     for (monId2 = 0; monId2 < 3; monId2++)
                     {
@@ -6348,7 +6090,7 @@ static void DecideRoundWinners(u8 roundId)
 
             for (monId1 = 0; monId1 < 3; monId1++)
             {
-                for (moveSlot = 0; moveSlot < 4; moveSlot++)
+                for (moveSlot = 0; moveSlot < MAX_MON_MOVES; moveSlot++)
                 {
                     for (monId2 = 0; monId2 < 3; monId2++)
                     {

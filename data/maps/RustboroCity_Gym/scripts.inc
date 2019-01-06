@@ -5,9 +5,8 @@ RustboroCity_Gym_EventScript_212F31:: @ 8212F31
 	trainerbattle_single TRAINER_ROXANNE_1, RustboroCity_Gym_Text_21362A, RustboroCity_Gym_Text_21370B, RustboroCity_Gym_EventScript_212F66, NO_MUSIC
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	compare VAR_RESULT, 1
-	goto_eq RustboroCity_Gym_EventScript_212FC8
-	checkflag FLAG_0x0A5
-	goto_if 0, RustboroCity_Gym_EventScript_212FA4
+	goto_if_eq RustboroCity_Gym_EventScript_212FC8
+	goto_if_unset FLAG_RECEIVED_TM39, RustboroCity_Gym_EventScript_212FA4
 	msgbox RustboroCity_Gym_Text_2139A7, MSGBOX_DEFAULT
 	release
 	end
@@ -17,22 +16,22 @@ RustboroCity_Gym_EventScript_212F66:: @ 8212F66
 	waitmessage
 	call RustboroCity_Gym_EventScript_27207E
 	msgbox RustboroCity_Gym_Text_213816, MSGBOX_DEFAULT
-	setflag FLAG_0x4F0
+	setflag FLAG_DEFEATED_RUSTBORO_GYM
 	setflag FLAG_BADGE01_GET
 	setvar VAR_0x405A, 1
 	addvar VAR_0x4085, 1
 	setvar VAR_0x8008, 1
 	call RustboroCity_Gym_EventScript_271F43
 	compare VAR_0x4085, 6
-	call_if 1, RustboroCity_Gym_EventScript_271E84
+	call_if_eq RustboroCity_Gym_EventScript_271E84
 	goto RustboroCity_Gym_EventScript_212FA4
 	end
 
 RustboroCity_Gym_EventScript_212FA4:: @ 8212FA4
 	giveitem_std ITEM_TM39
 	compare VAR_RESULT, 0
-	goto_eq RustboroCity_Gym_EventScript_272054
-	setflag FLAG_0x0A5
+	goto_if_eq RustboroCity_Gym_EventScript_272054
+	setflag FLAG_RECEIVED_TM39
 	msgbox RustboroCity_Gym_Text_2138B1, MSGBOX_DEFAULT
 	release
 	end
@@ -60,8 +59,7 @@ RustboroCity_Gym_EventScript_213011:: @ 8213011
 RustboroCity_Gym_EventScript_213028:: @ 8213028
 	lock
 	faceplayer
-	checkflag FLAG_0x4F0
-	goto_eq RustboroCity_Gym_EventScript_21303D
+	goto_if_set FLAG_DEFEATED_RUSTBORO_GYM, RustboroCity_Gym_EventScript_21303D
 	msgbox RustboroCity_Gym_Text_21309D, MSGBOX_DEFAULT
 	release
 	end
@@ -73,15 +71,13 @@ RustboroCity_Gym_EventScript_21303D:: @ 821303D
 
 RustboroCity_Gym_EventScript_213047:: @ 8213047
 	lockall
-	checkflag FLAG_BADGE01_GET
-	goto_eq RustboroCity_Gym_EventScript_213067
+	goto_if_set FLAG_BADGE01_GET, RustboroCity_Gym_EventScript_213067
 	goto RustboroCity_Gym_EventScript_213071
 	end
 
 RustboroCity_Gym_EventScript_213057:: @ 8213057
 	lockall
-	checkflag FLAG_BADGE01_GET
-	goto_eq RustboroCity_Gym_EventScript_213067
+	goto_if_set FLAG_BADGE01_GET, RustboroCity_Gym_EventScript_213067
 	goto RustboroCity_Gym_EventScript_213071
 	end
 
@@ -105,8 +101,8 @@ RustboroCity_Gym_EventScript_21307B:: @ 821307B
 	waitfanfare
 	closemessage
 	delay 30
-	setflag FLAG_0x1D3
-	clearflag FLAG_0x080
+	setflag FLAG_ENABLE_ROXANNE_MATCH_CALL
+	clearflag FLAG_ENABLE_ROXANNE_FIRST_CALL
 	releaseall
 	end
 

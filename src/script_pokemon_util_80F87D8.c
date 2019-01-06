@@ -36,8 +36,6 @@ extern const u16 gEventObjectPalette33[];
 extern const u16 gEventObjectPalette34[];
 extern const struct CompressedSpriteSheet gMonFrontPicTable[];
 
-extern u8 gSelectedOrderFromParty[];
-
 static const u8 gUnknown_0858D8EC[] = { 3, 4, 5, 14 };
 
 static void sub_80F8EE8(u8 taskId);
@@ -230,7 +228,7 @@ void sub_80F8AFC(void)
 
     if (gIsLinkContest & 1)
     {
-        for (i = 0; i < gUnknown_02039F30; i++)
+        for (i = 0; i < gNumLinkContestPlayers; i++)
         {
             int version = (u8)gLinkPlayers[i].version;
             if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
@@ -259,7 +257,7 @@ void sub_80F8B94(void)
     gReservedSpritePaletteCount = 12;
     if (gIsLinkContest & 1)
     {
-        for (i = 0; i < gUnknown_02039F30; i++)
+        for (i = 0; i < gNumLinkContestPlayers; i++)
         {
             eventObjectId = GetEventObjectIdByLocalIdAndMap(gUnknown_0858D8EC[i], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
             sprite = &gSprites[gEventObjects[eventObjectId].spriteId];
@@ -287,14 +285,14 @@ u8 GiveMonArtistRibbon(void)
 {
     u8 hasArtistRibbon;
 
-    hasArtistRibbon = GetMonData(&gPlayerParty[gUnknown_02039F24], MON_DATA_ARTIST_RIBBON);
+    hasArtistRibbon = GetMonData(&gPlayerParty[gContestMonPartyIndex], MON_DATA_ARTIST_RIBBON);
     if (!hasArtistRibbon && gContestFinalStandings[gContestPlayerMonIndex] == 0 && gSpecialVar_ContestRank == 3
      && gUnknown_02039F08[gContestPlayerMonIndex] >= 800)
     {
         hasArtistRibbon = 1;
-        SetMonData(&gPlayerParty[gUnknown_02039F24], MON_DATA_ARTIST_RIBBON, &hasArtistRibbon);
-        if (GetRibbonCount(&gPlayerParty[gUnknown_02039F24]) > 4)
-            sub_80EE4DC(&gPlayerParty[gUnknown_02039F24], MON_DATA_ARTIST_RIBBON);
+        SetMonData(&gPlayerParty[gContestMonPartyIndex], MON_DATA_ARTIST_RIBBON, &hasArtistRibbon);
+        if (GetRibbonCount(&gPlayerParty[gContestMonPartyIndex]) > 4)
+            sub_80EE4DC(&gPlayerParty[gContestMonPartyIndex], MON_DATA_ARTIST_RIBBON);
 
         return 1;
     }
@@ -404,7 +402,7 @@ static void sub_80F8EE8(u8 taskId)
 
 void ScriptGetMultiplayerId(void)
 {
-    if ((gIsLinkContest & 1) && gUnknown_02039F30 == 4 && !(gIsLinkContest & 2))
+    if ((gIsLinkContest & 1) && gNumLinkContestPlayers == 4 && !(gIsLinkContest & 2))
         gSpecialVar_Result = GetMultiplayerId();
     else
         gSpecialVar_Result = 4;
@@ -453,7 +451,7 @@ static void sub_80F9088(u8 taskId)
     switch (gTasks[taskId].data[0])
     {
     case 0:
-        if (sub_800A520())
+        if (IsLinkTaskFinished())
         {
             sub_800ADF8();
             gTasks[taskId].data[0]++;
@@ -463,7 +461,7 @@ static void sub_80F9088(u8 taskId)
         gTasks[taskId].data[0]++;
         break;
     default:
-        if (sub_800A520() == 1)
+        if (IsLinkTaskFinished() == 1)
         {
             EnableBothScriptContexts();
             DestroyTask(taskId);
@@ -530,7 +528,7 @@ void HealPlayerParty(void)
         ppBonuses = GetMonData(&gPlayerParty[i], MON_DATA_PP_BONUSES);
 
         // restore PP.
-        for(j = 0; j < 4; j++)
+        for(j = 0; j < MAX_MON_MOVES; j++)
         {
             arg[0] = CalculatePPWithBonus(GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + j), ppBonuses, j);
             SetMonData(&gPlayerParty[i], MON_DATA_PP1 + j, arg);
