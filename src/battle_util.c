@@ -2,6 +2,7 @@
 #include "battle.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
+#include "battle_setup.h"
 #include "constants/battle_script_commands.h"
 #include "constants/abilities.h"
 #include "constants/moves.h"
@@ -606,7 +607,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
 	u8 moveId = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION);
     u32 move = gBattleMons[gActiveBattler].moves[moveId];
     u32 holdEffect = GetBattlerHoldEffect(gActiveBattler, TRUE);
-    u16* choicedMove = &gBattleStruct->choicedMove[gActiveBattler];
+    u16 *choicedMove = &gBattleStruct->choicedMove[gActiveBattler];
 
     if (gDisableStructs[gActiveBattler].disabledMove == move && move != 0)
     {
@@ -1496,14 +1497,9 @@ u8 DoBattlerEndTurnEffects(void)
                 {
                     if (--gDisableStructs[gActiveBattler].wrapTurns != 0)  // damaged by wrap
                     {
-                        // This is the only way I could get this array access to match.
-                        gBattleScripting.animArg1 = *(gBattleStruct->wrappedMove + gActiveBattler * 2 + 0);
-                        gBattleScripting.animArg2 = *(gBattleStruct->wrappedMove + gActiveBattler * 2 + 1);
-                        gBattleTextBuff1[0] = B_BUFF_PLACEHOLDER_BEGIN;
-                        gBattleTextBuff1[1] = B_BUFF_MOVE;
-                        gBattleTextBuff1[2] = *(gBattleStruct->wrappedMove + gActiveBattler * 2 + 0);
-                        gBattleTextBuff1[3] = *(gBattleStruct->wrappedMove + gActiveBattler * 2 + 1);
-                        gBattleTextBuff1[4] = EOS;
+                        gBattleScripting.animArg1 = gBattleStruct->wrappedMove[gActiveBattler];
+                        gBattleScripting.animArg2 = gBattleStruct->wrappedMove[gActiveBattler] >> 8;
+                        PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleStruct->wrappedMove[gActiveBattler]);
                         gBattlescriptCurrInstr = BattleScript_WrapTurnDmg;
                         if (GetBattlerHoldEffect(gBattleStruct->wrappedBy[gActiveBattler], TRUE) == HOLD_EFFECT_BINDING_BAND)
                             gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
@@ -1516,11 +1512,7 @@ u8 DoBattlerEndTurnEffects(void)
                     else  // broke free
                     {
                         gBattleMons[gActiveBattler].status2 &= ~(STATUS2_WRAPPED);
-                        gBattleTextBuff1[0] = B_BUFF_PLACEHOLDER_BEGIN;
-                        gBattleTextBuff1[1] = B_BUFF_MOVE;
-                        gBattleTextBuff1[2] = *(gBattleStruct->wrappedMove + gActiveBattler * 2 + 0);
-                        gBattleTextBuff1[3] = *(gBattleStruct->wrappedMove + gActiveBattler * 2 + 1);
-                        gBattleTextBuff1[4] = EOS;
+                        PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleStruct->wrappedMove[gActiveBattler]);
                         gBattlescriptCurrInstr = BattleScript_WrapEnds;
                     }
                     BattleScriptExecute(gBattlescriptCurrInstr);
@@ -2342,7 +2334,29 @@ bool8 HasNoMonsToSwitch(u8 battler, u8 partyIdBattlerOn1, u8 partyIdBattlerOn2)
     if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
         return FALSE;
 
-    if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
+    if (BATTLE_TWO_VS_ONE_OPPONENT && GetBattlerSide(battler) == B_SIDE_OPPONENT)
+    {
+        id2 = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        id1 = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+        party = gEnemyParty;
+
+        if (partyIdBattlerOn1 == PARTY_SIZE)
+            partyIdBattlerOn1 = gBattlerPartyIndexes[id2];
+        if (partyIdBattlerOn2 == PARTY_SIZE)
+            partyIdBattlerOn2 = gBattlerPartyIndexes[id1];
+
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            if (GetMonData(&party[i], MON_DATA_HP) != 0
+             && GetMonData(&party[i], MON_DATA_SPECIES2) != SPECIES_NONE
+             && GetMonData(&party[i], MON_DATA_SPECIES2) != SPECIES_EGG
+             && i != partyIdBattlerOn1 && i != partyIdBattlerOn2
+             && i != *(gBattleStruct->monToSwitchIntoId + id2) && i != id1[gBattleStruct->monToSwitchIntoId])
+                break;
+        }
+        return (i == PARTY_SIZE);
+    }
+    else if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
     {
         if (GetBattlerSide(battler) == B_SIDE_PLAYER)
             party = gPlayerParty;
