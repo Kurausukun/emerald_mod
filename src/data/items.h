@@ -6814,7 +6814,8 @@ const struct Item gItems[] =
         .battleUseFunc = NULL,
         .secondaryId = 0,
     },
-	
+
+	[ITEM_WIDE_LENS] =
 	{
         .name = _("WIDE LENS"),
         .itemId = ITEM_WIDE_LENS,
