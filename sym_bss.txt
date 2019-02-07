@@ -117,3 +117,6 @@ gMPlayTrack_SE3: @ 3001A20
 	.include "*libgcc.a:dp-bit.o"
 	.include "*libgcc.a:fp-bit.o"
 	.include "*libc.a:syscalls.o"
+
+gMPlayTrack_BGM_HINSI:
+	.space 0x230

@@ -2173,3 +2173,11 @@ DirectSoundWaveData_88F94DC:: @ 88F94DC
 	.align 2
 DirectSoundWaveData_88F9F3C:: @ 88F9F3C
 	.incbin "sound/direct_sound_samples/88F9F3C.bin"
+
+	.align 2
+DirectSoundWaveData_orchhit60::
+	.incbin "sound/direct_sound_samples/orchhit60.bin"
+
+	.align 2
+DirectSoundWaveData_orchhit72::
+	.incbin "sound/direct_sound_samples/orchhit72.bin"

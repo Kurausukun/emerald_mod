@@ -194,6 +194,9 @@ $(MID_SUBDIR)/mus_hideri.s: %.s: %.mid
 
 $(MID_SUBDIR)/mus_hightown.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G073 -V078
+	
+$(MID_SUBDIR)/mus_hightown.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G195 -V080
 
 $(MID_SUBDIR)/mus_hutago.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G095 -V075

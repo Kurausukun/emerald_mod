@@ -72,3 +72,6 @@ ProgrammableWaveData_86B49A0:: @ 86B49A0
 
 ProgrammableWaveData_86B49B0:: @ 86B49B0
 	.incbin "sound/programmable_wave_samples/86B49B0.pcm"
+
+ProgrammableWaveData_organwave::
+	.incbin "sound/programmable_wave_samples/organwave.pcm"
