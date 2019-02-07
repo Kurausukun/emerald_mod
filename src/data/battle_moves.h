@@ -7884,7 +7884,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_BELCH] =
     {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_BELCH,
         .power = 120,
         .type = TYPE_POISON,
         .accuracy = 90,
@@ -8112,7 +8112,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_CRAFTY_SHIELD] =
     {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_PROTECT,
         .power = 0,
         .type = TYPE_FAIRY,
         .accuracy = 0,
@@ -8122,6 +8122,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = 0,
         .split = SPLIT_STATUS,
+        .argument = TRUE, // Protects the whole side.
     },
 
     [MOVE_FLOWER_SHIELD] =

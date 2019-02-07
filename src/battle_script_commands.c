@@ -904,6 +904,9 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
     else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_QUICK_GUARD
              && GetMovePriority(gBattlerAttacker) > 0)
         return TRUE;
+    else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_CRAFTY_SHIELD
+             && gBattleMoves[move].power == 0)
+        return TRUE;
     else
         return FALSE;
 }
@@ -936,6 +939,7 @@ static void atk00_attackcanceler(void)
     {
         PREPARE_TYPE_BUFFER(gBattleTextBuff1, moveType);
         SET_BATTLER_TYPE(gBattlerAttacker, moveType);
+        gBattlerAbility = gBattlerAttacker;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_ProteanActivates;
         return;
@@ -2719,6 +2723,7 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 if (gProtectStructs[gBattlerTarget].protected
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_WIDE_GUARD
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_QUICK_GUARD
+                    || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_CRAFTY_SHIELD
                     || gProtectStructs[gBattlerTarget].spikyShielded
                     || gProtectStructs[gBattlerTarget].kingsShielded
                     || gProtectStructs[gBattlerTarget].banefulBunkered)
@@ -2726,6 +2731,7 @@ void SetMoveEffect(bool8 primary, u8 certain)
                     gProtectStructs[gBattlerTarget].protected = 0;
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_WIDE_GUARD);
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_QUICK_GUARD);
+                    gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_CRAFTY_SHIELD);
                     gProtectStructs[gBattlerTarget].spikyShielded = 0;
                     gProtectStructs[gBattlerTarget].kingsShielded = 0;
                     gProtectStructs[gBattlerTarget].banefulBunkered = 0;
@@ -3811,13 +3817,13 @@ static void atk3D_end(void)
 
     gMoveResultFlags = 0;
     gActiveBattler = 0;
-    gCurrentActionFuncId = 0xB;
+    gCurrentActionFuncId = B_ACTION_TRY_FINISH;
 }
 
 static void atk3E_end2(void)
 {
     gActiveBattler = 0;
-    gCurrentActionFuncId = 0xB;
+    gCurrentActionFuncId = B_ACTION_TRY_FINISH;
 }
 
 static void atk3F_end3(void) // pops the main function stack
@@ -7264,6 +7270,13 @@ static void atk77_setprotectlike(void)
                 gDisableStructs[gBattlerAttacker].protectUses++;
                 fail = FALSE;
             }
+            else if (gCurrentMove == MOVE_CRAFTY_SHIELD && !(gSideStatuses[side] & SIDE_STATUS_CRAFTY_SHIELD))
+            {
+                gSideStatuses[side] |= SIDE_STATUS_CRAFTY_SHIELD;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 3;
+                gDisableStructs[gBattlerAttacker].protectUses++;
+                fail = FALSE;
+            }
         }
     }
 
@@ -10186,6 +10199,8 @@ static void atkDD_setuserstatus3(void)
     else
     {
         gStatuses3[gBattlerAttacker] |= flags;
+        if (flags == STATUS3_MAGNET_RISE)
+            gDisableStructs[gBattlerAttacker].magnetRiseTimer = 5;
         gBattlescriptCurrInstr += 9;
     }
 }

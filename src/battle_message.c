@@ -38,8 +38,6 @@ struct BattleWindowText
     u8 shadowColor;
 };
 
-extern u8 gUnknown_0203C7B4;
-
 extern const u8 gTrainerClassNames[][13];
 extern const u16 gUnknown_08D85620[];
 
@@ -642,10 +640,12 @@ static const u8 sText_ThirdTypeAdded[] = _("{B_BUFF1} type was added to\n{B_DEF_
 static const u8 sText_FellForFeint[] = _("{B_DEF_NAME_WITH_PREFIX} fell for\nthe feint!");
 static const u8 sText_PokemonCannotUseMove[] = _("{B_ATK_NAME_WITH_PREFIX} cannot\nuse {B_CURRENT_MOVE}!");
 static const u8 sText_CoveredInPowder[] = _("{B_DEF_NAME_WITH_PREFIX} is covered in powder!");
-static const u8 sText_PowderExplodes[] = _("When the flame touched the powder \non the Pokémon, it exploded!");
+static const u8 sText_PowderExplodes[] = _("When the flame touched the powder\non the Pokémon, it exploded!");
+static const u8 sText_BelchCantUse[] = _("Belch cannot be used!\p");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
+    [STRINGID_BELCHCANTSELECT - 12] = sText_BelchCantUse,
     [STRINGID_TRAINER1LOSETEXT - 12] = sText_Trainer1LoseText,
     [STRINGID_PKMNGAINEDEXP - 12] = sText_PkmnGainedEXP,
     [STRINGID_PKMNGREWTOLV - 12] = sText_PkmnGrewToLv,
