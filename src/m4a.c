@@ -19,6 +19,8 @@ struct MusicPlayerInfo gMPlayInfo_SE1;
 struct MusicPlayerInfo gMPlayInfo_SE2;
 struct MusicPlayerInfo gMPlayInfo_SE3;
 struct MusicPlayerInfo gMPlayInfo_BGM_HINSI;
+extern struct MusicPlayerTrack gMPlayTrack_BGM[];
+extern struct MusicPlayerTrack gMPlayTrack_BGM_HINSI[];
 u8 gMPlayMemAccArea[0x10];
 
 u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust)
@@ -77,7 +79,7 @@ void m4aSoundInit(void)
     SoundInit(&gSoundInfo);
     MPlayExtender(gCgbChans);
     m4aSoundMode(SOUND_MODE_DA_BIT_8
-               | SOUND_MODE_FREQ_13379
+               | SOUND_MODE_FREQ_36314
                | (12 << SOUND_MODE_MASVOL_SHIFT)
                | (5 << SOUND_MODE_MAXCHN_SHIFT));
 

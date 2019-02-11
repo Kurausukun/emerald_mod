@@ -43,6 +43,8 @@ extern const struct CompressedSpriteSheet gSpriteSheet_EnemyShadow;
 extern const struct SpriteTemplate gSpriteTemplate_EnemyShadow;
 extern const u8 gEnemyMonElevation[];
 
+static u8 WasBarRedLast;
+
 // this file's functions
 static u8 sub_805D4A8(u16 move);
 static u16 BattlePalaceGetTargetRetValue(void);
@@ -1025,43 +1027,47 @@ void ClearBehindSubstituteBit(u8 battlerId)
 
 void HandleLowHpMusicChange(struct Pokemon *mon, u8 battlerId)
 {
-    //u16 hp = GetMonData(mon, MON_DATA_HP);
-    //u16 maxHP = GetMonData(mon, MON_DATA_MAX_HP);
-    //
-    //if (GetHPBarLevel(hp, maxHP) == HP_BAR_RED)
-    //{
-    //    if (!gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong)
-    //    {
-    //        if (!gBattleSpritesDataPtr->battlerData[battlerId ^ BIT_FLANK].lowHpSong)
-    //            PlaySE(SE_HINSI);
-    //        gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong = 1;
-    //    }
-    //}
-    //else
-    //{
-    //    gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong = 0;
-    //    if (!IsDoubleBattle())
-    //    {
-    //        m4aSongNumStop(SE_HINSI);
-    //        return;
-    //    }
-    //    if (IsDoubleBattle() && !gBattleSpritesDataPtr->battlerData[battlerId ^ BIT_FLANK].lowHpSong)
-    //    {
-    //        m4aSongNumStop(SE_HINSI);
-    //        return;
-    //    }
-    //}
+    u16 hp = GetMonData(mon, MON_DATA_HP);
+    u16 maxHP = GetMonData(mon, MON_DATA_MAX_HP);
+    
+    if (GetHPBarLevel(hp, maxHP) == HP_BAR_RED)
+    {
+		WasBarRedLast = 1;
+        if (!gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong)
+        {
+            if (!gBattleSpritesDataPtr->battlerData[battlerId ^ BIT_FLANK].lowHpSong)
+                SwitchToLowHPMusic();
+            gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong = 1;
+        }
+    }
+    else
+    {
+        gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong = 0;
+        if (!IsDoubleBattle() && WasBarRedLast == 1)
+        {
+			WasBarRedLast = 0;
+            SwitchFromLowHPMusic();
+            return;
+        }
+        if (IsDoubleBattle() && !gBattleSpritesDataPtr->battlerData[battlerId ^ BIT_FLANK].lowHpSong)
+        {
+			WasBarRedLast = 0;
+            SwitchFromLowHPMusic();
+            return;
+        }
+    }
 }
 
 void BattleStopLowHpSound(void)
 {
-    //u8 playerBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-    //
-    //gBattleSpritesDataPtr->battlerData[playerBattler].lowHpSong = 0;
-    //if (IsDoubleBattle())
-    //    gBattleSpritesDataPtr->battlerData[playerBattler ^ BIT_FLANK].lowHpSong = 0;
-    //
-    //m4aSongNumStop(SE_HINSI);
+    u8 playerBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+    
+    gBattleSpritesDataPtr->battlerData[playerBattler].lowHpSong = 0;
+    if (IsDoubleBattle())
+        gBattleSpritesDataPtr->battlerData[playerBattler ^ BIT_FLANK].lowHpSong = 0;
+	
+    WasBarRedLast = 0;
+    SwitchFromLowHPMusic();
 }
 
 u8 GetMonHPBarLevel(struct Pokemon *mon)

@@ -64,6 +64,18 @@ static const struct Fanfare sFanfares[] = {
 
 #define CRY_VOLUME  120 // was 125 in R/S
 
+void SwitchToLowHPMusic(void)
+{
+    m4aMPlayStop(&gMPlayInfo_BGM);
+	m4aSongNumStart(MUS_HINSI);
+}
+
+void SwitchFromLowHPMusic(void)
+{
+    m4aMPlayStop(&gMPlayInfo_BGM_HINSI);
+	m4aMPlayContinue(&gMPlayInfo_BGM);
+}
+
 void InitMapMusic(void)
 {
     gDisableMusic = FALSE;
