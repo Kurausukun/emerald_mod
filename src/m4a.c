@@ -19,8 +19,6 @@ struct MusicPlayerInfo gMPlayInfo_SE1;
 struct MusicPlayerInfo gMPlayInfo_SE2;
 struct MusicPlayerInfo gMPlayInfo_SE3;
 struct MusicPlayerInfo gMPlayInfo_BGM_HINSI;
-extern struct MusicPlayerTrack gMPlayTrack_BGM[];
-extern struct MusicPlayerTrack gMPlayTrack_BGM_HINSI[];
 u8 gMPlayMemAccArea[0x10];
 
 u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust)

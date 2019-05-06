@@ -35,6 +35,7 @@ extern struct MusicPlayerInfo gMPlayInfo_SE3;
 extern struct MusicPlayerInfo gMPlayInfo_BGM_HINSI;
 extern struct ToneData gCryTable[];
 extern struct ToneData gCryTable2[];
+extern u8 WasBarRedLast;
 
 static void Task_Fanfare(u8 taskId);
 static void CreateFanfareTask(void);
@@ -67,13 +68,13 @@ static const struct Fanfare sFanfares[] = {
 void SwitchToLowHPMusic(void)
 {
     m4aMPlayStop(&gMPlayInfo_BGM);
-	m4aSongNumStart(MUS_HINSI);
+    m4aSongNumStart(MUS_HINSI);
 }
 
 void SwitchFromLowHPMusic(void)
 {
     m4aMPlayStop(&gMPlayInfo_BGM_HINSI);
-	m4aMPlayContinue(&gMPlayInfo_BGM);
+    m4aMPlayContinue(&gMPlayInfo_BGM);
 }
 
 void InitMapMusic(void)
@@ -307,7 +308,14 @@ void FadeInBGM(u8 speed)
 
 void FadeOutBGM(u8 speed)
 {
-    m4aMPlayFadeOut(&gMPlayInfo_BGM, speed);
+    if (WasBarRedLast == 1)
+    {
+	    m4aMPlayFadeOut(&gMPlayInfo_BGM_HINSI, speed);
+    }
+    else
+    {
+        m4aMPlayFadeOut(&gMPlayInfo_BGM, speed);
+    }
 }
 
 bool8 IsBGMStopped(void)

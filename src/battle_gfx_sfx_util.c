@@ -42,8 +42,7 @@ extern const union AnimCmd* const * const gMonAnimationsSpriteAnimsPtrTable[];
 extern const struct CompressedSpriteSheet gSpriteSheet_EnemyShadow;
 extern const struct SpriteTemplate gSpriteTemplate_EnemyShadow;
 extern const u8 gEnemyMonElevation[];
-
-static u8 WasBarRedLast;
+u8 WasBarRedLast;
 
 // this file's functions
 static u8 sub_805D4A8(u16 move);
@@ -1032,7 +1031,7 @@ void HandleLowHpMusicChange(struct Pokemon *mon, u8 battlerId)
     
     if (GetHPBarLevel(hp, maxHP) == HP_BAR_RED)
     {
-		WasBarRedLast = 1;
+	    WasBarRedLast = 1;
         if (!gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong)
         {
             if (!gBattleSpritesDataPtr->battlerData[battlerId ^ BIT_FLANK].lowHpSong)
@@ -1045,13 +1044,13 @@ void HandleLowHpMusicChange(struct Pokemon *mon, u8 battlerId)
         gBattleSpritesDataPtr->battlerData[battlerId].lowHpSong = 0;
         if (!IsDoubleBattle() && WasBarRedLast == 1)
         {
-			WasBarRedLast = 0;
+		    WasBarRedLast = 0;
             SwitchFromLowHPMusic();
             return;
         }
         if (IsDoubleBattle() && !gBattleSpritesDataPtr->battlerData[battlerId ^ BIT_FLANK].lowHpSong)
         {
-			WasBarRedLast = 0;
+		    WasBarRedLast = 0;
             SwitchFromLowHPMusic();
             return;
         }

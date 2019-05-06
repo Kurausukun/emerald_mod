@@ -2181,3 +2181,15 @@ DirectSoundWaveData_orchhit60::
 	.align 2
 DirectSoundWaveData_orchhit72::
 	.incbin "sound/direct_sound_samples/orchhit72.bin"
+
+	.align 2
+DirectSoundWaveData_organchord::
+	.incbin "sound/direct_sound_samples/organchord.bin"
+
+	.align 2
+DirectSoundWaveData_octavestrings::
+	.incbin "sound/direct_sound_samples/octavestrings.bin"
+
+	.align 2
+DirectSoundWaveData_octavestrings2::
+	.incbin "sound/direct_sound_samples/octavestrings2.bin"

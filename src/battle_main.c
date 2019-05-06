@@ -4963,7 +4963,6 @@ static void ReturnFromBattleToOverworld(void)
             SetRoamerInactive();
     }
 
-    m4aSongNumStop(SE_HINSI);
     SetMainCallback2(gMain.savedCallback);
 }
 

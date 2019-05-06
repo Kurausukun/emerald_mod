@@ -21984,7 +21984,7 @@ voicegroup191::
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
-	voice_directsound_no_resample 60, 64, DirectSoundWaveData_86C566C, 255, 0, 255, 242
+	voice_directsound_no_resample 64, 64, DirectSoundWaveData_86CD0C4, 255, 0, 255, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
@@ -22009,12 +22009,11 @@ voicegroup192::
 voicegroup193::
 	voice_directsound 60, 0, DirectSoundWaveData_86E5440, 255, 0, 255, 200  @ 8676AC0
 	voice_directsound 60, 0, DirectSoundWaveData_86E89E4, 255, 0, 255, 200  @ 8676ACC
-	voice_directsound 60, 0, DirectSoundWaveData_86EAD00, 255, 0, 255, 100  @ 8676AD8
+	voice_directsound 60, 0, DirectSoundWaveData_86EAD00, 255, 0, 255, 200  @ 8676AD8
 
-voicegroup194::
-	voice_directsound 60, 0, DirectSoundWaveData_86E5440, 255, 0, 255, 226  @ 8676AC0
-	voice_directsound 60, 0, DirectSoundWaveData_86E89E4, 255, 0, 255, 226  @ 8676ACC
-	voice_directsound 60, 0, DirectSoundWaveData_86EAD00, 255, 0, 255, 226  @ 8676AD8
+voicegroup194:: @ 8676AC0
+	voice_directsound 60, 0, DirectSoundWaveData_octavestrings, 255, 0, 255, 200  @ 8676AC0
+	voice_directsound 60, 0, DirectSoundWaveData_octavestrings2, 255, 0, 255, 200  @ 8676ACC
 
 	.align 2
 voicegroup195::
@@ -22034,8 +22033,8 @@ voicegroup195::
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1_alt 0, 2, 0, 6, 0, 0
-	voice_square_2_alt 2, 0, 6, 0, 0
-	voice_directsound 60, 0, DirectSoundWaveData_86B63A8, 255, 0, 255, 127
+	voice_square_2_alt 3, 0, 0, 15, 7
+	voice_directsound 60, 0, DirectSoundWaveData_organchord, 255, 0, 255, 127
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
@@ -22066,8 +22065,8 @@ voicegroup195::
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_keysplit voicegroup194, KeySplitTable7
 	voice_keysplit voicegroup193, KeySplitTable2
-	voice_keysplit voicegroup194, KeySplitTable2
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
