@@ -3,8 +3,6 @@
 #include "trig.h"
 #include "constants/rgb.h"
 
-extern void sub_80A77C8(struct Sprite *);
-
 void sub_810DBAC(struct Sprite *);
 void sub_810DC2C(struct Sprite *);
 void sub_810DCD0(struct Sprite *);
@@ -192,7 +190,7 @@ const struct SpriteTemplate gWaterBubbleSpriteTemplate =
 const struct SpriteTemplate gGreenPoisonDrip =
 {
 	.tileTag = ANIM_TAG_POISON_BUBBLE,
-	.paletteTag = ANIM_TAG_UNUSED_VINE ,
+	.paletteTag = ANIM_TAG_VINE,
 	.oam = &gUnknown_085249CC,
 	.anims = gUnknown_08596168,
 	.images = NULL,
@@ -203,7 +201,7 @@ const struct SpriteTemplate gGreenPoisonDrip =
 const struct SpriteTemplate gGreenPoisonBubble =
 {
 	.tileTag = ANIM_TAG_POISON_BUBBLE,
-	.paletteTag = ANIM_TAG_UNUSED_VINE ,
+	.paletteTag = ANIM_TAG_VINE,
 	.oam = &gUnknown_085249CC,
 	.anims = gUnknown_08596164,
 	.images = NULL,
@@ -230,7 +228,7 @@ void sub_810DBAC(struct Sprite *sprite)
 
 static void sub_810DC10(struct Sprite *sprite)
 {
-    if (TranslateAnimArc(sprite))
+    if (TranslateAnimHorizontalArc(sprite))
         DestroyAnimSprite(sprite);
 }
 
@@ -258,7 +256,7 @@ void sub_810DC2C(struct Sprite *sprite)
 
 static void sub_810DCB4(struct Sprite *sprite)
 {
-    if (TranslateAnimArc(sprite))
+    if (TranslateAnimHorizontalArc(sprite))
         DestroyAnimSprite(sprite);
 }
 
@@ -280,7 +278,7 @@ void sub_810DCD0(struct Sprite *sprite)
 
 static void sub_810DD24(struct Sprite *sprite)
 {
-    AnimTranslateLinearSimple(sprite);
+    TranslateSpriteLinearFixedPoint(sprite);
 
     sprite->data[1] -= sprite->data[5];
     sprite->data[2] -= sprite->data[6];

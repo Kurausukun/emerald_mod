@@ -9,7 +9,7 @@
 #include "battle_setup.h"
 #include "battle_tv.h"
 #include "bg.h"
-#include "data2.h"
+#include "data.h"
 #include "item.h"
 #include "item_menu.h"
 #include "link.h"
@@ -33,15 +33,9 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
+#include "constants/rgb.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_BGM;
-
-extern const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[];
-extern const struct CompressedSpritePalette gTrainerBackPicPaletteTable[];
-
-extern void sub_8172EF0(u8 battlerId, struct Pokemon *mon);
-extern void sub_81AABB0(void);
-extern void sub_81851A8(u8 *);
 
 // this file's functions
 static void PlayerHandleGetMonData(void);
@@ -100,7 +94,7 @@ static void PlayerHandleLinkStandbyMsg(void);
 static void PlayerHandleResetActionMoveSelection(void);
 static void PlayerHandleCmd55(void);
 static void PlayerHandleBattleDebug(void);
-static void nullsub_22(void);
+static void PlayerCmdEnd(void);
 
 static void PlayerBufferRunCommand(void);
 static void HandleInputChooseTarget(void);
@@ -188,7 +182,7 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
     PlayerHandleResetActionMoveSelection,
     PlayerHandleCmd55,
     PlayerHandleBattleDebug,
-    nullsub_22
+    PlayerCmdEnd
 };
 
 static const u8 sTargetIdentities[] = {B_POSITION_PLAYER_LEFT, B_POSITION_PLAYER_RIGHT, B_POSITION_OPPONENT_RIGHT, B_POSITION_OPPONENT_LEFT};
@@ -2421,7 +2415,7 @@ static void PlayerHandleTrainerSlide(void)
 
 static void PlayerHandleTrainerSlideBack(void)
 {
-    oamt_add_pos2_onto_pos1(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
+    SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 50;
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[2] = -40;
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[4] = gSprites[gBattlerSpriteIds[gActiveBattler]].pos1.y;
@@ -2456,7 +2450,7 @@ static void PlayerHandleFaintAnimation(void)
 
 static void PlayerHandlePaletteFade(void)
 {
-    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, 0);
+    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, RGB_BLACK);
     PlayerBufferExecCompleted();
 }
 
@@ -2683,7 +2677,7 @@ static void PlayerHandleChooseItem(void)
 {
     s32 i;
 
-    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, 0);
+    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, RGB_BLACK);
     gBattlerControllerFuncs[gActiveBattler] = OpenBagAndChooseItem;
     gBattlerInMenuId = gActiveBattler;
 
@@ -2710,7 +2704,7 @@ static void PlayerHandleChoosePokemon(void)
         *(&gBattleStruct->battlerPreventingSwitchout) = gBattleResources->bufferA[gActiveBattler][1] >> 4;
         *(&gBattleStruct->field_8B) = gBattleResources->bufferA[gActiveBattler][2];
         *(&gBattleStruct->abilityPreventingSwitchout) = gBattleResources->bufferA[gActiveBattler][3];
-        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, 0);
+        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, RGB_BLACK);
         gBattlerControllerFuncs[gActiveBattler] = OpenPartyMenuToChooseMon;
         gBattlerInMenuId = gActiveBattler;
     }
@@ -2719,7 +2713,7 @@ static void PlayerHandleChoosePokemon(void)
 static void PlayerHandleCmd23(void)
 {
     BattleStopLowHpSound();
-    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, 0);
+    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, RGB_BLACK);
     PlayerBufferExecCompleted();
 }
 
@@ -2970,7 +2964,7 @@ static void PlayerHandleIntroTrainerBallThrow(void)
     u8 paletteNum;
     u8 taskId;
 
-    oamt_add_pos2_onto_pos1(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
+    SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
 
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 50;
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[2] = -40;
@@ -3169,6 +3163,6 @@ static void PlayerHandleBattleDebug(void)
     gBattlerControllerFuncs[gActiveBattler] = WaitForDebug;
 }
 
-static void nullsub_22(void)
+static void PlayerCmdEnd(void)
 {
 }

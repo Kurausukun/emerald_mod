@@ -248,6 +248,12 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_NOBLE_ROAR, AI_CBM_NobleRoar
 	if_effect EFFECT_SHELL_SMASH, AI_CBM_ShellSmash
 	if_effect EFFECT_LAST_RESORT, AI_CBM_LastResort
+	if_effect EFFECT_BELCH, AI_CBM_Belch
+	if_effect EFFECT_DO_NOTHING, Score_Minus8
+	end
+	
+AI_CBM_Belch:
+	if_cant_use_belch AI_USER, Score_Minus10
 	end
 	
 AI_CBM_LastResort:
@@ -474,6 +480,9 @@ AI_CBM_BellyDrum: @ 82DC341
 
 AI_CBM_AttackUp: @ 82DC348
 	if_stat_level_equal AI_USER, STAT_ATK, 12, Score_Minus10
+	@ Do not raise attack if has no physical moves
+	if_has_move_with_effect AI_USER, EFFECT_BATON_PASS, AI_Ret
+	if_has_no_physical_move AI_USER, Score_Minus10
 	end
 
 AI_CBM_DefenseUp: @ 82DC351
@@ -486,6 +495,9 @@ AI_CBM_SpeedUp: @ 82DC35A
 
 AI_CBM_SpAtkUp: @ 82DC363
 	if_stat_level_equal AI_USER, STAT_SPATK, 12, Score_Minus10
+	@ Do not raise sp. attack if has no special moves
+	if_has_move_with_effect AI_USER, EFFECT_BATON_PASS, AI_Ret
+	if_has_no_special_move AI_USER, Score_Minus10
 	end
 
 AI_CBM_SpDefUp: @ 82DC36C
@@ -880,11 +892,25 @@ Score_Plus5:
 Score_Plus10:
 	score +10
 	end
+	
+@ omae wa mou shindeiru
+@ Basically a scenario where the players mon is faster, able to hit and able to OHKO
+@ In which, it would be best to use a priority move to deal any damage
+AI_CheckIfAlreadyDead:
+	if_status2 AI_TARGET, STATUS2_RECHARGE | STATUS2_BIDE, AI_Ret
+	if_ai_can_go_down AI_CheckIfAlreadyDeadPriorities
+	end
+AI_CheckIfAlreadyDeadPriorities:
+	if_target_faster Score_Minus1
+	if_random_less_than 126, AI_Ret
+	score +1
+	end
 
 AI_CheckViability:
 	if_target_is_ally AI_Ret
 	call_if_always_hit AI_CV_AlwaysHit
 	call_if_move_flag FLAG_HIGH_CRIT, AI_CV_HighCrit
+	call AI_CheckIfAlreadyDead
 	if_effect EFFECT_HIT, AI_CV_Hit
 	if_effect EFFECT_SLEEP, AI_CV_Sleep
 	if_effect EFFECT_ABSORB, AI_CV_Absorb
@@ -1134,6 +1160,7 @@ AI_CV_MirrorMove_EncouragedMovesToMirror: @ 82DCB6C
     .2byte -1
 
 AI_CV_AttackUp: @ 82DCBBC
+	if_physical_moves_unusable AI_USER, AI_TARGET, Score_Minus8
 	if_stat_level_less_than AI_USER, STAT_ATK, 9, AI_CV_AttackUp2
 	if_random_less_than 100, AI_CV_AttackUp3
 	score -1
@@ -2052,7 +2079,7 @@ AI_CV_Encore_EncouragedMovesToEncore:
     .byte EFFECT_POISON
     .byte EFFECT_PARALYZE
     .byte EFFECT_LEECH_SEED
-    .byte EFFECT_SPLASH
+    .byte EFFECT_DO_NOTHING
     .byte EFFECT_ATTACK_UP_2
     .byte EFFECT_ENCORE
     .byte EFFECT_CONVERSION_2
@@ -3365,7 +3392,9 @@ AI_TryHelpingHandOnAlly:
 	goto Score_Plus2
 
 AI_TrySwaggerOnAlly:
+	if_has_no_physical_move AI_USER_PARTNER, Score_Minus30
 	if_holds_item AI_TARGET, ITEM_PERSIM_BERRY, AI_TrySwaggerOnAlly2
+	if_ability AI_USER_PARTNER, ABILITY_OWN_TEMPO, AI_TrySwaggerOnAlly2
 	goto Score_Minus30
 
 AI_TrySwaggerOnAlly2:
@@ -3599,7 +3628,6 @@ AI_HPAware_DiscouragedEffectsWhenTargetLowHP: @ 82DE2B1
     .byte EFFECT_TOXIC
     .byte EFFECT_LIGHT_SCREEN
     .byte EFFECT_OHKO
-    .byte EFFECT_SUPER_FANG
     .byte EFFECT_SUPER_FANG
     .byte EFFECT_MIST
     .byte EFFECT_FOCUS_ENERGY

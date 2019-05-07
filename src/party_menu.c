@@ -10,7 +10,7 @@
 #include "battle_pyramid_bag.h"
 #include "bg.h"
 #include "contest.h"
-#include "data2.h"
+#include "data.h"
 #include "decompress.h"
 #include "easy_chat.h"
 #include "event_data.h"
@@ -37,18 +37,19 @@
 #include "main.h"
 #include "menu.h"
 #include "menu_helpers.h"
+#include "menu_specialized.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
+#include "player_pc.h"
 #include "pokemon.h"
 #include "pokemon_icon.h"
+#include "pokemon_jump.h"
 #include "pokemon_storage_system.h"
 #include "pokemon_summary_screen.h"
-#include "pokenav.h"
 #include "region_map.h"
 #include "reshow_battle_screen.h"
-#include "rom_8011DC0.h"
 #include "scanline_effect.h"
 #include "script.h"
 #include "sound.h"
@@ -60,11 +61,14 @@
 #include "text.h"
 #include "text_window.h"
 #include "trade.h"
+#include "union_room.h"
 #include "window.h"
 #include "constants/battle.h"
 #include "constants/battle_frontier.h"
+#include "constants/easy_chat.h"
 #include "constants/field_effects.h"
 #include "constants/flags.h"
+#include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/maps.h"
 #include "constants/moves.h"
@@ -295,8 +299,8 @@ static u8 sub_81B8984(void);
 static void sub_81B6280(u8);
 static void c2_815ABFC(void);
 static void sub_81B672C(u8);
-static u16 sub_81B691C(struct Pokemon*, u8);
-static void option_menu_get_string(u8, u8*);
+static u16 ItemEffectToMonEv(struct Pokemon*, u8);
+static void ItemEffectToStatString(u8, u8*);
 static void sub_81B6BB4(u8);
 static void ether_effect_related_2(u8);
 static void ether_effect_related(u8);
@@ -1174,10 +1178,10 @@ static const struct OamData gOamData_83765EC =
     .objMode = 0,
     .mosaic = 0,
     .bpp = 0,
-    .shape = 0,
+    .shape = SPRITE_SHAPE(8x8),
     .x = 0,
     .matrixNum = 0,
-    .size = 0,
+    .size = SPRITE_SIZE(8x8),
     .tileNum = 0,
     .priority = 1,
     .paletteNum = 0,
@@ -1230,10 +1234,10 @@ static const struct OamData sOamData_8615ED8 =
     .objMode = 0,
     .mosaic = 0,
     .bpp = 0,
-    .shape = 0,
+    .shape = SPRITE_SHAPE(32x32),
     .x = 0,
     .matrixNum = 0,
-    .size = 2,
+    .size = SPRITE_SIZE(32x32),
     .tileNum = 0,
     .priority = 1,
     .paletteNum = 0,
@@ -1286,10 +1290,10 @@ static const struct OamData sOamData_8615F20 =
     .objMode = 0,
     .mosaic = 0,
     .bpp = 0,
-    .shape = 0,
+    .shape = SPRITE_SHAPE(16x16),
     .x = 0,
     .matrixNum = 0,
-    .size = 1,
+    .size = SPRITE_SIZE(16x16),
     .tileNum = 0,
     .priority = 2,
     .paletteNum = 0,
@@ -1365,10 +1369,10 @@ static const struct OamData sOamData_8615F90 =
     .objMode = 0,
     .mosaic = 0,
     .bpp = 0,
-    .shape = 1,
+    .shape = SPRITE_SHAPE(32x8),
     .x = 0,
     .matrixNum = 0,
-    .size = 1,
+    .size = SPRITE_SIZE(32x8),
     .tileNum = 0,
     .priority = 1,
     .paletteNum = 0,
@@ -2753,7 +2757,7 @@ static void sub_81B1B8C(u8 taskId)
     {
         if (gTasks[taskId].data[0] == 0)
         {
-            sub_8198070(6, 0);
+            ClearStdWindowAndFrameToTransparent(6, 0);
             ClearWindowTilemap(6);
         }
         DestroyTask(taskId);
@@ -2778,7 +2782,7 @@ static void sub_81B1C1C(u8 taskId)
 {
     if (sub_81B1BD4() != TRUE)
     {
-        sub_8198070(6, 0);
+        ClearStdWindowAndFrameToTransparent(6, 0);
         ClearWindowTilemap(6);
         if (sub_81221AC() == TRUE)
         {
@@ -2935,7 +2939,7 @@ u8 pokemon_ailments_get_primary(u32 status)
     return AILMENT_NONE;
 }
 
-u8 sub_81B205C(struct Pokemon *mon)
+u8 GetMonAilment(struct Pokemon *mon)
 {
     u8 ailment;
 
@@ -3108,7 +3112,7 @@ static void sub_81B239C(u8 a)
     }
     DeactivateAllTextPrinters();
     for (i = 0; i < PARTY_SIZE; i++)
-        FillWindowPixelBuffer(i, 0);
+        FillWindowPixelBuffer(i, PIXEL_FILL(0));
     LoadUserWindowBorderGfx(0, 0x4F, 0xD0);
     LoadPalette(GetOverworldTextboxPalettePtr(), 0xE0, 0x20);
     LoadPalette(gUnknown_0860F074, 0xF0, 0x20);
@@ -3126,7 +3130,7 @@ static void sub_81B2428(bool8 a)
         if (a == TRUE)
         {
             firstWindowId = AddWindow(&gUnknown_08615918);
-            FillWindowPixelBuffer(firstWindowId, 0);
+            FillWindowPixelBuffer(firstWindowId, PIXEL_FILL(0));
             mainOffset = GetStringCenterAlignXOffset(0, gMenuText_Confirm, 48);
             AddTextPrinterParameterized4(firstWindowId, 0, mainOffset, 1, 0, 0, gUnknown_086157FC[0], -1, gMenuText_Confirm);
             PutWindowTilemap(firstWindowId);
@@ -3139,7 +3143,7 @@ static void sub_81B2428(bool8 a)
             windowId = AddWindow(&gUnknown_08615908);
             offset = 3;
         }
-        FillWindowPixelBuffer(windowId, 0);
+        FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
         if (gUnknown_0203CEC8.unk8_0 != 10)
         {
             mainOffset = GetStringCenterAlignXOffset(0, gText_Cancel, 48);
@@ -3354,7 +3358,7 @@ static void DisplayPartyPokemonLevelCheck(struct Pokemon *mon, struct Struct203C
 {
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
-        u8 ailment = sub_81B205C(mon);
+        u8 ailment = GetMonAilment(mon);
         if (ailment == AILMENT_NONE || ailment == AILMENT_PKRS)
         {
             if (c != 0)
@@ -3479,8 +3483,9 @@ static void DisplayPartyPokemonHPBar(u16 hp, u16 maxhp, struct Struct203CEDC *pt
     FillWindowPixelRect(ptr->windowId, gUnknown_08615AB8[0], ptr->unk0->unk4[20], ptr->unk0->unk4[21] + 1, hpFraction, 2);
     if (hpFraction != ptr->unk0->unk4[22])
     {
-        FillWindowPixelRect(ptr->windowId, 13, ptr->unk0->unk4[20] + hpFraction, ptr->unk0->unk4[21], ptr->unk0->unk4[22] - hpFraction, 1);
-        FillWindowPixelRect(ptr->windowId, 2, ptr->unk0->unk4[20] + hpFraction, ptr->unk0->unk4[21] + 1, ptr->unk0->unk4[22] - hpFraction, 2);
+        // This appears to be an alternating fill
+        FillWindowPixelRect(ptr->windowId, 0x0D, ptr->unk0->unk4[20] + hpFraction, ptr->unk0->unk4[21], ptr->unk0->unk4[22] - hpFraction, 1);
+        FillWindowPixelRect(ptr->windowId, 0x02, ptr->unk0->unk4[20] + hpFraction, ptr->unk0->unk4[21] + 1, ptr->unk0->unk4[22] - hpFraction, 2);
     }
     CopyWindowToVram(ptr->windowId, 2);
 }
@@ -3501,7 +3506,7 @@ static void sub_81B302C(u8 *ptr)
 {
     if (*ptr != 0xFF)
     {
-        sub_8198070(*ptr, 0);
+        ClearStdWindowAndFrameToTransparent(*ptr, 0);
         RemoveWindow(*ptr);
         *ptr = 0xFF;
         schedule_bg_copy_tilemap_to_vram(2);
@@ -3546,7 +3551,7 @@ void display_pokemon_menu_message(u32 stringID)
             else if (sub_81B314C() == FALSE)
                 stringID = 1;
         }
-        SetWindowBorderStyle(*windowPtr, FALSE, 0x4F, 0xD);
+        DrawStdFrameWithCustomTileAndPalette(*windowPtr, FALSE, 0x4F, 0xD);
         StringExpandPlaceholders(gStringVar4, gUnknown_08615AF4[stringID]);
         AddTextPrinterParameterized(*windowPtr, 1, gStringVar4, 0, 1, 0, 0);
         schedule_bg_copy_tilemap_to_vram(2);
@@ -3596,7 +3601,7 @@ static u8 sub_81B31B0(u8 a)
     }
 
     gUnknown_0203CEC4->unkC[0] = AddWindow(&window);
-    SetWindowBorderStyle(gUnknown_0203CEC4->unkC[0], FALSE, 0x4F, 13);
+    DrawStdFrameWithCustomTileAndPalette(gUnknown_0203CEC4->unkC[0], FALSE, 0x4F, 13);
     if (a == 3)
         return gUnknown_0203CEC4->unkC[0];
     cursorDimension = GetMenuCursorDimensionByFont(1, 0);
@@ -3616,7 +3621,7 @@ static u8 sub_81B31B0(u8 a)
 
 static void sub_81B3300(const u8 *text)
 {
-    SetWindowBorderStyle(6, FALSE, 0x4F, 13);
+    DrawStdFrameWithCustomTileAndPalette(6, FALSE, 0x4F, 13);
     gTextFlags.canABSpeedUpPrint = TRUE;
     AddTextPrinterParameterized2(6, 1, text, GetPlayerTextSpeedDelay(), 0, 2, 1, 3);
 }
@@ -3629,7 +3634,7 @@ static void sub_81B334C(void)
 static u8 sub_81B3364(void)
 {
     gUnknown_0203CEC4->unkC[0] = AddWindow(&gUnknown_08615970);
-    SetWindowBorderStyle(gUnknown_0203CEC4->unkC[0], FALSE, 0x4F, 13);
+    DrawStdFrameWithCustomTileAndPalette(gUnknown_0203CEC4->unkC[0], FALSE, 0x4F, 13);
     return gUnknown_0203CEC4->unkC[0];
 }
 
@@ -3833,7 +3838,7 @@ static void sub_81B3828(void)
 static void sub_81B3894(void)
 {
     gPaletteFade.bufferTransferDisabled = TRUE;
-    gUnknown_0203CEC8.unk9 = gUnknown_0203CF20;
+    gUnknown_0203CEC8.unk9 = gLastViewedMonIndex;
     InitPartyMenu(gUnknown_0203CEC8.unk8_0, 0xFF, gUnknown_0203CEC8.unkB, 1, 21, sub_81B36FC, gUnknown_0203CEC8.exitCallback);
 }
 
@@ -4211,7 +4216,11 @@ static void sub_81B452C(void)
 {
     u8 mail = GetMonData(&gPlayerParty[gUnknown_0203CEC8.unk9], MON_DATA_MAIL);
 
-    sub_811A20C(4, gSaveBlock1Ptr->mail[mail].words, sub_81B4578, 3);
+    DoEasyChatScreen(
+    	EASY_CHAT_TYPE_MAIL,
+    	gSaveBlock1Ptr->mail[mail].words,
+    	sub_81B4578,
+    	EASY_CHAT_PERSON_DISPLAY_NONE);
 }
 
 static void sub_81B4578(void)
@@ -5178,7 +5187,7 @@ static void party_menu_link_mon_status_condition_object(u16 species, u8 status, 
 
 static void party_menu_get_status_condition_and_update_object(struct Pokemon *mon, struct Struct203CEDC *ptr)
 {
-    party_menu_update_status_condition_object(sub_81B205C(mon), ptr);
+    party_menu_update_status_condition_object(GetMonAilment(mon), ptr);
 }
 
 static void party_menu_update_status_condition_object(u8 status, struct Struct203CEDC *ptr)
@@ -5222,7 +5231,7 @@ void sub_81B617C(void)
         doubleBattleStatus = 0;
     }
 
-    if (GetItemEffectType(gSpecialVar_ItemId) == 10)
+    if (GetItemEffectType(gSpecialVar_ItemId) == ITEM_EFFECT_SACRED_ASH)
     {
         gUnknown_0203CEC8.unk9 = 0;
         for (i = 0; i < PARTY_SIZE; i++)
@@ -5276,7 +5285,7 @@ static bool8 IsHPRecoveryItem(u16 item)
     else
         effect = gItemEffectTable[item - ITEM_POTION];
 
-    if ((effect[4] & 4) != 0)
+    if (effect[4] & ITEM4_HEAL_HP)
         return TRUE;
     else
         return FALSE;
@@ -5286,59 +5295,59 @@ static void GetMedicineItemEffectMessage(u16 item)
 {
     switch (GetItemEffectType(item))
     {
-    case 3:
+    case ITEM_EFFECT_CURE_POISON:
         StringExpandPlaceholders(gStringVar4, gText_PkmnCuredOfPoison);
         break;
-    case 4:
+    case ITEM_EFFECT_CURE_SLEEP:
         StringExpandPlaceholders(gStringVar4, gText_PkmnWokeUp2);
         break;
-    case 5:
+    case ITEM_EFFECT_CURE_BURN:
         StringExpandPlaceholders(gStringVar4, gText_PkmnBurnHealed);
         break;
-    case 6:
+    case ITEM_EFFECT_CURE_FREEZE:
         StringExpandPlaceholders(gStringVar4, gText_PkmnThawedOut);
         break;
-    case 7:
+    case ITEM_EFFECT_CURE_PARALYSIS:
         StringExpandPlaceholders(gStringVar4, gText_PkmnCuredOfParalysis);
         break;
-    case 8:
+    case ITEM_EFFECT_CURE_CONFUSION:
         StringExpandPlaceholders(gStringVar4, gText_PkmnSnappedOutOfConfusion);
         break;
-    case 9:
+    case ITEM_EFFECT_CURE_INFATUATION:
         StringExpandPlaceholders(gStringVar4, gText_PkmnGotOverInfatuation);
         break;
-    case 11:
+    case ITEM_EFFECT_CURE_ALL_STATUS:
         StringExpandPlaceholders(gStringVar4, gText_PkmnBecameHealthy);
         break;
-    case 13:
+    case ITEM_EFFECT_HP_EV:
         StringCopy(gStringVar2, gText_HP3);
         StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
         break;
-    case 12:
+    case ITEM_EFFECT_ATK_EV:
         StringCopy(gStringVar2, gText_Attack3);
         StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
         break;
-    case 17:
+    case ITEM_EFFECT_DEF_EV:
         StringCopy(gStringVar2, gText_Defense3);
         StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
         break;
-    case 16:
+    case ITEM_EFFECT_SPEED_EV:
         StringCopy(gStringVar2, gText_Speed2);
         StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
         break;
-    case 14:
+    case ITEM_EFFECT_SPATK_EV:
         StringCopy(gStringVar2, gText_SpAtk3);
         StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
         break;
-    case 15:
+    case ITEM_EFFECT_SPDEF_EV:
         StringCopy(gStringVar2, gText_SpDef3);
         StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
         break;
-    case 19:
-    case 20:
+    case ITEM_EFFECT_PP_UP:
+    case ITEM_EFFECT_PP_MAX:
         StringExpandPlaceholders(gStringVar4, gText_MovesPPIncreased);
         break;
-    case 21:
+    case ITEM_EFFECT_HEAL_PP:
         StringExpandPlaceholders(gStringVar4, gText_PPWasRestored);
         break;
     default:
@@ -5349,12 +5358,12 @@ static void GetMedicineItemEffectMessage(u16 item)
 
 static bool8 UsingHPEVItemOnShedinja(struct Pokemon *mon, u16 item)
 {
-    if (GetItemEffectType(item) == 13 && GetMonData(mon, MON_DATA_SPECIES) == SPECIES_SHEDINJA)
+    if (GetItemEffectType(item) == ITEM_EFFECT_HP_EV && GetMonData(mon, MON_DATA_SPECIES) == SPECIES_SHEDINJA)
         return FALSE;
     return TRUE;
 }
 
-static bool8 IsBlueYellowRedFlute(u16 item)
+static bool8 IsItemFlute(u16 item)
 {
     if (item == ITEM_BLUE_FLUTE || item == ITEM_RED_FLUTE || item == ITEM_YELLOW_FLUTE)
         return TRUE;
@@ -5401,7 +5410,7 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
         goto iTriedHonestlyIDid;
     }
     gUnknown_0203CEE8 = 1;
-    if (IsBlueYellowRedFlute(item) == FALSE)
+    if (IsItemFlute(item) == FALSE)
     {
         PlaySE(SE_KAIFUKU);
         if (gUnknown_0203CEC8.unkB != 14)
@@ -5458,10 +5467,10 @@ void sub_81B67C8(u8 taskId, TaskFunc task)
     u16 item = gSpecialVar_ItemId;
     u8 effectType = GetItemEffectType(item);
     u16 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP);
-    u16 relevantEV = sub_81B691C(mon, effectType);
+    u16 relevantEV = ItemEffectToMonEv(mon, effectType);
     bool8 cannotUseEffect = ExecuteTableBasedItemEffect__(gUnknown_0203CEC8.unk9, item, 0);
     u16 newFriendship = GetMonData(mon, MON_DATA_FRIENDSHIP);
-    u16 newRelevantEV = sub_81B691C(mon, effectType);
+    u16 newRelevantEV = ItemEffectToMonEv(mon, effectType);
 
     if (cannotUseEffect || (friendship == newFriendship && relevantEV == newRelevantEV))
     {
@@ -5477,7 +5486,7 @@ void sub_81B67C8(u8 taskId, TaskFunc task)
         PlaySE(SE_KAIFUKU);
         RemoveBagItem(item, 1);
         GetMonNickname(mon, gStringVar1);
-        option_menu_get_string(effectType, gStringVar2);
+        ItemEffectToStatString(effectType, gStringVar2);
         if (friendship != newFriendship)
         {
             if (relevantEV != newRelevantEV)
@@ -5495,48 +5504,48 @@ void sub_81B67C8(u8 taskId, TaskFunc task)
     }
 }
 
-static u16 sub_81B691C(struct Pokemon *mon, u8 effectType)
+static u16 ItemEffectToMonEv(struct Pokemon *mon, u8 effectType)
 {
     switch (effectType)
     {
-    case 13:
+    case ITEM_EFFECT_HP_EV:
         if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_SHEDINJA)
             return GetMonData(mon, MON_DATA_HP_EV);
         break;
-    case 12:
+    case ITEM_EFFECT_ATK_EV:
         return GetMonData(mon, MON_DATA_ATK_EV);
-    case 17:
+    case ITEM_EFFECT_DEF_EV:
         return GetMonData(mon, MON_DATA_DEF_EV);
-    case 16:
+    case ITEM_EFFECT_SPEED_EV:
         return GetMonData(mon, MON_DATA_SPEED_EV);
-    case 14:
+    case ITEM_EFFECT_SPATK_EV:
         return GetMonData(mon, MON_DATA_SPATK_EV);
-    case 15:
+    case ITEM_EFFECT_SPDEF_EV:
         return GetMonData(mon, MON_DATA_SPDEF_EV);
     }
     return 0;
 }
 
-static void option_menu_get_string(u8 effectType, u8 *dest)
+static void ItemEffectToStatString(u8 effectType, u8 *dest)
 {
     switch (effectType)
     {
-    case 13:
+    case ITEM_EFFECT_HP_EV:
         StringCopy(dest, gText_HP3);
         break;
-    case 12:
+    case ITEM_EFFECT_ATK_EV:
         StringCopy(dest, gText_Attack3);
         break;
-    case 17:
+    case ITEM_EFFECT_DEF_EV:
         StringCopy(dest, gText_Defense3);
         break;
-    case 16:
+    case ITEM_EFFECT_SPEED_EV:
         StringCopy(dest, gText_Speed2);
         break;
-    case 14:
+    case ITEM_EFFECT_SPATK_EV:
         StringCopy(dest, gText_SpAtk3);
         break;
-    case 15:
+    case ITEM_EFFECT_SPDEF_EV:
         StringCopy(dest, gText_SpDef3);
         break;
     }
@@ -5590,7 +5599,7 @@ void dp05_ether(u8 taskId, TaskFunc task)
     else
         effect = gItemEffectTable[item - ITEM_POTION];
 
-    if ((effect[4] & 0x10) == 0)
+    if (!(effect[4] & ITEM4_HEAL_PP_ONE))
     {
         gUnknown_0203CEC8.unkE = 0;
         ether_effect_related(taskId);
@@ -6000,7 +6009,7 @@ static void sub_81B767C(u8 taskId)
     s16 *arrayPtr = gUnknown_0203CEC4->data;
 
     arrayPtr[12] = sub_81B3364();
-    sub_81D3640(arrayPtr[12], arrayPtr, &arrayPtr[6], 1, 2, 3);
+    DrawLevelUpWindowPg1(arrayPtr[12], arrayPtr, &arrayPtr[6], 1, 2, 3);
     CopyWindowToVram(arrayPtr[12], 2);
     schedule_bg_copy_tilemap_to_vram(2);
 }
@@ -6009,7 +6018,7 @@ static void sub_81B76C8(u8 taskId)
 {
     s16 *arrayPtr = gUnknown_0203CEC4->data;
 
-    sub_81D3784(arrayPtr[12], &arrayPtr[6], 1, 2, 3);
+    DrawLevelUpWindowPg2(arrayPtr[12], &arrayPtr[6], 1, 2, 3);
     CopyWindowToVram(arrayPtr[12], 2);
     schedule_bg_copy_tilemap_to_vram(2);
 }
@@ -6213,8 +6222,8 @@ u8 GetItemEffectType(u16 item)
     const u8 *itemEffect;
     u32 statusCure;
 
-    if (!IS_POKEMON_ITEM(item))
-        return 22;
+    if (!ITEM_HAS_EFFECT(item))
+        return ITEM_EFFECT_NONE;
 
     // Read the item's effect properties.
     if (item == ITEM_ENIGMA_BERRY)
@@ -6222,58 +6231,58 @@ u8 GetItemEffectType(u16 item)
     else
         itemEffect = gItemEffectTable[item - ITEM_POTION];
 
-    if ((itemEffect[0] & 0x3F) || itemEffect[1] || itemEffect[2] || (itemEffect[3] & 0x80))
-        return 0;
-    else if (itemEffect[0] & 0x40)
-        return 10;
-    else if (itemEffect[3] & 0x40)
-        return 1;
+    if ((itemEffect[0] & (ITEM0_HIGH_CRIT | ITEM0_X_ATTACK)) || itemEffect[1] || itemEffect[2] || (itemEffect[3] & ITEM3_MIST))
+        return ITEM_EFFECT_X_ITEM;
+    else if (itemEffect[0] & ITEM0_SACRED_ASH)
+        return ITEM_EFFECT_SACRED_ASH;
+    else if (itemEffect[3] & ITEM3_LEVEL_UP)
+        return ITEM_EFFECT_RAISE_LEVEL;
 
-    statusCure = itemEffect[3] & 0x3F;
+    statusCure = itemEffect[3] & ITEM3_STATUS_ALL;
     if (statusCure || (itemEffect[0] >> 7))
     {
-        if (statusCure == 0x20)
-            return 4;
-        else if (statusCure == 0x10)
-            return 3;
-        else if (statusCure == 0x8)
-            return 5;
-        else if (statusCure == 0x4)
-            return 6;
-        else if (statusCure == 0x2)
-            return 7;
-        else if (statusCure == 0x1)
-            return 8;
+        if (statusCure == ITEM3_SLEEP)
+            return ITEM_EFFECT_CURE_SLEEP;
+        else if (statusCure == ITEM3_POISON)
+            return ITEM_EFFECT_CURE_POISON;
+        else if (statusCure == ITEM3_BURN)
+            return ITEM_EFFECT_CURE_BURN;
+        else if (statusCure == ITEM3_FREEZE)
+            return ITEM_EFFECT_CURE_FREEZE;
+        else if (statusCure == ITEM3_PARALYSIS)
+            return ITEM_EFFECT_CURE_PARALYSIS;
+        else if (statusCure == ITEM3_CONFUSION)
+            return ITEM_EFFECT_CURE_CONFUSION;
         else if (itemEffect[0] >> 7 && !statusCure)
-            return 9;
+            return ITEM_EFFECT_CURE_INFATUATION;
         else
-            return 11;
+            return ITEM_EFFECT_CURE_ALL_STATUS;
     }
 
-    if (itemEffect[4] & 0x44)
-        return 2;
-    else if (itemEffect[4] & 0x2)
-        return 12;
-    else if (itemEffect[4] & 0x1)
-        return 13;
-    else if (itemEffect[5] & 0x8)
-        return 14;
-    else if (itemEffect[5] & 0x4)
-        return 15;
-    else if (itemEffect[5] & 0x2)
-        return 16;
-    else if (itemEffect[5] & 0x1)
-        return 17;
-    else if (itemEffect[4] & 0x80)
-        return 18;
-    else if (itemEffect[4] & 0x20)
-        return 19;
-    else if (itemEffect[5] & 0x10)
-        return 20;
-    else if (itemEffect[4] & 0x18)
-        return 21;
+    if (itemEffect[4] & (ITEM4_REVIVE | ITEM4_HEAL_HP))
+        return ITEM_EFFECT_HEAL_HP;
+    else if (itemEffect[4] & ITEM4_EV_ATK)
+        return ITEM_EFFECT_ATK_EV;
+    else if (itemEffect[4] & ITEM4_EV_HP)
+        return ITEM_EFFECT_HP_EV;
+    else if (itemEffect[5] & ITEM5_EV_SPATK)
+        return ITEM_EFFECT_SPATK_EV;
+    else if (itemEffect[5] & ITEM5_EV_SPDEF)
+        return ITEM_EFFECT_SPDEF_EV;
+    else if (itemEffect[5] & ITEM5_EV_SPEED)
+        return ITEM_EFFECT_SPEED_EV;
+    else if (itemEffect[5] & ITEM5_EV_DEF)
+        return ITEM_EFFECT_DEF_EV;
+    else if (itemEffect[4] & ITEM4_EVO_STONE)
+        return ITEM_EFFECT_EVO_STONE;
+    else if (itemEffect[4] & ITEM4_PP_UP)
+        return ITEM_EFFECT_PP_UP;
+    else if (itemEffect[5] & ITEM5_PP_MAX)
+        return ITEM_EFFECT_PP_MAX;
+    else if (itemEffect[4] & (ITEM4_HEAL_PP_ALL | ITEM4_HEAL_PP_ONE))
+        return ITEM_EFFECT_HEAL_PP;
     else
-        return 22;
+        return ITEM_EFFECT_NONE;
 }
 
 static void sub_81B7E4C(u8 taskId)
@@ -6385,7 +6394,11 @@ static void sub_81B814C(void)
 
     sub_81B1DB8(&gPlayerParty[gUnknown_0203CEC8.unk9], gUnknown_0203CEC8.unkC);
     mail = GetMonData(&gPlayerParty[gUnknown_0203CEC8.unk9], MON_DATA_MAIL);
-    sub_811A20C(4, gSaveBlock1Ptr->mail[mail].words, sub_81B81A8, 3);
+    DoEasyChatScreen(
+    	EASY_CHAT_TYPE_MAIL,
+    	gSaveBlock1Ptr->mail[mail].words,
+    	sub_81B81A8,
+    	EASY_CHAT_PERSON_DISPLAY_NONE);
 }
 
 static void sub_81B81A8(void)
@@ -6513,7 +6526,7 @@ static void sub_81B8474(u8 taskId)
     gTasks[taskId].func = sub_81B8104;
 }
 
-void sub_81B8518(u8 unused)
+void InitChooseHalfPartyForBattle(u8 unused)
 {
     sub_81B8558();
     InitPartyMenu(4, 0, 0, 0, 0, sub_81B1370, gMain.savedCallback);
@@ -7278,7 +7291,7 @@ static void sub_81B9640(u8 taskId)
 void sub_81B968C(void)
 {
     ShowPokemonSummaryScreen(PSS_MODE_SELECT_MOVE, gPlayerParty, gSpecialVar_0x8004, gPlayerPartyCount - 1, CB2_ReturnToField);
-    gFieldCallback = sub_80AF168;
+    gFieldCallback = FieldCallback_ReturnToEventScript2;
 }
 
 void sub_81B96D0(void)
@@ -7319,9 +7332,9 @@ static void sub_81B97DC(struct Pokemon *mon, u8 slotTo, u8 slotFrom)
     u8 pp1 = GetMonData(mon, MON_DATA_PP1 + slotTo);
     u8 pp0 = GetMonData(mon, MON_DATA_PP1 + slotFrom);
     u8 ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
-    u8 ppBonusMask1 = gUnknown_08329D22[slotTo];
+    u8 ppBonusMask1 = gPPUpGetMask[slotTo];
     u8 ppBonusMove1 = (ppBonuses & ppBonusMask1) >> (slotTo * 2);
-    u8 ppBonusMask2 = gUnknown_08329D22[slotFrom];
+    u8 ppBonusMask2 = gPPUpGetMask[slotFrom];
     u8 ppBonusMove2 = (ppBonuses & ppBonusMask2) >> (slotFrom * 2);
     ppBonuses &= ~ppBonusMask1;
     ppBonuses &= ~ppBonusMask2;
