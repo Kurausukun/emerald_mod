@@ -149,6 +149,19 @@ const u16 *const gTilesetAnims_General_LandWaterEdge[] = {
     gTilesetAnims_General_LandWaterEdge_Frame3
 };
 
+const u16 gTilesetAnims_Fortree0_Frame0[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/0.4bpp");
+
+const u16 gTilesetAnims_Fortree0_Frame1[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/1.4bpp");
+
+const u16 gTilesetAnims_Fortree0_Frame2[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/2.4bpp");
+
+const u16 *const gTilesetAnims_Fortree0[] = {
+    gTilesetAnims_Fortree0_Frame0,
+    gTilesetAnims_Fortree0_Frame1,
+    gTilesetAnims_Fortree0_Frame2,
+    gTilesetAnims_Fortree0_Frame1
+};
+
 
 const u16 gTilesetAnims_Lavaridge_Steam_Frame0[] = INCBIN_U16("data/tilesets/secondary/lavaridge/anim/steam/0.4bpp");
 const u16 gTilesetAnims_Lavaridge_Steam_Frame1[] = INCBIN_U16("data/tilesets/secondary/lavaridge/anim/steam/1.4bpp");
@@ -725,9 +738,10 @@ void InitTilesetAnim_Fallarbor(void)
 
 void InitTilesetAnim_Fortree(void)
 {
+    static void TilesetAnim_Fortree(u16);
     sSecondaryTilesetAnimCounter = 0;
     sSecondaryTilesetAnimCounterMax = sPrimaryTilesetAnimCounterMax;
-    sSecondaryTilesetAnimCallback = NULL;
+    sSecondaryTilesetAnimCallback = fortreeCB;
 }
 
 void InitTilesetAnim_Lilycove(void)
@@ -1109,6 +1123,14 @@ static void TilesetAnim_BattleDome2(u16 timer)
 {
     if (timer % 4 == 0)
         BlendAnimPalette_BattleDome_FloorLightsNoBlend(timer >> 2);
+}
+
+static void TilesetAnim_Fortree(u16 timer)
+{
+    static void Fortree_AppendAnim(u16);
+	
+	if ((timer & 7) == 0)
+		Fortree_AppendAnim(timer >> 3);
 }
 
 static void QueueAnimTiles_Building_TVTurnedOn(u16 timer)
