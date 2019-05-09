@@ -632,24 +632,6 @@ void InitTilesetAnim_Building(void)
 
 static void TilesetAnim_General(u16 timer)
 {
-<<<<<<< HEAD
-    static void gTilesetAnims_Flower(u16);
-    static void gTilesetAnims_Water(u16);
-    static void gTilesetAnims_SandWaterEdge(u16);
-    static void gTilesetAnims_Waterfall(u16);
-    static void gTilesetAnims_LandWaterEdge (u16);
-
-    if ((timer & 0x0F) == 0)
-        gTilesetAnims_Flower(timer >> 4);
-    if ((timer & 0x0F) == 1)
-        gTilesetAnims_Water(timer >> 4);
-    if ((timer & 0x0F) == 2)
-        gTilesetAnims_SandWaterEdge(timer >> 4);
-    if ((timer & 0x0F) == 3)
-        gTilesetAnims_Waterfall(timer >> 4);
-    if ((timer & 0x0F) == 4)
-        gTilesetAnims_LandWaterEdge(timer >> 4);
-=======
     if (timer % 16 == 0)
         QueueAnimTiles_General_Flower(timer >> 4);
     if (timer % 16 == 1)
@@ -660,7 +642,6 @@ static void TilesetAnim_General(u16 timer)
         QueueAnimTiles_General_Waterfall(timer >> 4);
     if (timer % 16 == 4)
         QueueAnimTiles_General_LandWaterEdge(timer >> 4);
->>>>>>> upstream/battle_engine_v2
 }
 
 static void TilesetAnim_Building(u16 timer)
@@ -744,16 +725,9 @@ void InitTilesetAnim_Fallarbor(void)
 
 void InitTilesetAnim_Fortree(void)
 {
-<<<<<<< HEAD
-	static void fortreeCB(u16);
-    sSecondaryTilesetCBCounter = 0;
-    sSecondaryTilesetCBBufferSize = sPrimaryTilesetCBBufferSize;
-    sSecondaryTilesetCB = fortreeCB;
-=======
     sSecondaryTilesetAnimCounter = 0;
     sSecondaryTilesetAnimCounterMax = sPrimaryTilesetAnimCounterMax;
     sSecondaryTilesetAnimCallback = NULL;
->>>>>>> upstream/battle_engine_v2
 }
 
 void InitTilesetAnim_Lilycove(void)
@@ -861,19 +835,7 @@ void InitTilesetAnim_BattleDome(void)
     sSecondaryTilesetAnimCallback = TilesetAnim_BattleDome;
 }
 
-<<<<<<< HEAD
-static void fortreeCB(u16 timer)
-{
-    static void fortree_AppendAnim(u16);
-	
-	if ((timer & 7) == 0)
-		fortree_AppendAnim(timer >> 3);
-}
-
-static void sub_80A103C(u16 timer)
-=======
 static void TilesetAnim_Rustboro(u16 timer)
->>>>>>> upstream/battle_engine_v2
 {
     if (timer % 8 == 0)
     {
@@ -1102,19 +1064,7 @@ static void QueueAnimTiles_Slateport_Balloons(u16 timer)
     AppendTilesetAnimToBuffer(gTilesetAnims_Slateport_Balloons[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 224)), 0x80);
 }
 
-<<<<<<< HEAD
-static void fortree_AppendAnim(u16 timer)
-{
-    u16 idx;
-
-    idx = timer % 4;
-    AppendTilesetAnimToBuffer(gTilesetAnims_Fortree0[idx], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 240)), 0x80);
-}
-
-static void sub_80A15C0(u16 timer)
-=======
 static void TilesetAnim_MauvilleGym(u16 timer)
->>>>>>> upstream/battle_engine_v2
 {
     if (timer % 2 == 0)
         QueueAnimTiles_MauvilleGym_ElectricGates(timer >> 1);
