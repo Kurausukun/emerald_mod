@@ -14,7 +14,7 @@
 #define MON_DATA_OT_NAME            7
 #define MON_DATA_MARKINGS           8
 #define MON_DATA_CHECKSUM           9
-#define MON_DATA_10                10
+#define MON_DATA_ENCRYPT_SEPARATOR 10
 #define MON_DATA_SPECIES           11
 #define MON_DATA_HELD_ITEM         12
 #define MON_DATA_MOVE1             13
@@ -336,11 +336,9 @@ struct BaseStats
             u8 noFlip : 1;
 };
 
-// Argument and effect field are temporarily switched till functions referencing gBattleMoves are decompiled.
-
 struct BattleMove
 {
-    u8 argument;
+    u16 effect;
     u8 power;
     u8 type;
     u8 accuracy;
@@ -350,7 +348,7 @@ struct BattleMove
     s8 priority;
     u32 flags;
     u8 split;
-    u16 effect;
+    u8 argument;
 };
 
 struct SpindaSpot
@@ -389,6 +387,7 @@ enum
     BODY_COLOR_PINK
 };
 
+#define EVO_MEGA_EVOLUTION 0xffff // Not an actual evolution, used to temporarily mega evolve in battle.
 #define EVO_FRIENDSHIP       0x0001 // Pokémon levels up with friendship ≥ 220
 #define EVO_FRIENDSHIP_DAY   0x0002 // Pokémon levels up during the day with friendship ≥ 220
 #define EVO_FRIENDSHIP_NIGHT 0x0003 // Pokémon levels up at night with friendship ≥ 220
@@ -404,8 +403,6 @@ enum
 #define EVO_LEVEL_NINJASK    0x000d // Pokémon reaches the specified level (special value for Ninjask)
 #define EVO_LEVEL_SHEDINJA   0x000e // Pokémon reaches the specified level (special value for Shedinja)
 #define EVO_BEAUTY           0x000f // Pokémon levels up with beauty ≥ specified value
-
-#define EVO_MEGA_EVOLUTION   0xffff // Not an actual evolution, used to temporarily mega evolve in battle.
 
 struct Evolution
 {
@@ -430,9 +427,9 @@ extern const u8 *const gItemEffectTable[];
 extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
 extern const u32 gExperienceTables[][MAX_LEVEL + 1];
 extern const struct LevelUpMove *const gLevelUpLearnsets[];
-extern const u8 gUnknown_08329D22[];
-extern const u8 gUnknown_08329D26[];
-extern const u8 gUnknown_08329D2A[];
+extern const u8 gPPUpGetMask[];
+extern const u8 gPPUpSetMask[];
+extern const u8 gPPUpAddMask[];
 extern const u8 gStatStageRatios[][2];
 extern const u16 gUnknown_08329D54[];
 extern const struct SpriteTemplate gUnknown_08329D98[];
@@ -485,7 +482,7 @@ u8 GetDefaultMoveTarget(u8 battlerId);
 u8 GetMonGender(struct Pokemon *mon);
 u8 GetBoxMonGender(struct BoxPokemon *boxMon);
 u8 GetGenderFromSpeciesAndPersonality(u16 species, u32 personality);
-void SetMultiuseSpriteTemplateToPokemon(u16 species, u8 battlerPosition);
+void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition);
 void SetMultiuseSpriteTemplateToTrainerBack(u16 trainerSpriteId, u8 battlerPosition);
 void SetMultiuseSpriteTemplateToTrainerFront(u16 arg0, u8 battlerPosition);
 
@@ -507,7 +504,7 @@ u8 GetMonsStateToDoubles(void);
 u8 GetMonsStateToDoubles_2(void);
 u8 GetAbilityBySpecies(u16 species, bool8 altAbility);
 u8 GetMonAbility(struct Pokemon *mon);
-void CreateSecretBaseEnemyParty(struct SecretBaseRecord *secretBaseRecord);
+void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord);
 u8 GetSecretBaseTrainerPicIndex(void);
 u8 GetSecretBaseTrainerClass(void);
 bool8 IsPlayerPartyAndPokemonStorageFull(void);
@@ -582,7 +579,7 @@ const u8 *GetTrainerPartnerName(void);
 void BattleAnimateFrontSprite(struct Sprite* sprite, u16 species, bool8 noCry, u8 arg3);
 void DoMonFrontSpriteAnimation(struct Sprite* sprite, u16 species, bool8 noCry, u8 arg3);
 void PokemonSummaryDoMonAnimation(struct Sprite* sprite, u16 species, bool8 oneFrame);
-void sub_806EE98(void);
+void StopPokemonAnimationDelayTask(void);
 void BattleAnimateBackSprite(struct Sprite* sprite, u16 species);
 u8 sub_806EF08(u8 arg0);
 u8 sub_806EF84(u8 arg0, u8 arg1);

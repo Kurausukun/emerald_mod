@@ -256,6 +256,30 @@ const struct SpriteTemplate gEmberFlareSpriteTemplate =
     .callback = AnimEmberFlare,
 };
 
+const union AnimCmd gIncinerateAnim1[] =
+{
+    ANIMCMD_FRAME(0, 2),
+    ANIMCMD_FRAME(16, 4),
+    ANIMCMD_FRAME(32, 2),
+    ANIMCMD_JUMP(0),
+};
+
+const union AnimCmd *const gIncinerateAnims[] =
+{
+    gIncinerateAnim1,
+};
+
+const struct SpriteTemplate gIncinerateSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_SMALL_EMBER,
+    .paletteTag = ANIM_TAG_SMALL_EMBER,
+    .oam = &gUnknown_08524914,
+    .anims = gIncinerateAnims,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = TranslateAnimSpriteToTargetMonLocation,
+};
+
 const struct SpriteTemplate gUnknown_08595504 =
 {
     .tileTag = ANIM_TAG_SMALL_EMBER,
@@ -479,7 +503,7 @@ static void sub_8108F08(struct Sprite *sprite)
     sprite->data[1] = gBattleAnimArgs[2];
     sprite->data[2] = gBattleAnimArgs[3];
 
-    sprite->callback = AnimTranslateLinearSimple;
+    sprite->callback = TranslateSpriteLinearFixedPoint;
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
 }
 
@@ -653,7 +677,7 @@ void AnimFireRing(struct Sprite *sprite)
 }
 
 static void AnimFireRingStep1(struct Sprite *sprite)
-{   
+{
     UpdateFireRingCircleOffset(sprite);
 
     if (++sprite->data[0] == 0x12)
@@ -713,7 +737,7 @@ static void UpdateFireRingCircleOffset(struct Sprite *sprite)
 // arg 1: initial y pixel offset
 // arg 2: duration
 // arg 3: x delta
-// arg 4: y delta 
+// arg 4: y delta
 // AnimFireCross(struct Sprite *sprite)
 static void AnimFireCross(struct Sprite *sprite)
 {
@@ -726,7 +750,7 @@ static void AnimFireCross(struct Sprite *sprite)
 
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
 
-    sprite->callback = TranslateSpriteOverDuration;
+    sprite->callback = TranslateSpriteLinear;
 }
 
 static void sub_81093A4(struct Sprite *sprite)
@@ -1093,7 +1117,7 @@ static void sub_8109AFC(struct Sprite *sprite)
     case 2:
         sprite->pos2.x = Sin(sprite->data[2], sprite->data[4]);
         sprite->data[2] = (sprite->data[2] + 4) & 0xFF;
-        
+
         if (++sprite->data[3] == 31)
         {
             sprite->pos1.x += sprite->pos2.x;
@@ -1280,9 +1304,9 @@ static void sub_8109E2C(u8 taskId)
 // arg 1: color code
 void AnimTask_BlendBackground(u8 taskId)
 {
-    struct UnknownAnimStruct2 unk;
-    sub_80A6B30(&unk);
-    BlendPalette(unk.unk8 << 4, 16, gBattleAnimArgs[0], gBattleAnimArgs[1]); // u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor
+    struct BattleAnimBgData animBg;
+    sub_80A6B30(&animBg);
+    BlendPalette(animBg.paletteId * 16, 16, gBattleAnimArgs[0], gBattleAnimArgs[1]); // u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor
     DestroyAnimVisualTask(taskId);
 }
 

@@ -9,7 +9,7 @@
 #include "battle_tower.h"
 #include "battle_tv.h"
 #include "bg.h"
-#include "data2.h"
+#include "data.h"
 #include "item_use.h"
 #include "link.h"
 #include "main.h"
@@ -30,11 +30,6 @@
 #include "constants/trainers.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_BGM;
-
-extern const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[];
-
-extern void sub_8172EF0(u8 battlerId, struct Pokemon *mon);
-extern u16 sub_8068B48(void);
 
 // this file's functions
 static void RecordedOpponentHandleGetMonData(void);
@@ -94,7 +89,7 @@ static void RecordedOpponentHandleLinkStandbyMsg(void);
 static void RecordedOpponentHandleResetActionMoveSelection(void);
 static void RecordedOpponentHandleCmd55(void);
 static void RecordedOpponentHandleBattleDebug(void);
-static void nullsub_119(void);
+static void RecordedOpponentCmdEnd(void);
 
 static void RecordedOpponentBufferRunCommand(void);
 static void RecordedOpponentBufferExecCompleted(void);
@@ -167,7 +162,7 @@ static void (*const sRecordedOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(void
     RecordedOpponentHandleResetActionMoveSelection,
     RecordedOpponentHandleCmd55,
     RecordedOpponentHandleBattleDebug,
-    nullsub_119
+    RecordedOpponentCmdEnd
 };
 
 static void nullsub_70(void)
@@ -1269,7 +1264,7 @@ static void RecordedOpponentHandleTrainerSlide(void)
 
 static void RecordedOpponentHandleTrainerSlideBack(void)
 {
-    oamt_add_pos2_onto_pos1(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
+    SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 35;
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[2] = 280;
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[4] = gSprites[gBattlerSpriteIds[gActiveBattler]].pos1.y;
@@ -1642,7 +1637,7 @@ static void RecordedOpponentHandleIntroTrainerBallThrow(void)
     u8 paletteNum;
     u8 taskId;
 
-    oamt_add_pos2_onto_pos1(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
+    SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
 
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[0] = 35;
     gSprites[gBattlerSpriteIds[gActiveBattler]].data[2] = 280;
@@ -1798,6 +1793,6 @@ static void RecordedOpponentHandleBattleDebug(void)
     RecordedOpponentBufferExecCompleted();
 }
 
-static void nullsub_119(void)
+static void RecordedOpponentCmdEnd(void)
 {
 }

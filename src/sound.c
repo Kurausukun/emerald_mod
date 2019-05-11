@@ -287,7 +287,7 @@ void FadeInNewBGM(u16 songNum, u8 speed)
 {
     if (gDisableMusic)
         songNum = 0;
-    if (songNum == 0xFFFF)
+    if (songNum == MUS_NONE)
         songNum = 0;
 	if (WasBarRedLast)
     {
@@ -623,7 +623,7 @@ void PlayBGM(u16 songNum)
 {
     if (gDisableMusic)
         songNum = 0;
-    if (songNum == 0xFFFF)
+    if (songNum == MUS_NONE)
         songNum = 0;
     m4aSongNumStart(songNum);
 }
