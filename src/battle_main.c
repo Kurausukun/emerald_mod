@@ -71,6 +71,7 @@ extern const u8 *const gBattlescriptsForBallThrow[];
 extern const u8 *const gBattlescriptsForRunningByItem[];
 extern const u8 *const gBattlescriptsForUsingItem[];
 extern const u8 *const gBattlescriptsForSafariActions[];
+extern u8 WasBarRedLast;
 
 // this file's functions
 static void CB2_InitBattleInternal(void);
@@ -4870,6 +4871,7 @@ static void HandleEndTurn_FinishBattle(void)
         sub_8186444();
         BeginFastPaletteFade(3);
         FadeOutMapMusic(5);
+		WasBarRedLast = 0;
         for (i = 0; i < PARTY_SIZE; i++)
             UndoMegaEvolution(i);
         gBattleMainFunc = FreeResetData_ReturnToOvOrDoEvolutions;
