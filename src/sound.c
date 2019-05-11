@@ -65,6 +65,8 @@ static const struct Fanfare sFanfares[] = {
 
 #define CRY_VOLUME  120 // was 125 in R/S
 
+WasBarRedLast = 0;
+
 void SwitchToLowHPMusic(void)
 {
     m4aMPlayStop(&gMPlayInfo_BGM);
@@ -310,7 +312,10 @@ void FadeInNewBGM(u16 songNum, u8 speed)
 
 void FadeOutBGMTemporarily(u8 speed)
 {
-    m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, speed);
+	if (WasBarRedLast)
+        m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM_HINSI, speed);
+    else
+        m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, speed);
 }
 
 bool8 IsBGMPausedOrStopped(void)
@@ -324,7 +329,10 @@ bool8 IsBGMPausedOrStopped(void)
 
 void FadeInBGM(u8 speed)
 {
-    m4aMPlayFadeIn(&gMPlayInfo_BGM, speed);
+	if (WasBarRedLast)
+        m4aMPlayFadeIn(&gMPlayInfo_BGM_HINSI, speed);
+    else
+		m4aMPlayFadeIn(&gMPlayInfo_BGM, speed);
 }
 
 void FadeOutBGM(u8 speed)
@@ -373,7 +381,7 @@ void PlayCry3(u16 species, s8 pan, u8 mode)
 		if (WasBarRedLast)
             m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
         else
-             m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
+            m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
         PlayCryInternal(species, pan, CRY_VOLUME, 10, mode);
         gPokemonCryBGMDuckingCounter = 2;
         RestoreBGMVolumeAfterPokemonCry();
@@ -410,7 +418,7 @@ void PlayCry6(u16 species, s8 pan, u8 mode) // not present in R/S
         if (WasBarRedLast)
             m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
         else
-             m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
+            m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
         PlayCryInternal(species, pan, CRY_VOLUME, 10, mode);
         gPokemonCryBGMDuckingCounter = 2;
     }
@@ -421,7 +429,7 @@ void PlayCry5(u16 species, u8 mode)
 	if (WasBarRedLast)
         m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
     else
-         m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
     PlayCryInternal(species, 0, CRY_VOLUME, 10, mode);
     gPokemonCryBGMDuckingCounter = 2;
     RestoreBGMVolumeAfterPokemonCry();
