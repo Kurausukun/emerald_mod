@@ -318,9 +318,9 @@ void FadeOutBGMTemporarily(u8 speed)
 
 bool8 IsBGMPausedOrStopped(void)
 {
-    if ((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE) && (gMPlayInfo_BGM_HINSI.status & MUSICPLAYER_STATUS_PAUSE))
+    if (gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE)
         return TRUE;
-    if ((!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK)) && (!(gMPlayInfo_BGM_HINSI.status & MUSICPLAYER_STATUS_TRACK)))
+    if (!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK))
         return TRUE;
     return FALSE;
 }
@@ -347,7 +347,7 @@ void FadeOutBGM(u8 speed)
 
 bool8 IsBGMStopped(void)
 {
-    if ((!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK)) && (!(gMPlayInfo_BGM_HINSI.status & MUSICPLAYER_STATUS_TRACK)))
+    if (!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK))
         return TRUE;
     return FALSE;
 }
@@ -679,9 +679,9 @@ bool8 IsSEPlaying(void)
 
 bool8 IsBGMPlaying(void)
 {
-    if ((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE) && (gMPlayInfo_BGM_HINSI.status & MUSICPLAYER_STATUS_PAUSE))
+    if (gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE)
         return FALSE;
-    if ((!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK)) && (!(gMPlayInfo_BGM_HINSI.status & MUSICPLAYER_STATUS_TRACK)))
+    if (!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK))
         return FALSE;
     return TRUE;
 }
