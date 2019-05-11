@@ -119,4 +119,4 @@ gMPlayTrack_SE3: @ 3001A20
 	.include "*libc.a:syscalls.o"
 
 gMPlayTrack_BGM_HINSI:
-	.space 0x230
+	.space 0x1E0
