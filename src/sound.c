@@ -65,8 +65,6 @@ static const struct Fanfare sFanfares[] = {
 
 #define CRY_VOLUME  120 // was 125 in R/S
 
-WasBarRedLast = 0;
-
 void SwitchToLowHPMusic(void)
 {
     m4aMPlayStop(&gMPlayInfo_BGM);
@@ -204,7 +202,7 @@ bool8 IsNotWaitingForBGMStop(void)
 void PlayFanfareByFanfareNum(u8 fanfareNum)
 {
     u16 songNum;
-	if (WasBarRedLast)
+	if (WasBarRedLast == 1)
         m4aMPlayStop(&gMPlayInfo_BGM_HINSI);
     else
         m4aMPlayStop(&gMPlayInfo_BGM);
@@ -223,7 +221,7 @@ bool8 WaitFanfare(bool8 stop)
     else
     {
         if (!stop)
-            if (WasBarRedLast)
+            if (WasBarRedLast == 1)
                 m4aMPlayContinue(&gMPlayInfo_BGM_HINSI);
             else
                 m4aMPlayContinue(&gMPlayInfo_BGM);
@@ -271,7 +269,7 @@ static void Task_Fanfare(u8 taskId)
     }
     else
     {
-		if (WasBarRedLast)
+		if (WasBarRedLast == 1)
             m4aMPlayContinue(&gMPlayInfo_BGM_HINSI);
         else
 		    m4aMPlayContinue(&gMPlayInfo_BGM);
@@ -291,7 +289,7 @@ void FadeInNewBGM(u16 songNum, u8 speed)
         songNum = 0;
     if (songNum == MUS_NONE)
         songNum = 0;
-	if (WasBarRedLast)
+	if (WasBarRedLast == 1)
     {
         m4aSongNumStart(songNum);
         m4aMPlayImmInit(&gMPlayInfo_BGM_HINSI);
@@ -312,7 +310,7 @@ void FadeInNewBGM(u16 songNum, u8 speed)
 
 void FadeOutBGMTemporarily(u8 speed)
 {
-	if (WasBarRedLast)
+	if (WasBarRedLast == 1)
         m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM_HINSI, speed);
     else
         m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, speed);
@@ -356,7 +354,7 @@ bool8 IsBGMStopped(void)
 
 void PlayCry1(u16 species, s8 pan)
 {
-	if (WasBarRedLast)
+	if (WasBarRedLast == 1)
         m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
     else
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
@@ -378,7 +376,7 @@ void PlayCry3(u16 species, s8 pan, u8 mode)
     }
     else
     {
-		if (WasBarRedLast)
+		if (WasBarRedLast == 1)
             m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
         else
             m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
@@ -398,7 +396,7 @@ void PlayCry4(u16 species, s8 pan, u8 mode)
     {
         if (!(gBattleTypeFlags & BATTLE_TYPE_MULTI))
         {
-            if (WasBarRedLast)
+            if (WasBarRedLast == 1)
                  m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
             else
                  m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
@@ -415,7 +413,7 @@ void PlayCry6(u16 species, s8 pan, u8 mode) // not present in R/S
     }
     else
     {
-        if (WasBarRedLast)
+        if (WasBarRedLast == 1)
             m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
         else
             m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
@@ -426,7 +424,7 @@ void PlayCry6(u16 species, s8 pan, u8 mode) // not present in R/S
 
 void PlayCry5(u16 species, u8 mode)
 {
-	if (WasBarRedLast)
+	if (WasBarRedLast == 1)
         m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 85);
     else
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 85);
@@ -613,7 +611,7 @@ static void Task_DuckBGMForPokemonCry(u8 taskId)
 
     if (!IsPokemonCryPlaying(gMPlay_PokemonCry))
     {
-        if (WasBarRedLast)
+        if (WasBarRedLast == 1)
             m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 256);
         else
             m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 256);
