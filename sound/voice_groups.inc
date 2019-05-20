@@ -22007,13 +22007,13 @@ voicegroup192::
 
 	.align 2
 voicegroup193::
-	voice_directsound 60, 0, DirectSoundWaveData_86E5440, 255, 0, 255, 200  @ 8676AC0
-	voice_directsound 60, 0, DirectSoundWaveData_86E89E4, 255, 0, 255, 200  @ 8676ACC
-	voice_directsound 60, 0, DirectSoundWaveData_86EAD00, 255, 0, 255, 200  @ 8676AD8
+	voice_directsound 60, 0, DirectSoundWaveData_86E5440, 255, 0, 255, 225  @ 8676AC0
+	voice_directsound 60, 0, DirectSoundWaveData_86E89E4, 255, 0, 255, 225  @ 8676ACC
+	voice_directsound 60, 0, DirectSoundWaveData_86EAD00, 255, 0, 255, 225  @ 8676AD8
 
 voicegroup194:: @ 8676AC0
-	voice_directsound 60, 0, DirectSoundWaveData_octavestrings, 255, 0, 255, 200  @ 8676AC0
-	voice_directsound 60, 0, DirectSoundWaveData_octavestrings2, 255, 0, 255, 200  @ 8676ACC
+	voice_directsound 60, 0, DirectSoundWaveData_octavestrings, 255, 0, 255, 210  @ 8676AC0
+	voice_directsound 60, 0, DirectSoundWaveData_octavestrings2, 255, 0, 255, 210  @ 8676ACC
 
 	.align 2
 voicegroup195::
@@ -22032,8 +22032,8 @@ voicegroup195::
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
-	voice_square_1_alt 0, 2, 0, 6, 0, 0
-	voice_square_2_alt 3, 0, 0, 15, 7
+	voice_square_2_alt 2, 0, 6, 0, 0
+	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_organchord, 255, 0, 255, 127
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
@@ -22052,7 +22052,7 @@ voicegroup195::
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
-	voice_directsound 60, 0, DirectSoundWaveData_86B6BA0, 255, 253, 0, 149
+	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
@@ -22098,4 +22098,4 @@ voicegroup195::
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
 	voice_square_1 0, 2, 0, 0, 15, 0
-	voice_programmable_wave_alt ProgrammableWaveData_organwave, 0, 7, 15, 0
+	voice_programmable_wave_alt ProgrammableWaveData_86B4880, 0, 7, 15, 2

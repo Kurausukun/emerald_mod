@@ -4870,7 +4870,10 @@ static void HandleEndTurn_FinishBattle(void)
 
         sub_8186444();
         BeginFastPaletteFade(3);
-        FadeOutMapMusic(5);
+		if (WasBarRedLast == 1)
+            FadeOutMapMusic(4);
+        else
+            FadeOutMapMusic(5);
 		WasBarRedLast = 0;
         for (i = 0; i < PARTY_SIZE; i++)
             UndoMegaEvolution(i);
