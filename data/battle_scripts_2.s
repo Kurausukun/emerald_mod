@@ -117,10 +117,6 @@ BattleScript_TrainerBallBlock::
 	waitmessage 0x40
 	finishaction
 
-BattleScript_NuzlockeEncounterUsed::
-	printstring STRINGID_NUZLOCKEENCOUNTERUSED
-	finishaction
-
 BattleScript_PlayerUsesItem::
 	setbyte sMOVEEND_STATE, 0xF
 	moveend 0x1, 0x0

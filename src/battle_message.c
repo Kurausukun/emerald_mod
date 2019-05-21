@@ -492,7 +492,6 @@ static const u8 sText_ItemAllowsOnlyYMove[] = _("{B_LAST_ITEM} allows the\nuse o
 static const u8 sText_PkmnHungOnWithX[] = _("{B_DEF_NAME_WITH_PREFIX} hung on\nusing its {B_LAST_ITEM}!");
 const u8 gText_EmptyString3[] = _("");
 static const u8 sText_YouThrowABallNowRight[] = _("You throw a BALL now, right?\nI… I'll do my best!");
-static const u8 sText_NuzlockeEncounterUsed[] = _("You have already used your encounter for this ROUTE!");
 
 // early declaration of strings
 static const u8 sText_PkmnIncapableOfPower[];
@@ -1006,7 +1005,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_PKMNSXINTENSIFIEDSUN - 12] = sText_PkmnsXIntensifiedSun,
     [STRINGID_PKMNMAKESGROUNDMISS - 12] = sText_PkmnMakesGroundMiss,
     [STRINGID_YOUTHROWABALLNOWRIGHT - 12] = sText_YouThrowABallNowRight,
-	[STRINGID_NUZLOCKEENCOUNTERUSED - 12] = sText_NuzlockeEncounterUsed,
     [STRINGID_PKMNSXTOOKATTACK - 12] = sText_PkmnsXTookAttack,
     [STRINGID_PKMNCHOSEXASDESTINY - 12] = sText_PkmnChoseXAsDestiny,
     [STRINGID_PKMNLOSTFOCUS - 12] = sText_PkmnLostFocus,

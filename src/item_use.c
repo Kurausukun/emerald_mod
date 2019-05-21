@@ -2,6 +2,7 @@
 #include "item_use.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_setup.h"
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "berry.h"
@@ -104,6 +105,8 @@ static const struct YesNoFuncTable gUnknown_085920E8 =
     .yesFunc = sub_80FE03C,
     .noFunc = bag_menu_inits_lists_menu,
 };
+
+static const u8 textCantThrowPokeBallNuzlocke[] = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
 
 // .text
 
@@ -928,6 +931,10 @@ void ItemUseInBattle_PokeBall(u8 taskId)
             DisplayItemMessage(taskId, 1, textCantThrowPokeBall, bag_menu_inits_lists_menu);
         else
             DisplayItemMessageInBattlePyramid(taskId, textCantThrowPokeBall, sub_81C6714);
+    }
+	else if (IsCaptureBlockedByNuzlocke == 1)
+    {
+        DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallNuzlocke);
     }
     else if (gBattlerInMenuId == GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)) // Attempting to throw a ball with the second pokemon.
     {

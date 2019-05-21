@@ -27,6 +27,7 @@ EWRAM_DATA u16 gSpecialVar_Unused_0x8014 = 0;
 EWRAM_DATA static u8 gSpecialFlags[16] = {0};
 
 extern u16 *const gSpecialVars[];
+extern u8 NuzlockeLUT[];
 
 void InitEventData(void)
 {
@@ -229,4 +230,36 @@ bool8 FlagGet(u16 id)
         return FALSE;
 
     return TRUE;
+}
+
+u8 NuzlockeFlagSet(u8 mapsec)
+{
+    u8 id = NuzlockeLUT[mapsec];
+    u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
+    if (ptr)
+        * ptr |= 1 << (id & 7);
+    return 0;
+}
+
+u8 NuzlockeFlagClear(u8 mapsec)
+{
+    u8 id = NuzlockeLUT[mapsec];
+    u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
+    if (ptr)
+        * ptr &= ~(1 << (id & 7));
+    return 0;
+}
+
+u8 NuzlockeFlagGet(u8 mapsec)
+{
+    u8 id = NuzlockeLUT[mapsec];
+	u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
+	
+	if (!ptr)
+        return 0;
+	
+    if (!(((*ptr) >> (id & 7)) & 1))
+        return 0;
+
+    return 1;
 }
