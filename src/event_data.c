@@ -253,11 +253,11 @@ u8 NuzlockeFlagClear(u8 mapsec)
 u8 NuzlockeFlagGet(u8 mapsec)
 {
     u8 id = NuzlockeLUT[mapsec];
-	u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
-	
-	if (!ptr)
+    u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
+
+    if (!ptr)
         return 0;
-	
+
     if (!(((*ptr) >> (id & 7)) & 1))
         return 0;
 
