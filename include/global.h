@@ -971,7 +971,7 @@ struct SaveBlock1
     /*0x3D5A*/ u8 filler3D5A[0xA];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    /*0x3D88*/ u8 NuzlockeEncounterFlags[8];
+    /*0x3D88*/ u8 NuzlockeEncounterFlags[9];
     // sizeof: 0x3D94
 };
 

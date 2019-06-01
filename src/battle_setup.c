@@ -387,7 +387,8 @@ const u8 NuzlockeLUT[] =
     [MAPSEC_SKY_PILLAR] = 0x3D,
     [MAPSEC_VICTORY_ROAD] = 0x3E,
     [MAPSEC_UNDERWATER_124] = 0x3F,
-    [MAPSEC_UNDERWATER_126] = 0x3F
+    [MAPSEC_UNDERWATER_126] = 0x3F,
+	[GLOBAL_NUZLOCKE_SWITCH] = 0x47
 };
 
 #define tState data[0]
@@ -436,10 +437,17 @@ void BattleSetup_StartWildBattle(void)
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
-        if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
-            IsCaptureBlockedByNuzlocke = 0;
+        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
+        {
+            if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
+                IsCaptureBlockedByNuzlocke = 0;
+            else
+                IsCaptureBlockedByNuzlocke = 1;
+        }
         else
-            IsCaptureBlockedByNuzlocke = 1;
+        {
+            IsCaptureBlockedByNuzlocke = 0;
+        }
         DoStandardWildBattle();
 }
 
