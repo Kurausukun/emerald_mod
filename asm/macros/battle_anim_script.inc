@@ -283,8 +283,3 @@
 	.macro jumpretfalse ptr:req
 	jumpreteq FALSE, \ptr
 	.endm
-	
-	.macro jumpifdoublebattle ptr:req
-	createvisualtask AnimTask_IsDoubleBattle, 0
-	jumprettrue \ptr
-	.endm

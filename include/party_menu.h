@@ -33,7 +33,7 @@ struct Struct203CEC8
     u8 unk8_0:4;
     u8 mode:2;
     u8 unk8_2:2;
-    s8 unk9;
+    s8 slotId;
     s8 unkA;
     u8 unkB;
     u16 unkC;
@@ -60,14 +60,12 @@ void sub_81B1370(u8 taskId);
 u8* GetMonNickname(struct Pokemon *mon, u8 *dest);
 u8 sub_81B1B5C(const u8* str, u8 b);
 bool8 sub_81B1BD4(void);
-void sub_81B1C1C(u8 taskId);
 void sub_81B1F18(u8 taskId, u8 slot, s8 c, s16 HPDifference, TaskFunc func);
 u8 pokemon_ailments_get_primary(u32 status);
 u8 GetMonAilment(struct Pokemon *mon);
 void display_pokemon_menu_message(u32 stringID);
 void sub_81B47E0(u8 taskId);
 bool8 FieldCallback_PrepareFadeInFromMenu(void);
-void sub_81B57DC(void);
 void sub_81B58A8(void);
 void LoadHeldItemIcons(void);
 void sub_81B5D4C(u8 *a, u8 *b, u8 c);
@@ -113,7 +111,5 @@ void sub_81B9770(void);
 void sub_81B9718(void);
 void sub_81B96D0(void);
 void sub_81B968C(void);
-bool8 SetUpFieldMove_Fly(void);
-void sub_81B12C0(u8 taskId);
 
 #endif // GUARD_PARTY_MENU_H

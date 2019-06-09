@@ -98,7 +98,6 @@ void AgbMain()
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
-    SeedRngWithRtc();
     ClearDma3Requests();
     ResetBgs();
     SetDefaultFontsPointer();
@@ -207,13 +206,6 @@ void EnableVCountIntrAtLine150(void)
     u16 gpuReg = (GetGpuReg(REG_OFFSET_DISPSTAT) & 0xFF) | (150 << 8);
     SetGpuReg(REG_OFFSET_DISPSTAT, gpuReg | DISPSTAT_VCOUNT_INTR);
     EnableInterrupts(INTR_FLAG_VCOUNT);
-}
-
-static void SeedRngWithRtc(void)
-{
-    u32 seed = RtcGetMinuteCount();
-    seed = (seed >> 16) ^ (seed & 0xFFFF);
-    SeedRng(seed);
 }
 
 void InitKeys(void)
@@ -391,7 +383,9 @@ static void IntrDummy(void)
 static void WaitForVBlank(void)
 {
     gMain.intrCheck &= ~INTR_FLAG_VBLANK;
-	VBlankIntrWait();
+
+    while (!(gMain.intrCheck & INTR_FLAG_VBLANK))
+        ;
 }
 
 void SetTrainerHillVBlankCounter(u32 *counter)

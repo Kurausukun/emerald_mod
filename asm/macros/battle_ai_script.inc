@@ -245,10 +245,10 @@
 	.4byte \param1
 	.endm
 
-	.macro if_cant_use_belch battler:req, ptr:req
+	.macro if_user_doesnt_go param0:req, param1:req
 	.byte 0x29
-	.byte \battler
-	.4byte \ptr
+	.byte \param0
+	.4byte \param1
 	.endm
 
 	.macro nullsub_2A
@@ -315,13 +315,13 @@
 
 	.macro if_effect param0:req, param1:req
 	.byte 0x37
-	.2byte \param0
+	.byte \param0
 	.4byte \param1
 	.endm
 
 	.macro if_not_effect param0:req, param1:req
 	.byte 0x38
-	.2byte \param0
+	.byte \param0
 	.4byte \param1
 	.endm
 
@@ -467,32 +467,24 @@
 	.byte \battler
 	.endm
 
-	.macro if_move_flag flag jumpptr
+	.macro nullsub_52
 	.byte 0x52
-	.4byte \flag
-	.4byte \jumpptr
 	.endm
 
-	.macro if_field_status flag jumpptr
+	.macro nullsub_53
 	.byte 0x53
-	.4byte \flag
-	.4byte \jumpptr
 	.endm
 
-	.macro get_move_accuracy
+	.macro nullsub_54
 	.byte 0x54
 	.endm
 
-	.macro call_if_eq value, ptr
+	.macro nullsub_55
 	.byte 0x55
-	.2byte \value
-	.4byte \ptr
 	.endm
 
-	.macro call_if_move_flag flag ptr
-	.byte 0x52
-	.4byte \flag
-	.4byte \ptr
+	.macro nullsub_56
+	.byte 0x56
 	.endm
 
 	.macro nullsub_57
@@ -559,88 +551,7 @@
 	.4byte \param2
 	.endm
 	
-	.macro get_ally_chosen_move
-	.byte 0x63
-	.endm
-	
-	.macro if_has_no_attacking_moves battler:req, param1:req
-	.byte 0x64
-	.byte \battler
-	.4byte \param1
-	.endm
-	
-	.macro get_hazards_count battler:req, effect:req
-	.byte 0x65
-	.byte \battler
-	.2byte \effect
-	.endm
-	
-	.macro if_doesnt_hold_berry battler:req, ptr:req
-	.byte 0x66
-	.byte \battler
-	.4byte \ptr
-	.endm
-	
-	.macro if_share_type battler1:req, battler2:req, ptr:req
-	.byte 0x67
-	.byte \battler1
-	.byte \battler2
-	.4byte \ptr
-	.endm
-	
-	.macro if_cant_use_last_resort battler:req, ptr:req
-	.byte 0x68
-	.byte \battler
-	.4byte \ptr
-	.endm
-	
-	.macro if_has_move_with_split battler:req, split:req, ptr:req
-	.byte 0x69
-	.byte \battler
-	.byte \split
-	.4byte \ptr
-	.endm
-	
-	.macro if_has_no_move_with_split battler:req, split:req, ptr:req
-	.byte 0x6A
-	.byte \battler
-	.byte \split
-	.4byte \ptr
-	.endm
-	
-	.macro if_physical_moves_unusable attacker:req, target:req, ptr:req
-	.byte 0x6B
-	.byte \attacker
-	.byte \target
-	.4byte \ptr
-	.endm
-	
-	.macro if_ai_can_go_down ptr:req
-	.byte 0x6C
-	.4byte \ptr
-	.endm
-	
 @ useful script macros
-	.macro if_has_physical_move battler:req, ptr:req
-	if_has_move_with_split \battler, SPLIT_PHYSICAL, \ptr
-	.endm
-	
-	.macro if_has_no_physical_move battler:req, ptr:req
-	if_has_no_move_with_split \battler, SPLIT_PHYSICAL, \ptr
-	.endm
-	
-	.macro if_has_special_move battler:req, ptr:req
-	if_has_move_with_split \battler, SPLIT_SPECIAL, \ptr
-	.endm
-	
-	.macro if_has_no_special_move battler:req, ptr:req
-	if_has_no_move_with_split \battler, SPLIT_SPECIAL, \ptr
-	.endm
-
-	.macro if_holds_no_item battler, ptr:req
-	if_holds_item \battler, 0, \ptr
-	.endm
-
 	.macro get_curr_move_type
 	get_type AI_TYPE_MOVE
 	.endm
@@ -705,9 +616,4 @@
 	
 	.macro if_any_move_encored battler:req, ptr:req
 	if_any_move_disabled_or_encored \battler, 1, \ptr
-	.endm
-	
-	.macro call_if_always_hit ptr:req
-	get_move_accuracy
-	call_if_eq 0, \ptr
 	.endm

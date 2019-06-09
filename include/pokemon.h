@@ -2,7 +2,6 @@
 #define GUARD_POKEMON_H
 
 #include "constants/pokemon.h"
-#include "constants/species.h"
 #include "sprite.h"
 
 #define MON_DATA_PERSONALITY        0
@@ -51,7 +50,7 @@
 #define MON_DATA_SPATK_IV          43
 #define MON_DATA_SPDEF_IV          44
 #define MON_DATA_IS_EGG            45
-#define MON_DATA_ALT_ABILITY       46
+#define MON_DATA_ABILITY_NUM       46
 #define MON_DATA_TOUGH             47
 #define MON_DATA_SHEEN             48
 #define MON_DATA_OT_GENDER         49
@@ -183,7 +182,7 @@ struct PokemonSubstruct3
  /* 0x05 */ u32 spAttackIV:5;
  /* 0x06 */ u32 spDefenseIV:5;
  /* 0x07 */ u32 isEgg:1;
- /* 0x07 */ u32 altAbility:1;
+ /* 0x07 */ u32 abilityNum:1;
 
  /* 0x08 */ u32 coolRibbon:3;
  /* 0x08 */ u32 beautyRibbon:3;
@@ -282,12 +281,12 @@ struct BattlePokemon
     /*0x16*/ u32 spAttackIV:5;
     /*0x17*/ u32 spDefenseIV:5;
     /*0x17*/ u32 isEgg:1;
-    /*0x17*/ u32 altAbility:1;
+    /*0x17*/ u32 abilityNum:1;
     /*0x18*/ s8 statStages[NUM_BATTLE_STATS];
     /*0x20*/ u8 ability;
     /*0x21*/ u8 type1;
     /*0x22*/ u8 type2;
-    /*0x23*/ u8 type3;
+    /*0x23*/ u8 unknown;
     /*0x24*/ u8 pp[4];
     /*0x28*/ u16 hp;
     /*0x2A*/ u8 level;
@@ -296,7 +295,7 @@ struct BattlePokemon
     /*0x2E*/ u16 item;
     /*0x30*/ u8 nickname[POKEMON_NAME_LENGTH + 1];
     /*0x3B*/ u8 ppBonuses;
-    /*0x3C*/ u8 otName[8];
+    /*0x3C*/ u8 otName[PLAYER_NAME_LENGTH + 1];
     /*0x44*/ u32 experience;
     /*0x48*/ u32 personality;
     /*0x4C*/ u32 status1;
@@ -330,8 +329,7 @@ struct BaseStats
  /* 0x13 */ u8 growthRate;
  /* 0x14 */ u8 eggGroup1;
  /* 0x15 */ u8 eggGroup2;
- /* 0x16 */ u8 ability1;
- /* 0x17 */ u8 ability2;
+ /* 0x16 */ u8 abilities[2];
  /* 0x18 */ u8 safariZoneFleeRate;
  /* 0x19 */ u8 bodyColor : 7;
             u8 noFlip : 1;
@@ -339,7 +337,7 @@ struct BaseStats
 
 struct BattleMove
 {
-    u16 effect;
+    u8 effect;
     u8 power;
     u8 type;
     u8 accuracy;
@@ -347,10 +345,15 @@ struct BattleMove
     u8 secondaryEffectChance;
     u8 target;
     s8 priority;
-    u32 flags;
-    u8 split;
-    u8 argument;
+    u8 flags;
 };
+
+#define FLAG_MAKES_CONTACT          0x1
+#define FLAG_PROTECT_AFFECTED       0x2
+#define FLAG_MAGICCOAT_AFFECTED     0x4
+#define FLAG_SNATCH_AFFECTED        0x8
+#define FLAG_MIRROR_MOVE_AFFECTED   0x10
+#define FLAG_KINGSROCK_AFFECTED     0x20
 
 struct SpindaSpot
 {
@@ -358,10 +361,10 @@ struct SpindaSpot
     u16 image[16];
 };
 
-struct LevelUpMove
+struct __attribute__((packed)) LevelUpMove
 {
-    u16 move;
-    u16 level;
+    u16 move:9;
+    u16 level:7;
 };
 
 enum
@@ -388,7 +391,6 @@ enum
     BODY_COLOR_PINK
 };
 
-#define EVO_MEGA_EVOLUTION 0xffff // Not an actual evolution, used to temporarily mega evolve in battle.
 #define EVO_FRIENDSHIP       0x0001 // Pokémon levels up with friendship ≥ 220
 #define EVO_FRIENDSHIP_DAY   0x0002 // Pokémon levels up during the day with friendship ≥ 220
 #define EVO_FRIENDSHIP_NIGHT 0x0003 // Pokémon levels up at night with friendship ≥ 220
@@ -413,7 +415,6 @@ struct Evolution
 };
 
 #define EVOS_PER_MON 5
-#define EVOS_PER_LINE 6
 
 extern u8 gPlayerPartyCount;
 extern struct Pokemon gPlayerParty[PARTY_SIZE];
@@ -428,15 +429,14 @@ extern const struct BaseStats gBaseStats[];
 extern const u8 *const gItemEffectTable[];
 extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
 extern const u32 gExperienceTables[][MAX_LEVEL + 1];
-extern const struct LevelUpMove *const gLevelUpLearnsets[];
+extern const u16 *const gLevelUpLearnsets[];
 extern const u8 gPPUpGetMask[];
 extern const u8 gPPUpSetMask[];
 extern const u8 gPPUpAddMask[];
 extern const u8 gStatStageRatios[][2];
-extern const u16 gUnknown_08329D54[];
+extern const u16 gLinkPlayerFacilityClasses[];
 extern const struct SpriteTemplate gUnknown_08329D98[];
 extern const s8 gNatureStatTable[][5];
-extern const u16 gEvolutionLines[NUM_SPECIES][EVOS_PER_LINE];
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
@@ -475,6 +475,7 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon);
 u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
 void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
+s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *defender, u32 move, u16 sideStatus, u16 powerOverride, u8 typeOverride, u8 bankAtk, u8 bankDef);
 
 u8 CountAliveMonsInBattle(u8 caseId);
 #define BATTLE_ALIVE_EXCEPT_ACTIVE  0
@@ -505,7 +506,7 @@ u8 CalculatePlayerPartyCount(void);
 u8 CalculateEnemyPartyCount(void);
 u8 GetMonsStateToDoubles(void);
 u8 GetMonsStateToDoubles_2(void);
-u8 GetAbilityBySpecies(u16 species, bool8 altAbility);
+u8 GetAbilityBySpecies(u16 species, bool8 abilityNum);
 u8 GetMonAbility(struct Pokemon *mon);
 void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord);
 u8 GetSecretBaseTrainerPicIndex(void);
@@ -516,7 +517,6 @@ void GetSpeciesName(u8 *name, u16 species);
 u8 CalculatePPWithBonus(u16 move, u8 ppBonuses, u8 moveIndex);
 void RemoveMonPPBonus(struct Pokemon *mon, u8 moveIndex);
 void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex);
-void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst);
 void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex);
 bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex);
 bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex, u8 e);
@@ -597,7 +597,5 @@ bool8 sub_806F104(void);
 struct Unknown_806F160_Struct *sub_806F2AC(u8 id, u8 arg1);
 void sub_806F47C(u8 id);
 u8 *sub_806F4F8(u8 id, u8 arg1);
-void DeletePartyMon(u8 position);
-void DeleteFaintedPartyPokemon(void);
 
 #endif // GUARD_POKEMON_H

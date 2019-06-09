@@ -4,7 +4,6 @@
 #include "battle_anim.h"
 #include "battle_controllers.h"
 #include "battle_message.h"
-#include "battle_setup.h"
 #include "cable_club.h"
 #include "link.h"
 #include "party_menu.h"
@@ -60,9 +59,7 @@ void SetUpBattleVarsAndBirchZigzagoon(void)
     gBattleControllerExecFlags = 0;
     ClearBattleAnimationVars();
     ClearBattleMonForms();
-    BattleAI_SetupItems();
-	BattleAI_SetupFlags();
-	BattleAI_SetupAIData(0xF);
+    BattleAI_HandleItemUseBeforeAISetup(0xF);
 
     if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
     {
@@ -154,16 +151,8 @@ static void InitSinglePlayerBtlControllers(void)
 
         gBattlerPartyIndexes[0] = 0;
         gBattlerPartyIndexes[1] = 0;
-        if (BATTLE_TWO_VS_ONE_OPPONENT)
-        {
-            gBattlerPartyIndexes[2] = 3;
-            gBattlerPartyIndexes[3] = 1;
-        }
-        else
-        {
-            gBattlerPartyIndexes[2] = 3;
-            gBattlerPartyIndexes[3] = 3;
-        }
+        gBattlerPartyIndexes[2] = 3;
+        gBattlerPartyIndexes[3] = 3;
     }
     else if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
     {
@@ -674,14 +663,14 @@ static void PrepareBufferDataTransfer(u8 bufferId, u8 *data, u16 size)
         case 0:
             for (i = 0; i < size; i++)
             {
-                gBattleResources->bufferA[gActiveBattler][i] = *data;
+                gBattleBufferA[gActiveBattler][i] = *data;
                 data++;
             }
             break;
         case 1:
             for (i = 0; i < size; i++)
             {
-                gBattleResources->bufferB[gActiveBattler][i] = *data;
+                gBattleBufferB[gActiveBattler][i] = *data;
                 data++;
             }
             break;
@@ -896,7 +885,7 @@ static void Task_HandleCopyReceivedLinkBuffersData(u8 taskId)
             if (gBattleControllerExecFlags & gBitTable[battlerId])
                 return;
 
-            memcpy(gBattleResources->bufferA[battlerId], &gLinkBattleRecvBuffer[gTasks[taskId].data[15] + LINK_BUFF_DATA], blockSize);
+            memcpy(gBattleBufferA[battlerId], &gLinkBattleRecvBuffer[gTasks[taskId].data[15] + LINK_BUFF_DATA], blockSize);
             sub_803F850(battlerId);
 
             if (!(gBattleTypeFlags & BATTLE_TYPE_IS_MASTER))
@@ -908,7 +897,7 @@ static void Task_HandleCopyReceivedLinkBuffersData(u8 taskId)
             }
             break;
         case 1:
-            memcpy(gBattleResources->bufferB[battlerId], &gLinkBattleRecvBuffer[gTasks[taskId].data[15] + LINK_BUFF_DATA], blockSize);
+            memcpy(gBattleBufferB[battlerId], &gLinkBattleRecvBuffer[gTasks[taskId].data[15] + LINK_BUFF_DATA], blockSize);
             break;
         case 2:
             var = gLinkBattleRecvBuffer[gTasks[taskId].data[15] + LINK_BUFF_DATA];
@@ -1073,7 +1062,7 @@ void BtlController_EmitMoveAnimation(u8 bufferId, u16 move, u8 turnOfMove, u16 m
     sBattleBuffersTransferData[9] = (dmg & 0xFF000000) >> 24;
     sBattleBuffersTransferData[10] = friendship;
     sBattleBuffersTransferData[11] = multihit;
-    if (WEATHER_HAS_EFFECT)
+    if (WEATHER_HAS_EFFECT2)
     {
         sBattleBuffersTransferData[12] = gBattleWeather;
         sBattleBuffersTransferData[13] = (gBattleWeather & 0xFF00) >> 8;
@@ -1529,10 +1518,4 @@ void BtlController_EmitCmd55(u8 bufferId, u8 battleOutcome)
     sBattleBuffersTransferData[3] = gSaveBlock2Ptr->frontier.field_CA9_b;
     sBattleBuffersTransferData[5] = sBattleBuffersTransferData[4] = sub_81850DC(&sBattleBuffersTransferData[6]);
     PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, sBattleBuffersTransferData[4] + 6);
-}
-
-void BtlController_EmitDebugMenu(u8 bufferId)
-{
-    sBattleBuffersTransferData[0] = CONTROLLER_DEBUGMENU;
-    PrepareBufferDataTransfer(bufferId, sBattleBuffersTransferData, 1);
 }

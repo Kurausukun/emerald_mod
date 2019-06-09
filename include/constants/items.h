@@ -462,10 +462,7 @@
 #define ITEM_MAGMA_EMBLEM 375
 #define ITEM_OLD_SEA_MAP 376
 
-#define ITEM_FLASH 377
-#define ITEM_FLY 378
-
-#define ITEMS_COUNT 379
+#define ITEMS_COUNT 377
 #define ITEM_FIELD_ARROW ITEMS_COUNT
 
 #define FIRST_BERRY_INDEX ITEM_CHERI_BERRY
@@ -477,7 +474,5 @@
 
 // Check if the item is one that can be used on a Pokemon.
 #define ITEM_HAS_EFFECT(item) ((item) >= ITEM_POTION && (item) <= ITEM_0B2)
-
-#define ITEM_GRISEOUS_ORB 0
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

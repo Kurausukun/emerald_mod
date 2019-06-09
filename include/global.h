@@ -42,7 +42,6 @@
 
 // Converts a number to Q4.12 fixed-point format
 #define Q_4_12(n)  ((s16)((n) * 4096))
-#define UQ_4_12(n)  ((u16)((n) * 4096))
 
 // Converts a number to Q24.8 fixed-point format
 #define Q_24_8(n)  ((s32)((n) * 256))
@@ -52,14 +51,9 @@
 
 // Converts a Q4.12 fixed-point format number to a regular integer
 #define Q_4_12_TO_INT(n)  ((int)((n) / 4096))
-#define UQ_4_12_TO_INT(n)  ((int)((n) / 4096))
 
 // Converts a Q24.8 fixed-point format number to a regular integer
 #define Q_24_8_TO_INT(n) ((int)((n) >> 8))
-
-// Rounding value for Q4.12 fixed-point format
-#define Q_4_12_ROUND ((1) << (12 - 1))
-#define UQ_4_12_ROUND ((1) << (12 - 1))
 
 #define PARTY_SIZE 6
 
@@ -91,6 +85,11 @@
 #define T2_READ_16(ptr) ((ptr)[0] + ((ptr)[1] << 8))
 #define T2_READ_32(ptr) ((ptr)[0] + ((ptr)[1] << 8) + ((ptr)[2] << 16) + ((ptr)[3] << 24))
 #define T2_READ_PTR(ptr) (void*) T2_READ_32(ptr)
+
+// Macros for checking the joypad
+#define TEST_BUTTON(field, button) ({(field) & (button);})
+#define JOY_NEW(button) TEST_BUTTON(gMain.newKeys,  button)
+#define JOY_HELD(button)  TEST_BUTTON(gMain.heldKeys, button)
 
 #define S16TOPOSFLOAT(val)   \
 ({                           \
@@ -241,7 +240,7 @@ struct BattleTowerPokemon
     u32 spAttackIV:5;
     u32 spDefenseIV:5;
     u32 gap:1;
-    u32 altAbility:1;
+    u32 abilityNum:1;
     u32 personality;
     u8 nickname[POKEMON_NAME_LENGTH + 1];
     u8 friendship;
@@ -288,7 +287,7 @@ struct RentalMon
     u16 monId;
     u32 personality;
     u8 ivs;
-    u8 abilityBit;
+    u8 abilityNum;
 };
 
 struct BattleDomeTrainer
@@ -972,8 +971,7 @@ struct SaveBlock1
     /*0x3D5A*/ u8 filler3D5A[0xA];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    /*0x3D88*/ u8 NuzlockeEncounterFlags[9];
-    // sizeof: 0x3D94
+    // sizeof: 0x3D88
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
@@ -994,73 +992,5 @@ struct TradeRoomPlayer
     struct MapPosition pos;
     u16 field_C;
 };
-
-/*typedef struct NuzlockeEncounterFlags_s
-{
-    u8 Route101Flag:1;
-    u8 Route102Flag:1;
-    u8 Route103Flag:1;
-    u8 Route104Flag:1;
-    u8 Route105Flag:1;
-    u8 Route106Flag:1;
-    u8 Route107Flag:1;
-    u8 Route108Flag:1;
-    u8 Route109Flag:1;
-    u8 Route110Flag:1;
-    u8 Route111Flag:1;
-    u8 Route112Flag:1;
-    u8 Route113Flag:1;
-    u8 Route114Flag:1;
-    u8 Route115Flag:1;
-    u8 Route116Flag:1;
-    u8 Route117Flag:1;
-    u8 Route118Flag:1;
-    u8 Route119Flag:1;
-    u8 Route120Flag:1;
-    u8 Route121Flag:1;
-    u8 Route122Flag:1;
-    u8 Route123Flag:1;
-    u8 Route124Flag:1;
-    u8 Route125Flag:1;
-    u8 Route126Flag:1;
-    u8 Route127Flag:1;
-    u8 Route128Flag:1;
-    u8 Route129Flag:1;
-    u8 Route130Flag:1;
-    u8 Route131Flag:1;
-    u8 Route132Flag:1;
-    u8 Route133Flag:1;
-    u8 Route134Flag:1;
-    u8 PetalburgCityFlag:1;
-    u8 DewfordTownFlag:1;
-    u8 SlateportCityFlag:1;
-    u8 LilycoveCityFlag:1;
-    u8 MossdeepCityFlag:1;
-    u8 PacifidlogTownFlag:1;
-    u8 SootopolisCityFlag:1;
-    u8 EverGrandeCityFlag:1;
-    u8 PetalburgWoodsFlag:1;
-    u8 RusturfTunnelFlag:1;
-    u8 GraniteCaveFlag:1;
-    u8 FieryPathFlag:1;
-    u8 MeteorFallsFlag:1;
-    u8 JaggedPassFlag:1;
-    u8 MirageTowerFlag:1;
-    u8 AbandonedShipFlag:1;
-    u8 NewMauvilleFlag:1;
-    u8 SafariZoneArea1Flag:1;
-    u8 SafariZoneArea2Flag:1;
-    u8 SafariZoneArea3Flag:1;
-    u8 SafariZoneArea4Flag:1;
-    u8 MtPyreFlag:1;
-    u8 ShoalCaveFlag:1;
-    u8 AquaHideoutFlag:1;
-    u8 MagmaHideoutFlag:1;
-    u8 SeafloorCavernFlag:1;
-    u8 CaveOfOriginFlag:1;
-    u8 SkyPillarFlag:1;
-    u8 VictoryRoadFlag:1;
-    u8 UnderwaterFlag:1;
-} NuzlockeEncounterFlags;*/
 
 #endif // GUARD_GLOBAL_H

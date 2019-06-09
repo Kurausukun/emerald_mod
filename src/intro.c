@@ -26,8 +26,6 @@
 #include "title_screen.h"
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
-#include "event_data.h"
-#include "constants/region_map_sections.h"
 
 /*
  * Intro animation sequence state machine
@@ -1076,8 +1074,6 @@ void CB2_InitCopyrightScreenAfterBootup(void)
             Sav2_ClearSetDefault();
         SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
         InitHeap(gHeap, HEAP_SIZE);
-        if ((FlagGet(FLAG_SYS_POKEDEX_GET)) && (!(FlagGet(FLAG_DEFEATED_METEOR_FALLS_STEVEN))))
-            NuzlockeFlagSet(GLOBAL_NUZLOCKE_SWITCH);
     }
 }
 

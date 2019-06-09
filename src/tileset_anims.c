@@ -149,20 +149,6 @@ const u16 *const gTilesetAnims_General_LandWaterEdge[] = {
     gTilesetAnims_General_LandWaterEdge_Frame3
 };
 
-const u16 gTilesetAnims_Fortree0_Frame0[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/0.4bpp");
-
-const u16 gTilesetAnims_Fortree0_Frame1[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/1.4bpp");
-
-const u16 gTilesetAnims_Fortree0_Frame2[] = INCBIN_U16("data/tilesets/secondary/fortree/anim/2.4bpp");
-
-const u16 *const gTilesetAnims_Fortree0[] = {
-    gTilesetAnims_Fortree0_Frame0,
-    gTilesetAnims_Fortree0_Frame1,
-    gTilesetAnims_Fortree0_Frame2,
-    gTilesetAnims_Fortree0_Frame1
-};
-
-
 const u16 gTilesetAnims_Lavaridge_Steam_Frame0[] = INCBIN_U16("data/tilesets/secondary/lavaridge/anim/steam/0.4bpp");
 const u16 gTilesetAnims_Lavaridge_Steam_Frame1[] = INCBIN_U16("data/tilesets/secondary/lavaridge/anim/steam/1.4bpp");
 const u16 gTilesetAnims_Lavaridge_Steam_Frame2[] = INCBIN_U16("data/tilesets/secondary/lavaridge/anim/steam/2.4bpp");
@@ -738,10 +724,9 @@ void InitTilesetAnim_Fallarbor(void)
 
 void InitTilesetAnim_Fortree(void)
 {
-    static void TilesetAnim_Fortree(u16);
     sSecondaryTilesetAnimCounter = 0;
     sSecondaryTilesetAnimCounterMax = sPrimaryTilesetAnimCounterMax;
-    sSecondaryTilesetAnimCallback = TilesetAnim_Fortree;
+    sSecondaryTilesetAnimCallback = NULL;
 }
 
 void InitTilesetAnim_Lilycove(void)
@@ -1125,14 +1110,6 @@ static void TilesetAnim_BattleDome2(u16 timer)
         BlendAnimPalette_BattleDome_FloorLightsNoBlend(timer >> 2);
 }
 
-static void TilesetAnim_Fortree(u16 timer)
-{
-    static void QueueAnimTiles_Fortree_FeebasSparkles(u16);
-	
-    if ((timer & 7) == 0)
-        QueueAnimTiles_Fortree_FeebasSparkles(timer >> 3);
-}
-
 static void QueueAnimTiles_Building_TVTurnedOn(u16 timer)
 {
     u16 i = timer % 2;
@@ -1186,12 +1163,6 @@ static void QueueAnimTiles_BattlePyramid_StatueShadow(u16 timer)
 {
     u16 i = timer % 3;
     AppendTilesetAnimToBuffer(gTilesetAnims_BattlePyramid_StatueShadow[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 135)), 0x100);
-}
-
-static void QueueAnimTiles_Fortree_FeebasSparkles(u16 timer)
-{
-    u16 idx = timer % 4;
-    AppendTilesetAnimToBuffer(gTilesetAnims_Fortree0[idx], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 240)), 0x80);
 }
 
 static void BlendAnimPalette_BattleDome_FloorLights(u16 timer)

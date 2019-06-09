@@ -14,7 +14,6 @@
 #include "tv.h"
 #include "link.h"
 #include "script.h"
-#include "battle_debug.h"
 #include "battle_pike.h"
 #include "battle_pyramid.h"
 #include "constants/abilities.h"
@@ -42,6 +41,16 @@ EWRAM_DATA static u8 sWildEncountersDisabled = 0;
 EWRAM_DATA static u32 sFeebasRngValue = 0;
 
 #include "data/wild_encounters.h"
+
+//Special Feebas-related data.
+const struct WildPokemon gWildFeebasRoute119Data = {20, 25, SPECIES_FEEBAS};
+
+const u16 gRoute119WaterTileData[] =
+{
+    0, 0x2D, 0,
+    0x2E, 0x5B, 0x83,
+    0x5C, 0x8B, 0x12A,
+};
 
 // code
 void DisableWildEncounters(bool8 disabled)
@@ -130,100 +139,6 @@ static u16 FeebasRandom(void)
 static void FeebasSeedRng(u16 seed)
 {
     sFeebasRngValue = seed;
-}
-
-void HighlightFeebasSpots() {
-    u16 nWaterTiles = 447;
-    u16 nFeebasGenerated = 0;
-    u16 nFeebasHighlighted = 0;
-    u16 currentWaterTile = 0;
-    u16 feebasTiles[NUM_FEEBAS_SPOTS];
-    u16 x;
-    u16 y;
-    u8 index;
-     // Seed Feebas RNG
-    FeebasSeedRng(gSaveBlock1Ptr->easyChatPairs[0].unk2);
-    for(nFeebasGenerated = 0; nFeebasGenerated < NUM_FEEBAS_SPOTS; nFeebasGenerated++) {
-        u16 randomTile = FeebasRandom() % nWaterTiles;
-        if(randomTile == 0) {
-            randomTile == nWaterTiles;
-        }
-        if(randomTile == 0 || randomTile > 3) {
-            feebasTiles[nFeebasGenerated] = randomTile;
-        }
-    }
-     for (y = 0; y < gMapHeader.mapLayout->height + 7; y++) {
-        for (x = 0; x < gMapHeader.mapLayout->width + 7; x++) {
-            if (MetatileBehavior_IsSurfableAndNotWaterfall(MapGridGetMetatileBehaviorAt(x, y)) == TRUE) {
-                currentWaterTile++;
-                if(nFeebasHighlighted < NUM_FEEBAS_SPOTS) {
-                    for(index = 0; index < NUM_FEEBAS_SPOTS; index++) {
-                        if(currentWaterTile == feebasTiles[index]) {
-							switch (MapGridGetMetatileIdAt(x, y))
-							{
-							case 0x02C:
-							    MapGridSetMetatileIdAt(x, y, 0x2A9);
-							    break;
-							case 0x034:
-							    MapGridSetMetatileIdAt(x, y, 0x2CB);
-							    break;
-							case 0x03C:
-							    MapGridSetMetatileIdAt(x, y, 0x2AA);
-							    break;
-							case 0x11D:
-							    MapGridSetMetatileIdAt(x, y, 0x31B);
-							    break;
-							case 0x125:
-							    MapGridSetMetatileIdAt(x, y, 0x31A);
-							    break;
-							case 0x12C:
-							    MapGridSetMetatileIdAt(x, y, 0x318);
-							    break;
-							case 0x12D:
-							    MapGridSetMetatileIdAt(x, y, 0x319);
-							    break;
-							case 0x170:
-							    MapGridSetMetatileIdAt(x, y, 0x308);
-							    break;
-							case 0x178:
-							    MapGridSetMetatileIdAt(x, y, 0x2FD);
-							    break;
-							case 0x179:
-							    MapGridSetMetatileIdAt(x, y, 0x305);
-							    break;
-							case 0x189:
-							    MapGridSetMetatileIdAt(x, y, 0x31F);
-							    break;
-							case 0x190:
-							    MapGridSetMetatileIdAt(x, y, 0x310);
-								break;
-							case 0x192:
-							    MapGridSetMetatileIdAt(x, y, 0x31E);
-							    break;
-							case 0x198:
-							    MapGridSetMetatileIdAt(x, y, 0x311);
-							    break;
-							case 0x19A:
-							    MapGridSetMetatileIdAt(x, y, 0x30D);
-							    break;
-							case 0x20F:
-							    MapGridSetMetatileIdAt(x, y, 0x2D3);
-							    break;
-							case 0x266:
-							    MapGridSetMetatileIdAt(x, y, 0x312);
-							    break;
-							case 0x267:
-							    MapGridSetMetatileIdAt(x, y, 0x315);
-							default:
-								break;
-							}
-                            nFeebasHighlighted++;
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 static u8 ChooseWildMonIndex_Land(void)

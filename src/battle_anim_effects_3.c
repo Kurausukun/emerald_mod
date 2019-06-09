@@ -258,17 +258,6 @@ const struct SpriteTemplate gUnknown_085CE11C =
     .callback = sub_815A6C4,
 };
 
-const struct SpriteTemplate gToxicSpikesSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_TOXIC_SPIKES,
-    .paletteTag = ANIM_TAG_TOXIC_SPIKES,
-    .oam = &gUnknown_0852490C,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = sub_815A6C4,
-};
-
 const union AnimCmd gUnknown_085CE134[] =
 {
     ANIMCMD_FRAME(0, 3),
@@ -1188,39 +1177,6 @@ const union AffineAnimCmd gSlackOffSquishAffineAnimCmds[] =
     AFFINEANIMCMD_FRAME(0, 0, 0, 24),
     AFFINEANIMCMD_FRAME(1, -5, 0, 16),
     AFFINEANIMCMD_END,
-};
-
-const struct SpriteTemplate gMegaStoneSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MEGA_STONE,
-    .paletteTag = ANIM_TAG_MEGA_STONE,
-    .oam = &gUnknown_08524AFC,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gUnknown_08596894,
-    .callback = sub_80A77C8,
-};
-
-const struct SpriteTemplate gMegaParticlesSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MEGA_PARTICLES,
-    .paletteTag = ANIM_TAG_MEGA_PARTICLES,
-    .oam = &gUnknown_08524A8C,
-    .anims = gUnknown_085921C8,
-    .images = NULL,
-    .affineAnims = gUnknown_085921DC,
-    .callback = AnimPowerAbsorptionOrb,
-};
-
-const struct SpriteTemplate gMegaSymbolSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MEGA_SYMBOL,
-    .paletteTag = ANIM_TAG_MEGA_SYMBOL,
-    .oam = &gUnknown_08524A34,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = sub_8112B78,
 };
 
 void sub_815A0D4(struct Sprite *sprite)
@@ -2326,7 +2282,7 @@ void sub_815B7D0(u8 taskId)
         }
         break;
     case 2:
-        HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, gTasks[taskId].data[10], gBattleAnimArgs[1]);
+        HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, gTasks[taskId].data[10]);
         sub_80A6BFC(&animBg, gBattleAnimAttacker);
 
         if (IsContest())
@@ -2413,7 +2369,7 @@ void sub_815BB18(u8 taskId)
 
 void sub_815BB58(u8 taskId)
 {
-    HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, TRUE, FALSE);
+    HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, TRUE);
     DestroyAnimVisualTask(taskId);
 }
 
@@ -4366,7 +4322,7 @@ static void AnimSmellingSaltExclamationStep(struct Sprite *sprite)
 
 // Claps a hand several times.
 // arg 0: which hand
-// arg 1:
+// arg 1: 
 void AnimHelpingHandClap(struct Sprite *sprite)
 {
     if (gBattleAnimArgs[0] == 0)

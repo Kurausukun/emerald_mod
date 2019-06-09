@@ -16,8 +16,6 @@
 #include "constants/species.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_BGM;
-extern struct MusicPlayerInfo gMPlayInfo_BGM_HINSI;
-extern u8 WasBarRedLast;
 
 // this file's functions
 static void Task_DoPokeballSendOutAnim(u8 taskId);
@@ -769,19 +767,11 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
             if (gBattleTypeFlags & BATTLE_TYPE_MULTI && gBattleTypeFlags & BATTLE_TYPE_LINK)
             {
                 if (IsBGMPlaying())
-                {
-					if (WasBarRedLast == 1)
-                        m4aMPlayStop(&gMPlayInfo_BGM_HINSI);
-                    else
-                        m4aMPlayStop(&gMPlayInfo_BGM);
-                }
+                    m4aMPlayStop(&gMPlayInfo_BGM);
             }
             else
             {
-                if (WasBarRedLast == 1)
-                    m4aMPlayVolumeControl(&gMPlayInfo_BGM_HINSI, 0xFFFF, 128);
-				else
-                    m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 128);
+                m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 128);
             }
         }
 

@@ -334,7 +334,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_1FA061:: @ 81FA061
 
 LittlerootTown_ProfessorBirchsLab_EventScript_1FA06C:: @ 81FA06C
 	bufferspeciesname 0, SPECIES_CYNDAQUIL
-	setvar VAR_TEMP_1, 155
+	setvar VAR_TEMP_1, SPECIES_CYNDAQUIL
 	givemon SPECIES_CYNDAQUIL, 5, ITEM_NONE, 0x0, 0x0, 0
 	compare VAR_RESULT, 0
 	goto_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_1FA0A1
@@ -379,7 +379,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_1FA0FD:: @ 81FA0FD
 
 LittlerootTown_ProfessorBirchsLab_EventScript_1FA10D:: @ 81FA10D
 	bufferspeciesname 0, SPECIES_TOTODILE
-	setvar VAR_TEMP_1, 158
+	setvar VAR_TEMP_1, SPECIES_TOTODILE
 	givemon SPECIES_TOTODILE, 5, ITEM_NONE, 0x0, 0x0, 0
 	compare VAR_RESULT, 0
 	goto_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_1FA142
@@ -424,7 +424,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_1FA19E:: @ 81FA19E
 
 LittlerootTown_ProfessorBirchsLab_EventScript_1FA1AE:: @ 81FA1AE
 	bufferspeciesname 0, SPECIES_CHIKORITA
-	setvar VAR_TEMP_1, 152
+	setvar VAR_TEMP_1, SPECIES_CHIKORITA
 	givemon SPECIES_CHIKORITA, 5, ITEM_NONE, 0x0, 0x0, 0
 	compare VAR_RESULT, 0
 	goto_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_1FA1E3
@@ -548,7 +548,6 @@ LittlerootTown_ProfessorBirchsLab_EventScript_1FA2F8:: @ 81FA2F8
 LittlerootTown_ProfessorBirchsLab_EventScript_1FA352:: @ 81FA352
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FADD7, MSGBOX_DEFAULT
 	giveitem_std ITEM_POKE_BALL, 5
-	callnative GlobalNuzlockeSet
 	compare VAR_RESULT, 0
 	call_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_1FA3CE
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FAE40, MSGBOX_DEFAULT
@@ -558,7 +557,6 @@ LittlerootTown_ProfessorBirchsLab_EventScript_1FA352:: @ 81FA352
 LittlerootTown_ProfessorBirchsLab_EventScript_1FA37F:: @ 81FA37F
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FAF3F, MSGBOX_DEFAULT
 	giveitem_std ITEM_POKE_BALL, 5
-	callnative GlobalNuzlockeSet
 	compare VAR_RESULT, 0
 	call_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_1FA3D7
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FAF8E, MSGBOX_DEFAULT

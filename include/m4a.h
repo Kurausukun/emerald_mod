@@ -22,7 +22,6 @@ extern struct MusicPlayerInfo gMPlayInfo_BGM;
 extern struct MusicPlayerInfo gMPlayInfo_SE1;
 extern struct MusicPlayerInfo gMPlayInfo_SE2;
 extern struct MusicPlayerInfo gMPlayInfo_SE3;
-extern struct MusicPlayerInfo gMPlayInfo_BGM_HINSI;
 extern struct SoundInfo gSoundInfo;
 
 #endif //GUARD_M4A_H

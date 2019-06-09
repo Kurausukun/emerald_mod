@@ -1,3 +1,4 @@
+gSoundInfo
 gPokemonCrySongs
 gPokemonCryMusicPlayers
 gMPlayInfo_BGM
@@ -9,4 +10,3 @@ gPokemonCryTracks
 gPokemonCrySong
 gMPlayMemAccArea
 gMPlayInfo_SE3
-gMPlayInfo_BGM_HINSI
