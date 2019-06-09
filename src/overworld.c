@@ -37,6 +37,7 @@
 #include "new_game.h"
 #include "palette.h"
 #include "play_time.h"
+#include "pokemon_storage_system.h"
 #include "random.h"
 #include "roamer.h"
 #include "rotating_gate.h"
@@ -383,12 +384,20 @@ static void (*const gMovementStatusHandler[])(struct LinkPlayerEventObject *, st
 // code
 void DoWhiteOut(void)
 {
-    ScriptContext2_RunNewScript(EventScript_WhiteOut);
-    SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
-    HealPlayerParty();
-    Overworld_ResetStateAfterWhiteOut();
-    SetWarpDestinationToLastHealLocation();
-    WarpIntoMap();
+    if (GetFirstBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
+    {
+        DoSoftReset();
+    }
+    else
+    {
+        ScriptContext2_RunNewScript(EventScript_WhiteOut);
+        SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
+        //HealPlayerParty();
+        MoveFirstBoxPokemon();
+        Overworld_ResetStateAfterWhiteOut();
+        SetWarpDestinationToLastHealLocation();
+        WarpIntoMap();
+    }
 }
 
 void Overworld_ResetStateAfterFly(void)

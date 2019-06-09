@@ -43,6 +43,7 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/moves.h"
+#include "constants/region_map_sections.h"
 #include "constants/songs.h"
 #include "constants/species.h"
 #include "constants/trainers.h"
@@ -2105,6 +2106,158 @@ static const struct SpriteTemplate gUnknown_08329F28 =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy,
+};
+
+const u16 gEvolutionLines[NUM_SPECIES][EVOS_PER_LINE] =
+{
+    [SPECIES_BULBASAUR ... SPECIES_VENUSAUR]    = {SPECIES_BULBASAUR, SPECIES_IVYSAUR, SPECIES_VENUSAUR},
+    [SPECIES_CHARMANDER ... SPECIES_CHARIZARD]  = {SPECIES_CHARMANDER, SPECIES_CHARMELEON, SPECIES_CHARIZARD},
+    [SPECIES_SQUIRTLE ... SPECIES_BLASTOISE]    = {SPECIES_SQUIRTLE, SPECIES_WARTORTLE, SPECIES_BLASTOISE},
+    [SPECIES_CATERPIE ... SPECIES_BUTTERFREE]   = {SPECIES_CATERPIE, SPECIES_METAPOD, SPECIES_BUTTERFREE},
+    [SPECIES_WEEDLE ... SPECIES_BEEDRILL]       = {SPECIES_WEEDLE, SPECIES_KAKUNA, SPECIES_BEEDRILL},
+    [SPECIES_PIDGEY ... SPECIES_PIDGEOT]        = {SPECIES_PIDGEY, SPECIES_PIDGEOTTO, SPECIES_PIDGEOT},
+    [SPECIES_RATTATA ... SPECIES_RATICATE]      = {SPECIES_RATTATA, SPECIES_RATICATE},
+    [SPECIES_SPEAROW ... SPECIES_FEAROW]        = {SPECIES_SPEAROW, SPECIES_FEAROW},
+    [SPECIES_EKANS ... SPECIES_ARBOK]           = {SPECIES_EKANS, SPECIES_ARBOK},
+    [SPECIES_PIKACHU ... SPECIES_RAICHU]        = {SPECIES_PICHU, SPECIES_PIKACHU, SPECIES_RAICHU}, 
+    [SPECIES_PICHU]                             = {SPECIES_PICHU, SPECIES_PIKACHU, SPECIES_RAICHU},
+    [SPECIES_SANDSHREW ... SPECIES_SANDSLASH]   = {SPECIES_SANDSHREW, SPECIES_SANDSLASH},
+    [SPECIES_NIDORAN_F ... SPECIES_NIDOQUEEN]   = {SPECIES_NIDORAN_F, SPECIES_NIDORINA, SPECIES_NIDOQUEEN},
+    [SPECIES_NIDORAN_M ... SPECIES_NIDOKING]    = {SPECIES_NIDORAN_M, SPECIES_NIDORINO, SPECIES_NIDOKING},
+    [SPECIES_CLEFAIRY ... SPECIES_CLEFABLE]     = {SPECIES_CLEFFA, SPECIES_CLEFAIRY, SPECIES_CLEFABLE},
+    [SPECIES_CLEFFA]                            = {SPECIES_CLEFFA, SPECIES_CLEFAIRY, SPECIES_CLEFABLE},
+    [SPECIES_VULPIX ... SPECIES_NINETALES]      = {SPECIES_VULPIX, SPECIES_NINETALES},
+    [SPECIES_JIGGLYPUFF ... SPECIES_WIGGLYTUFF] = {SPECIES_IGGLYBUFF, SPECIES_JIGGLYPUFF, SPECIES_WIGGLYTUFF},
+    [SPECIES_IGGLYBUFF]                         = {SPECIES_IGGLYBUFF, SPECIES_JIGGLYPUFF, SPECIES_WIGGLYTUFF},
+    [SPECIES_ZUBAT ... SPECIES_GOLBAT]          = {SPECIES_ZUBAT, SPECIES_GOLBAT, SPECIES_CROBAT},
+    [SPECIES_CROBAT]                            = {SPECIES_ZUBAT, SPECIES_GOLBAT, SPECIES_CROBAT},
+    [SPECIES_ODDISH ... SPECIES_VILEPLUME]      = {SPECIES_ODDISH, SPECIES_GLOOM, SPECIES_VILEPLUME, SPECIES_BELLOSSOM},
+    [SPECIES_BELLOSSOM]                         = {SPECIES_ODDISH, SPECIES_GLOOM, SPECIES_VILEPLUME, SPECIES_BELLOSSOM},
+    [SPECIES_PARAS ... SPECIES_PARASECT]        = {SPECIES_PARAS, SPECIES_PARASECT},
+    [SPECIES_VENONAT ... SPECIES_VENOMOTH]      = {SPECIES_VENONAT, SPECIES_VENOMOTH},
+    [SPECIES_DIGLETT ... SPECIES_DUGTRIO]       = {SPECIES_DIGLETT, SPECIES_DUGTRIO},
+    [SPECIES_MEOWTH ... SPECIES_PERSIAN]        = {SPECIES_MEOWTH, SPECIES_PERSIAN},
+    [SPECIES_PSYDUCK ... SPECIES_GOLDUCK]       = {SPECIES_PSYDUCK, SPECIES_GOLDUCK},
+    [SPECIES_MANKEY ... SPECIES_PRIMEAPE]       = {SPECIES_MANKEY, SPECIES_PRIMEAPE},
+    [SPECIES_GROWLITHE ... SPECIES_ARCANINE]    = {SPECIES_GROWLITHE, SPECIES_ARCANINE},
+    [SPECIES_POLIWAG ... SPECIES_POLIWRATH]     = {SPECIES_POLIWAG, SPECIES_POLIWHIRL, SPECIES_POLIWRATH, SPECIES_POLITOED},
+    [SPECIES_POLITOED]                          = {SPECIES_POLIWAG, SPECIES_POLIWHIRL, SPECIES_POLIWRATH, SPECIES_POLITOED},
+    [SPECIES_ABRA ... SPECIES_ALAKAZAM]         = {SPECIES_ABRA, SPECIES_KADABRA, SPECIES_ALAKAZAM},
+    [SPECIES_MACHOP ... SPECIES_MACHAMP]        = {SPECIES_MACHOP, SPECIES_MACHOKE, SPECIES_MACHAMP},
+    [SPECIES_BELLSPROUT ... SPECIES_VICTREEBEL] = {SPECIES_BELLSPROUT, SPECIES_WEEPINBELL, SPECIES_VICTREEBEL},
+    [SPECIES_TENTACOOL ... SPECIES_TENTACRUEL]  = {SPECIES_TENTACOOL, SPECIES_TENTACRUEL},
+    [SPECIES_GEODUDE ... SPECIES_GOLEM]         = {SPECIES_GEODUDE, SPECIES_GRAVELER, SPECIES_GOLEM},
+    [SPECIES_PONYTA ... SPECIES_RAPIDASH]       = {SPECIES_PONYTA, SPECIES_RAPIDASH},
+    [SPECIES_SLOWPOKE ... SPECIES_SLOWBRO]      = {SPECIES_SLOWPOKE, SPECIES_SLOWBRO, SPECIES_SLOWKING},
+    [SPECIES_SLOWKING]                          = {SPECIES_SLOWPOKE, SPECIES_SLOWBRO, SPECIES_SLOWKING},
+    [SPECIES_MAGNEMITE ... SPECIES_MAGNETON]    = {SPECIES_MAGNEMITE, SPECIES_MAGNETON},
+    [SPECIES_DODUO ... SPECIES_DODRIO]          = {SPECIES_DODUO, SPECIES_DODRIO},
+    [SPECIES_SEEL ... SPECIES_DEWGONG]          = {SPECIES_SEEL, SPECIES_DEWGONG},
+    [SPECIES_GRIMER ... SPECIES_MUK]            = {SPECIES_GRIMER, SPECIES_MUK},
+    [SPECIES_SHELLDER ... SPECIES_CLOYSTER]     = {SPECIES_SHELLDER, SPECIES_CLOYSTER},
+    [SPECIES_GASTLY ... SPECIES_GENGAR]         = {SPECIES_GASTLY, SPECIES_HAUNTER, SPECIES_GENGAR},
+    [SPECIES_ONIX]                              = {SPECIES_ONIX, SPECIES_STEELIX},
+    [SPECIES_STEELIX]                           = {SPECIES_ONIX, SPECIES_STEELIX},
+    [SPECIES_DROWZEE ... SPECIES_HYPNO]         = {SPECIES_DROWZEE, SPECIES_HYPNO},
+    [SPECIES_KRABBY ... SPECIES_KINGLER]        = {SPECIES_KRABBY, SPECIES_KINGLER},
+    [SPECIES_VOLTORB ... SPECIES_ELECTRODE]     = {SPECIES_VOLTORB, SPECIES_ELECTRODE},
+    [SPECIES_EXEGGCUTE ... SPECIES_EXEGGUTOR]   = {SPECIES_EXEGGCUTE, SPECIES_EXEGGUTOR},
+    [SPECIES_CUBONE ... SPECIES_MAROWAK]        = {SPECIES_CUBONE, SPECIES_MAROWAK},
+    [SPECIES_KOFFING ... SPECIES_WEEZING]       = {SPECIES_KOFFING, SPECIES_WEEZING},
+    [SPECIES_RHYHORN ... SPECIES_RHYDON]        = {SPECIES_RHYHORN, SPECIES_RHYDON},
+    [SPECIES_CHANSEY]                           = {SPECIES_CHANSEY, SPECIES_BLISSEY}, 
+    [SPECIES_BLISSEY]                           = {SPECIES_CHANSEY, SPECIES_BLISSEY}, 
+    [SPECIES_HORSEA ... SPECIES_SEADRA]         = {SPECIES_HORSEA, SPECIES_SEADRA, SPECIES_KINGDRA},
+    [SPECIES_KINGDRA]                           = {SPECIES_HORSEA, SPECIES_SEADRA, SPECIES_KINGDRA},
+    [SPECIES_GOLDEEN ... SPECIES_SEAKING]       = {SPECIES_GOLDEEN, SPECIES_SEAKING},
+    [SPECIES_STARYU ... SPECIES_STARMIE]        = {SPECIES_STARYU, SPECIES_STARMIE},
+    [SPECIES_SCYTHER]                           = {SPECIES_SCYTHER, SPECIES_SCIZOR},
+    [SPECIES_SCIZOR]                            = {SPECIES_SCYTHER, SPECIES_SCIZOR},
+    [SPECIES_MAGIKARP ... SPECIES_GYARADOS]     = {SPECIES_MAGIKARP, SPECIES_GYARADOS},
+    [SPECIES_EEVEE ... SPECIES_FLAREON]         = {SPECIES_EEVEE, SPECIES_JOLTEON, SPECIES_VAPOREON, SPECIES_FLAREON, SPECIES_ESPEON, SPECIES_UMBREON},
+    [SPECIES_ESPEON ... SPECIES_UMBREON]        = {SPECIES_EEVEE, SPECIES_JOLTEON, SPECIES_VAPOREON, SPECIES_FLAREON, SPECIES_ESPEON, SPECIES_UMBREON},
+    [SPECIES_PORYGON]                           = {SPECIES_PORYGON, SPECIES_PORYGON2},
+    [SPECIES_PORYGON2]                          = {SPECIES_PORYGON, SPECIES_PORYGON2},
+    [SPECIES_OMANYTE ... SPECIES_OMASTAR]       = {SPECIES_OMANYTE, SPECIES_OMASTAR},
+    [SPECIES_KABUTO ... SPECIES_KABUTOPS]       = {SPECIES_KABUTO, SPECIES_KABUTOPS},
+    [SPECIES_DRATINI ... SPECIES_DRAGONITE]     = {SPECIES_DRATINI, SPECIES_DRAGONAIR, SPECIES_DRAGONITE},
+    [SPECIES_CHIKORITA ... SPECIES_MEGANIUM]    = {SPECIES_CHIKORITA, SPECIES_BAYLEEF, SPECIES_MEGANIUM},
+    [SPECIES_CYNDAQUIL ... SPECIES_TYPHLOSION]  = {SPECIES_CYNDAQUIL, SPECIES_QUILAVA, SPECIES_TYPHLOSION},
+    [SPECIES_TOTODILE ... SPECIES_FERALIGATR]   = {SPECIES_TOTODILE, SPECIES_CROCONAW, SPECIES_FERALIGATR},
+    [SPECIES_SENTRET ... SPECIES_FURRET]        = {SPECIES_SENTRET, SPECIES_FURRET},
+    [SPECIES_HOOTHOOT ... SPECIES_NOCTOWL]      = {SPECIES_HOOTHOOT, SPECIES_NOCTOWL},
+    [SPECIES_LEDYBA ... SPECIES_LEDIAN]         = {SPECIES_LEDYBA, SPECIES_LEDIAN},
+    [SPECIES_SPINARAK ... SPECIES_ARIADOS]      = {SPECIES_SPINARAK, SPECIES_ARIADOS},
+    [SPECIES_CHINCHOU ... SPECIES_LANTURN]      = {SPECIES_CHINCHOU, SPECIES_LANTURN},
+    [SPECIES_TOGEPI ... SPECIES_TOGETIC]        = {SPECIES_TOGEPI, SPECIES_TOGETIC},
+    [SPECIES_NATU ... SPECIES_XATU]             = {SPECIES_NATU, SPECIES_XATU},
+    [SPECIES_MAREEP ... SPECIES_AMPHAROS]       = {SPECIES_MAREEP, SPECIES_FLAAFFY, SPECIES_AMPHAROS},
+    [SPECIES_MARILL ... SPECIES_AZUMARILL]      = {SPECIES_AZURILL, SPECIES_MARILL, SPECIES_AZUMARILL},
+    [SPECIES_AZURILL]                           = {SPECIES_AZURILL, SPECIES_MARILL, SPECIES_AZUMARILL},
+    [SPECIES_HOPPIP ... SPECIES_JUMPLUFF]       = {SPECIES_HOPPIP, SPECIES_SKIPLOOM, SPECIES_JUMPLUFF},
+    [SPECIES_SUNKERN ... SPECIES_SUNFLORA]      = {SPECIES_SUNKERN, SPECIES_SUNFLORA},
+    [SPECIES_WOOPER ... SPECIES_QUAGSIRE]       = {SPECIES_WOOPER, SPECIES_QUAGSIRE},
+    [SPECIES_PINECO ... SPECIES_FORRETRESS]     = {SPECIES_PINECO, SPECIES_FORRETRESS},
+    [SPECIES_SNUBBULL ... SPECIES_GRANBULL]     = {SPECIES_SNUBBULL, SPECIES_GRANBULL},
+    [SPECIES_TEDDIURSA ... SPECIES_URSARING]    = {SPECIES_TEDDIURSA, SPECIES_URSARING},
+    [SPECIES_SLUGMA ... SPECIES_MAGCARGO]       = {SPECIES_SLUGMA, SPECIES_MAGCARGO},
+    [SPECIES_SWINUB ... SPECIES_PILOSWINE]      = {SPECIES_SWINUB, SPECIES_PILOSWINE},
+    [SPECIES_REMORAID ... SPECIES_OCTILLERY]    = {SPECIES_REMORAID, SPECIES_OCTILLERY},
+    [SPECIES_HOUNDOUR ... SPECIES_HOUNDOOM]     = {SPECIES_HOUNDOUR, SPECIES_HOUNDOOM},
+    [SPECIES_PHANPY ... SPECIES_DONPHAN]        = {SPECIES_PHANPY, SPECIES_DONPHAN},
+    [SPECIES_TYROGUE ... SPECIES_HITMONTOP]     = {SPECIES_TYROGUE, SPECIES_HITMONCHAN, SPECIES_HITMONLEE, SPECIES_HITMONTOP},
+    [SPECIES_HITMONLEE ... SPECIES_HITMONCHAN]  = {SPECIES_TYROGUE, SPECIES_HITMONCHAN, SPECIES_HITMONLEE, SPECIES_HITMONTOP}, 
+    [SPECIES_SMOOCHUM]                          = {SPECIES_SMOOCHUM, SPECIES_JYNX},
+    [SPECIES_JYNX]                              = {SPECIES_SMOOCHUM, SPECIES_JYNX},
+    [SPECIES_ELEKID]                            = {SPECIES_ELEKID, SPECIES_ELECTABUZZ},
+    [SPECIES_ELECTABUZZ]                        = {SPECIES_ELEKID, SPECIES_ELECTABUZZ},
+    [SPECIES_MAGBY]                             = {SPECIES_MAGBY, SPECIES_MAGMAR},
+    [SPECIES_MAGMAR]                            = {SPECIES_MAGBY, SPECIES_MAGMAR},
+    [SPECIES_LARVITAR ... SPECIES_TYRANITAR]    = {SPECIES_LARVITAR, SPECIES_PUPITAR, SPECIES_TYRANITAR},
+    [SPECIES_TREECKO ... SPECIES_SCEPTILE]      = {SPECIES_TREECKO, SPECIES_GROVYLE, SPECIES_SCEPTILE},
+    [SPECIES_TORCHIC ... SPECIES_BLAZIKEN]      = {SPECIES_TORCHIC, SPECIES_COMBUSKEN, SPECIES_BLAZIKEN},
+    [SPECIES_MUDKIP ... SPECIES_SWAMPERT]       = {SPECIES_MUDKIP, SPECIES_MARSHTOMP, SPECIES_SWAMPERT},
+    [SPECIES_POOCHYENA ... SPECIES_MIGHTYENA]   = {SPECIES_POOCHYENA, SPECIES_MIGHTYENA},
+    [SPECIES_ZIGZAGOON ... SPECIES_LINOONE]     = {SPECIES_ZIGZAGOON, SPECIES_LINOONE},
+    [SPECIES_WURMPLE ... SPECIES_DUSTOX]        = {SPECIES_WURMPLE, SPECIES_SILCOON, SPECIES_BEAUTIFLY, SPECIES_CASCOON, SPECIES_DUSTOX},
+    [SPECIES_LOTAD ... SPECIES_LUDICOLO]        = {SPECIES_LOTAD, SPECIES_LOMBRE, SPECIES_LUDICOLO},
+    [SPECIES_SEEDOT ... SPECIES_SHIFTRY]        = {SPECIES_SEEDOT, SPECIES_NUZLEAF, SPECIES_SHIFTRY},
+    [SPECIES_NINCADA ... SPECIES_SHEDINJA]      = {SPECIES_NINCADA, SPECIES_NINJASK, SPECIES_SHEDINJA},
+    [SPECIES_TAILLOW ... SPECIES_SWELLOW]       = {SPECIES_TAILLOW, SPECIES_SWELLOW},
+    [SPECIES_SHROOMISH ... SPECIES_BRELOOM]     = {SPECIES_SHROOMISH, SPECIES_BRELOOM},
+    [SPECIES_WINGULL ... SPECIES_PELIPPER]      = {SPECIES_WINGULL, SPECIES_PELIPPER},
+    [SPECIES_SURSKIT ... SPECIES_MASQUERAIN]    = {SPECIES_SURSKIT, SPECIES_MASQUERAIN},
+    [SPECIES_WAILMER ... SPECIES_WAILORD]       = {SPECIES_WAILMER, SPECIES_WAILORD},
+    [SPECIES_SKITTY ... SPECIES_DELCATTY]       = {SPECIES_SKITTY, SPECIES_DELCATTY},
+    [SPECIES_BALTOY ... SPECIES_CLAYDOL]        = {SPECIES_BALTOY, SPECIES_CLAYDOL},
+    [SPECIES_BARBOACH ... SPECIES_WHISCASH]     = {SPECIES_BARBOACH, SPECIES_WHISCASH},
+    [SPECIES_CORPHISH ... SPECIES_CRAWDAUNT]    = {SPECIES_CORPHISH, SPECIES_CRAWDAUNT},
+    [SPECIES_FEEBAS ... SPECIES_MILOTIC]        = {SPECIES_FEEBAS, SPECIES_MILOTIC},
+    [SPECIES_CARVANHA ... SPECIES_SHARPEDO]     = {SPECIES_CARVANHA, SPECIES_SHARPEDO},
+    [SPECIES_TRAPINCH ... SPECIES_FLYGON]       = {SPECIES_TRAPINCH, SPECIES_VIBRAVA, SPECIES_FLYGON},
+    [SPECIES_MAKUHITA ... SPECIES_HARIYAMA]     = {SPECIES_MAKUHITA, SPECIES_HARIYAMA},
+    [SPECIES_ELECTRIKE ... SPECIES_MANECTRIC]   = {SPECIES_ELECTRIKE, SPECIES_MANECTRIC},
+    [SPECIES_NUMEL ... SPECIES_CAMERUPT]        = {SPECIES_NUMEL, SPECIES_CAMERUPT},
+    [SPECIES_SPHEAL ... SPECIES_WALREIN]        = {SPECIES_SPHEAL, SPECIES_SEALEO, SPECIES_WALREIN},
+    [SPECIES_CACNEA ... SPECIES_CACTURNE]       = {SPECIES_CACNEA, SPECIES_CACTURNE},
+    [SPECIES_SNORUNT ... SPECIES_GLALIE]        = {SPECIES_SNORUNT, SPECIES_GLALIE},
+    [SPECIES_SPOINK ... SPECIES_GRUMPIG]        = {SPECIES_SPOINK, SPECIES_GRUMPIG},
+    [SPECIES_MEDITITE ... SPECIES_MEDICHAM]     = {SPECIES_MEDITITE, SPECIES_MEDICHAM},
+    [SPECIES_SWABLU ... SPECIES_ALTARIA]        = {SPECIES_SWABLU, SPECIES_ALTARIA},
+    [SPECIES_WYNAUT]                            = {SPECIES_WYNAUT, SPECIES_WOBBUFFET},
+    [SPECIES_WOBBUFFET]                         = {SPECIES_WYNAUT, SPECIES_WOBBUFFET},
+    [SPECIES_DUSKULL ... SPECIES_DUSCLOPS]      = {SPECIES_DUSKULL, SPECIES_DUSCLOPS},
+    [SPECIES_SLAKOTH ... SPECIES_SLAKING]       = {SPECIES_SLAKOTH, SPECIES_VIGOROTH, SPECIES_SLAKING},
+    [SPECIES_GULPIN ... SPECIES_SWALOT]         = {SPECIES_GULPIN, SPECIES_SWALOT},
+    [SPECIES_WHISMUR ... SPECIES_EXPLOUD]       = {SPECIES_WHISMUR, SPECIES_LOUDRED, SPECIES_EXPLOUD},
+    [SPECIES_CLAMPERL ... SPECIES_GOREBYSS]     = {SPECIES_CLAMPERL, SPECIES_HUNTAIL, SPECIES_GOREBYSS},
+    [SPECIES_SHUPPET ... SPECIES_BANETTE]       = {SPECIES_SHUPPET, SPECIES_BANETTE},
+    [SPECIES_ARON ... SPECIES_AGGRON]           = {SPECIES_ARON, SPECIES_LAIRON, SPECIES_AGGRON},
+    [SPECIES_LILEEP ... SPECIES_CRADILY]        = {SPECIES_LILEEP, SPECIES_CRADILY},
+    [SPECIES_ANORITH ... SPECIES_ARMALDO]       = {SPECIES_ANORITH, SPECIES_ARMALDO},
+    [SPECIES_RALTS ... SPECIES_GARDEVOIR]       = {SPECIES_RALTS, SPECIES_KIRLIA, SPECIES_GARDEVOIR},
+    [SPECIES_BAGON ... SPECIES_SALAMENCE]       = {SPECIES_BAGON, SPECIES_SHELGON, SPECIES_SALAMENCE},
+    [SPECIES_BELDUM ... SPECIES_METAGROSS]      = {SPECIES_BELDUM, SPECIES_METANG, SPECIES_METAGROSS},
 };
 
 // code
@@ -4853,84 +5006,91 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         break;
                     case 2:
                         // revive
-                        if (r10 & 0x10)
+                        if (!NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
                         {
-                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0)
+                            if (r10 & 0x10)
                             {
-                                var_3C++;
-                                break;
-                            }
-                            if (gMain.inBattle)
-                            {
-                                if (battlerId != 4)
+                                if (GetMonData(mon, MON_DATA_HP, NULL) != 0)
                                 {
-                                    gAbsentBattlerFlags &= ~gBitTable[battlerId];
-                                    CopyPlayerPartyMonToBattleData(battlerId, pokemon_order_func(gBattlerPartyIndexes[battlerId]));
-                                    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
-                                        gBattleResults.numRevivesUsed++;
+                                    var_3C++;
+                                    break;
                                 }
-                                else
+                                if (gMain.inBattle)
                                 {
-                                    gAbsentBattlerFlags &= ~gBitTable[gActiveBattler ^ 2];
-                                    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
-                                        gBattleResults.numRevivesUsed++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (GetMonData(mon, MON_DATA_HP, NULL) == 0)
-                            {
-                                var_3C++;
-                                break;
-                            }
-                        }
-                        dataUnsigned = itemEffect[var_3C++];
-                        switch (dataUnsigned)
-                        {
-                        case 0xFF:
-                            dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) - GetMonData(mon, MON_DATA_HP, NULL);
-                            break;
-                        case 0xFE:
-                            dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) / 2;
-                            if (dataUnsigned == 0)
-                                dataUnsigned = 1;
-                            break;
-                        case 0xFD:
-                            dataUnsigned = gBattleScripting.field_23;
-                            break;
-                        }
-                        if (GetMonData(mon, MON_DATA_MAX_HP, NULL) != GetMonData(mon, MON_DATA_HP, NULL))
-                        {
-                            if (e == 0)
-                            {
-                                dataUnsigned = GetMonData(mon, MON_DATA_HP, NULL) + dataUnsigned;
-                                if (dataUnsigned > GetMonData(mon, MON_DATA_MAX_HP, NULL))
-                                    dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL);
-                                SetMonData(mon, MON_DATA_HP, &dataUnsigned);
-                                if (gMain.inBattle && battlerId != 4)
-                                {
-                                    gBattleMons[battlerId].hp = dataUnsigned;
-                                    if (!(r10 & 0x10) && GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+                                    if (battlerId != 4)
                                     {
-                                        if (gBattleResults.numHealingItemsUsed < 255)
-                                            gBattleResults.numHealingItemsUsed++;
-                                        // I have to re-use this variable to match.
-                                        r5 = gActiveBattler;
-                                        gActiveBattler = battlerId;
-                                        BtlController_EmitGetMonData(0, REQUEST_ALL_BATTLE, 0);
-                                        MarkBattlerForControllerExec(gActiveBattler);
-                                        gActiveBattler = r5;
+                                        gAbsentBattlerFlags &= ~gBitTable[battlerId];
+                                        CopyPlayerPartyMonToBattleData(battlerId, pokemon_order_func(gBattlerPartyIndexes[battlerId]));
+                                        if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
+                                            gBattleResults.numRevivesUsed++;
+                                    }
+                                    else
+                                    {
+                                        gAbsentBattlerFlags &= ~gBitTable[gActiveBattler ^ 2];
+                                        if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
+                                            gBattleResults.numRevivesUsed++;
                                     }
                                 }
                             }
                             else
                             {
-                                gBattleMoveDamage = -dataUnsigned;
+                                if (GetMonData(mon, MON_DATA_HP, NULL) == 0)
+                                {
+                                    var_3C++;
+                                    break;
+                                }
                             }
+                            dataUnsigned = itemEffect[var_3C++];
+                            switch (dataUnsigned)
+                            {
+                            case 0xFF:
+                                dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) - GetMonData(mon, MON_DATA_HP, NULL);
+                                break;
+                            case 0xFE:
+                                dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) / 2;
+                                if (dataUnsigned == 0)
+                                    dataUnsigned = 1;
+                                break;
+                            case 0xFD:
+                                dataUnsigned = gBattleScripting.field_23;
+                                break;
+                            }
+                            if (GetMonData(mon, MON_DATA_MAX_HP, NULL) != GetMonData(mon, MON_DATA_HP, NULL))
+                            {
+                                if (e == 0)
+                                {
+                                    dataUnsigned = GetMonData(mon, MON_DATA_HP, NULL) + dataUnsigned;
+                                    if (dataUnsigned > GetMonData(mon, MON_DATA_MAX_HP, NULL))
+                                        dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL);
+                                    SetMonData(mon, MON_DATA_HP, &dataUnsigned);
+                                    if (gMain.inBattle && battlerId != 4)
+                                    {
+                                        gBattleMons[battlerId].hp = dataUnsigned;
+                                        if (!(r10 & 0x10) && GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+                                        {
+                                            if (gBattleResults.numHealingItemsUsed < 255)
+                                                gBattleResults.numHealingItemsUsed++;
+                                            // I have to re-use this variable to match.
+                                            r5 = gActiveBattler;
+                                            gActiveBattler = battlerId;
+                                            BtlController_EmitGetMonData(0, REQUEST_ALL_BATTLE, 0);
+                                            MarkBattlerForControllerExec(gActiveBattler);
+                                            gActiveBattler = r5;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    gBattleMoveDamage = -dataUnsigned;
+                                }
+                                retVal = FALSE;
+                            }
+                            r10 &= 0xEF;
+                        }
+                        else
+                        {
                             retVal = FALSE;
                         }
-                        r10 &= 0xEF;
                         break;
                     case 3:
                         // Heal pp in all moves.
@@ -6948,5 +7108,26 @@ u8 *sub_806F4F8(u8 id, u8 arg1)
             arg1 = 0;
 
         return structPtr->byteArrays[arg1];
+    }
+}
+
+void DeletePartyMon(u8 position)
+{
+    PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, position);
+}
+
+void DeleteFaintedPartyPokemon(void) 
+{
+    u8 i;
+    struct Pokemon *pokemon;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        pokemon = &gPlayerParty[i];
+        if (GetMonData(pokemon, MON_DATA_SANITY_HAS_SPECIES, NULL) && !GetMonData(pokemon, MON_DATA_IS_EGG, NULL))
+        {
+            if (GetMonData(pokemon, MON_DATA_STATUS, NULL) == AILMENT_FNT)
+                DeletePartyMon(i);
+        }
     }
 }

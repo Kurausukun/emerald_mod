@@ -29,9 +29,11 @@ u8 *GetFlagPointer(u16 id);
 u8 FlagSet(u16 id);
 u8 FlagClear(u16 id);
 bool8 FlagGet(u16 id);
-u8 NuzlockeFlagSet(u8 mapsec);
-u8 NuzlockeFlagClear(u8 mapsec);
-u8 NuzlockeFlagGet(u8 mapsec);
+u8 NuzlockeFlagSet(u16 mapsec);
+u8 NuzlockeFlagClear(u16 mapsec);
+u8 NuzlockeFlagGet(u16 mapsec);
+void GlobalNuzlockeSet(void);
+void GlobalNuzlockeClear(void);
 
 extern u16 gSpecialVar_0x8000;
 extern u16 gSpecialVar_0x8001;

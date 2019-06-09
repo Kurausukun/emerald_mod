@@ -4884,4 +4884,36 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .secondaryId = 0,
     },
+    
+    [ITEM_FLASH] =
+    {
+        .name = _("FLASH"),
+        .itemId = ITEM_FLASH,
+        .price = 0,
+        .description = sFlashDesc,
+        .importance = 1,
+        .unk19 = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = 2,
+        .fieldUseFunc = ItemUseOutOfBattle_Flash,
+        .battleUsage = 0,
+        .battleUseFunc = NULL,
+        .secondaryId = 0,
+    },
+
+    [ITEM_FLY] =
+    {
+        .name = _("FLY"),
+        .itemId = ITEM_FLY,
+        .price = 0,
+        .description = sFlyDesc,
+        .importance = 1,
+        .unk19 = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = 2,
+        .fieldUseFunc = ItemUseOutOfBattle_Fly,
+        .battleUsage = 0,
+        .battleUseFunc = NULL,
+        .secondaryId = 0,
+    }
 };

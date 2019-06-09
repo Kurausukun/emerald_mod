@@ -1,6 +1,7 @@
 #include "global.h"
 #include "event_data.h"
 #include "pokedex.h"
+#include "constants/region_map_sections.h"
 
 #define TEMP_FLAGS_SIZE 0x4
 #define DAILY_FLAGS_SIZE 0x8
@@ -232,7 +233,7 @@ bool8 FlagGet(u16 id)
     return TRUE;
 }
 
-u8 NuzlockeFlagSet(u8 mapsec)
+u8 NuzlockeFlagSet(u16 mapsec)
 {
     u8 id = NuzlockeLUT[mapsec];
     u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
@@ -241,7 +242,7 @@ u8 NuzlockeFlagSet(u8 mapsec)
     return 0;
 }
 
-u8 NuzlockeFlagClear(u8 mapsec)
+u8 NuzlockeFlagClear(u16 mapsec)
 {
     u8 id = NuzlockeLUT[mapsec];
     u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
@@ -250,7 +251,7 @@ u8 NuzlockeFlagClear(u8 mapsec)
     return 0;
 }
 
-u8 NuzlockeFlagGet(u8 mapsec)
+u8 NuzlockeFlagGet(u16 mapsec)
 {
     u8 id = NuzlockeLUT[mapsec];
     u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
@@ -262,4 +263,14 @@ u8 NuzlockeFlagGet(u8 mapsec)
         return 0;
 
     return 1;
+}
+
+void GlobalNuzlockeSet(void)
+{
+    NuzlockeFlagSet(GLOBAL_NUZLOCKE_SWITCH);
+}
+
+void GlobalNuzlockeClear(void)
+{
+    NuzlockeFlagClear(GLOBAL_NUZLOCKE_SWITCH);
 }

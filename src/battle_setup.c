@@ -47,6 +47,8 @@
 #include "field_screen_effect.h"
 #include "data.h"
 #include "constants/region_map_sections.h"
+#include "pokedex.h"
+#include "pokemon.h"
 
 enum
 {
@@ -104,6 +106,7 @@ EWRAM_DATA static u8 *sTrainerBBattleScriptRetAddr = NULL;
 EWRAM_DATA static bool8 sShouldCheckTrainerBScript = FALSE;
 EWRAM_DATA static u8 sNoOfPossibleTrainerRetScripts = 0;
 EWRAM_DATA u8 IsCaptureBlockedByNuzlocke = 0;
+EWRAM_DATA u8 IsSpeciesClauseActive = 0;
 
 // const rom data
 
@@ -437,9 +440,15 @@ void BattleSetup_StartWildBattle(void)
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
-        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
+        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
         {
-            if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
+            IsSpeciesClauseActive = IsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
+            if (IsMonShiny(&gEnemyParty[0]))
+            {
+                IsSpeciesClauseActive = 0;
+				IsCaptureBlockedByNuzlocke = 0;
+            }
+            else if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
                 IsCaptureBlockedByNuzlocke = 0;
             else
                 IsCaptureBlockedByNuzlocke = 1;
@@ -1936,4 +1945,15 @@ u16 CountBattledRematchTeams(u16 trainerId)
     }
 
     return i;
+}
+
+u8 IsCaptureBlockedBySpeciesClause(u16 species)
+{
+    u8 i;
+    for (i = 0; i < EVOS_PER_LINE; i++)
+    {
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gEvolutionLines[species][i]), FLAG_GET_CAUGHT))
+            return 0;
+    }
+    return 1;
 }

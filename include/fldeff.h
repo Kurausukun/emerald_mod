@@ -32,6 +32,7 @@ void sub_81615A8(u8 taskId);
 void sub_8161560(u8 taskId);
 
 // flash
+void sub_81371B4(void);
 bool8 SetUpFieldMove_Flash(void);
 void c2_change_map(void);
 bool8 GetMapPairFadeToType(u8 a1, u8 a2);

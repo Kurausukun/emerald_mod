@@ -1716,11 +1716,10 @@ Route109_EventScript_271E95:: @ 8271E95
 	return
 
 EventScript_UseSurf:: @ 8271EA0
-	checkpartymove MOVE_SURF
-	compare VAR_RESULT, 6
+	checkitem ITEM_HM03, 1
+	compare VAR_RESULT, 0
 	goto_if_eq EventScript_CantSurf
-	bufferpartymonnick 0, VAR_RESULT
-	setfieldeffectargument 0, VAR_RESULT
+	setfieldeffectargument 0, 0
 	lockall
 	msgbox gText_WantToUseSurf, MSGBOX_YESNO
 	compare VAR_RESULT, 0

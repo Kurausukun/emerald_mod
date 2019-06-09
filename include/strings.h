@@ -404,6 +404,10 @@ extern const u8 gText_CantStoreImportantItems[];
 extern const u8 gText_DepositedVar2Var1s[];
 extern const u8 gText_NoRoomForItems[];
 extern const u8 gText_ThreeDashes[];
+extern const u8 gText_UseFlyItem[];
+extern const u8 gText_BootedUpFlyItem[];
+extern const u8 gText_UseFlashItem[];
+extern const u8 gText_BootedUpFlashItem[];
 
 // party menu text
 extern const u8 gText_PkmnHPRestoredByVar2[];

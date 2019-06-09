@@ -2544,14 +2544,14 @@ bool8 FldEff_FieldMoveShowMon(void)
 
 bool8 FldEff_FieldMoveShowMonInit(void)
 {
-    struct Pokemon *pokemon;
-    u32 flag = gFieldEffectArguments[0] & 0x80000000;
-    pokemon = &gPlayerParty[(u8)gFieldEffectArguments[0]];
-    gFieldEffectArguments[0] = GetMonData(pokemon, MON_DATA_SPECIES);
-    gFieldEffectArguments[1] = GetMonData(pokemon, MON_DATA_OT_ID);
-    gFieldEffectArguments[2] = GetMonData(pokemon, MON_DATA_PERSONALITY);
-    gFieldEffectArguments[0] |= flag;
-    FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON);
+    //struct Pokemon *pokemon;
+    //u32 flag = gFieldEffectArguments[0] & 0x80000000;
+    //pokemon = &gPlayerParty[(u8)gFieldEffectArguments[0]];
+    //gFieldEffectArguments[0] = GetMonData(pokemon, MON_DATA_SPECIES);
+    //gFieldEffectArguments[1] = GetMonData(pokemon, MON_DATA_OT_ID);
+    //gFieldEffectArguments[2] = GetMonData(pokemon, MON_DATA_PERSONALITY);
+    //gFieldEffectArguments[0] |= flag;
+    //FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON);
     FieldEffectActiveListRemove(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
     return FALSE;
 }
