@@ -1,6 +1,8 @@
 #include "global.h"
 #include "item_use.h"
 #include "battle.h"
+#include "battle_anim.h"
+#include "battle_setup.h"
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "berry.h"
@@ -103,6 +105,8 @@ static const struct YesNoFuncTable gUnknown_085920E8 =
     .yesFunc = sub_80FE03C,
     .noFunc = BagMenu_InitListsMenu,
 };
+
+static const u8 textCantThrowPokeBallNuzlocke[] = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
 
 // .text
 
@@ -918,7 +922,11 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
 
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-    if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
+    if (IsCaptureBlockedByNuzlocke == 1)
+    {
+        DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallNuzlocke);
+    }
+    else if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
     {
         RemoveBagItem(gSpecialVar_ItemId, 1);
         if (!InBattlePyramid())
