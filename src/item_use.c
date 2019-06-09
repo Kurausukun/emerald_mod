@@ -1128,7 +1128,7 @@ void ItemUseInBattle_EnigmaBerry(u8 taskId)
 static const struct YesNoFuncTable gUseFlashItemYesNoTable =
 {
     .yesFunc = UseFlashItemYes,
-    .noFunc = bag_menu_inits_lists_menu,
+    .noFunc = BagMenu_InitListsMenu,
 };
 
 void ItemUseOutOfBattle_Flash(u8 taskId)
@@ -1162,7 +1162,7 @@ void DisplayBootUpFlashYesNo(u8 taskId)
 
 void UseFlashItemYesNo(u8 taskId)
 {
-    bag_menu_yes_no(taskId, 6, &gUseFlashItemYesNoTable);
+    BagMenu_YesNo(taskId, 6, &gUseFlashItemYesNoTable);
 }
 
 void UseFlashItemYes(u8 taskId)
@@ -1173,7 +1173,7 @@ void UseFlashItemYes(u8 taskId)
 
 void SetUpFlashUseCallback(u8 taskId)
 {
-    gUnknown_0203CE54->mainCallback2 = CB2_ReturnToField;
+    gBagMenu->mainCallback2 = CB2_ReturnToField;
     unknown_ItemMenu_Confirm(taskId);
 }
 
@@ -1185,7 +1185,7 @@ void DoFlashItem(u8 taskId, TaskFunc task)
 static const struct YesNoFuncTable gUseFlyItemYesNoTable =
 {
     .yesFunc = UseFlyItemYes,
-    .noFunc = bag_menu_inits_lists_menu,
+    .noFunc = BagMenu_InitListsMenu,
 };
 
 void ItemUseOutOfBattle_Fly(u8 taskId)
@@ -1219,7 +1219,7 @@ void DisplayBootUpFlyYesNo(u8 taskId)
 
 void UseFlyItemYesNo(u8 taskId)
 {
-    bag_menu_yes_no(taskId, 6, &gUseFlyItemYesNoTable);
+    BagMenu_YesNo(taskId, 6, &gUseFlyItemYesNoTable);
 }
 
 void UseFlyItemYes(u8 taskId)
@@ -1230,7 +1230,7 @@ void UseFlyItemYes(u8 taskId)
 
 void SetUpFlyUseCallback(u8 taskId)
 {
-    gUnknown_0203CE54->mainCallback2 = MCB2_FlyMap;
+    gBagMenu->mainCallback2 = MCB2_FlyMap;
     unknown_ItemMenu_Confirm(taskId);
 }
 

@@ -384,16 +384,27 @@ static void (*const gMovementStatusHandler[])(struct LinkPlayerEventObject *, st
 // code
 void DoWhiteOut(void)
 {
-    if (GetFirstBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
+    if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
     {
-        DoSoftReset();
+        if (GetFirstBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
+        {
+            DoSoftReset();
+        }
+        else
+        {
+            ScriptContext2_RunNewScript(EventScript_WhiteOut);
+            SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
+            MoveFirstBoxPokemon();
+            Overworld_ResetStateAfterWhiteOut();
+            SetWarpDestinationToLastHealLocation();
+            WarpIntoMap();
+        }
     }
     else
     {
         ScriptContext2_RunNewScript(EventScript_WhiteOut);
         SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
-        //HealPlayerParty();
-        MoveFirstBoxPokemon();
+        HealPlayerParty();
         Overworld_ResetStateAfterWhiteOut();
         SetWarpDestinationToLastHealLocation();
         WarpIntoMap();
