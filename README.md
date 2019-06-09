@@ -8,6 +8,7 @@ This is a mod for Pokemon Emerald built using pret's pokeemerald decompilation. 
 * A "species clause" has been implemented; if your first encounter is a Pokemon in the same evolutionary line as a Pokemon you have already caught, you will not be allowed to capture it, and your encounter for the area will not be used.
 * A "shiny clause" is also in effect which overrides everything. If a Pokemon is shiny, you are allowed to capture it no matter what.
 * The Nuzlocke run is controlled by a global switch that turns ON when you first receive the Pokedex and turns OFF when you beat Steven in Meteor Falls. This way, your first encounter on Route 101 is not wasted before you can capture it, and after you have beaten Steven, you can play the game as you normally would, without the restrictions of a Nuzlocke.
+* HMs no longer need to be taught to Pokemon to be used on the field; the game now checks if you have the item and the appropriate badge instead. This is because it would be possible to get stuck or be unable to progress if Pokemon who knew HMs died, and it would be unnecessarily complicated to implement an "HM slave" system into the game.
 * Not directly related to the Nuzlocke, but the RNG is now properly seeded from the RTC, so you won't get RNG clones anymore.
 
 ## Building
