@@ -11,4 +11,4 @@ This is a mod for Pokemon Emerald built using pret's pokeemerald decompilation. 
 * Not directly related to the Nuzlocke, but the RNG is now properly seeded from the RTC, so you won't get RNG clones anymore.
 
 ## Building
-Building is identical to building regular pokeemerald. If you are not familiar with the build process, look at the [pret repository] (https://GitHub.com/pret/pokeemerald).
+Building is identical to building regular pokeemerald. If you are not familiar with the build process, look at the [pret repository](https://github.com/pret/pokeemerald).
