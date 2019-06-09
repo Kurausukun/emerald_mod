@@ -8,6 +8,7 @@
 #include "fldeff_misc.h"
 #include "frontier_util.h"
 #include "party_menu.h"
+#include "pokemon.h"
 #include "pokenav.h"
 #include "script.h"
 #include "string_util.h"
@@ -50,6 +51,7 @@ static void FaintFromFieldPoison(u8 partyIdx)
     SetMonData(pokemon, MON_DATA_STATUS, &status);
     GetMonData(pokemon, MON_DATA_NICKNAME, gStringVar1);
     StringGetEnd10(gStringVar1);
+	DeleteFaintedPartyPokemon();
 }
 
 static bool32 MonFaintedFromPoison(u8 partyIdx)

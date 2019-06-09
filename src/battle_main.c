@@ -56,6 +56,7 @@
 #include "constants/hold_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/region_map_sections.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/species.h"
@@ -4884,8 +4885,11 @@ static void HandleEndTurn_FinishBattle(void)
 								  | BATTLE_TYPE_x800000
 								  | BATTLE_TYPE_x2000000)))
         {
-            if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
-                NuzlockeFlagSet(GetCurrentRegionMapSectionId());
+            if (IsSpeciesClauseActive == 0)
+            {
+                if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
+                    NuzlockeFlagSet(GetCurrentRegionMapSectionId());
+            }
         }
         sub_8186444();
         BeginFastPaletteFade(3);
@@ -4896,6 +4900,8 @@ static void HandleEndTurn_FinishBattle(void)
 		WasBarRedLast = 0;
         for (i = 0; i < PARTY_SIZE; i++)
             UndoMegaEvolution(i);
+        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
+            DeleteFaintedPartyPokemon();
         gBattleMainFunc = FreeResetData_ReturnToOvOrDoEvolutions;
         gCB2_AfterEvolution = BattleMainCB2;
     }

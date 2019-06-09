@@ -17,6 +17,7 @@
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
 #include "field_weather.h"
+#include "fldeff.h"
 #include "item.h"
 #include "item_menu.h"
 #include "item_use.h"
@@ -30,6 +31,7 @@
 #include "party_menu.h"
 #include "pokeblock.h"
 #include "pokemon.h"
+#include "region_map.h"
 #include "script.h"
 #include "sound.h"
 #include "strings.h"
@@ -38,6 +40,7 @@
 #include "text.h"
 #include "constants/bg_event_constants.h"
 #include "constants/event_objects.h"
+#include "constants/field_effects.h"
 #include "constants/flags.h"
 #include "constants/item_effects.h"
 #include "constants/items.h"
@@ -84,6 +87,18 @@ void sub_80FDA24(u8 a);
 void sub_80FD8E0(u8 taskId, s16 x, s16 y);
 void sub_80FDBEC(void);
 bool8 sub_80FDE2C(void);
+void BootUpFly(u8 taskId);
+void DisplayBootUpFlyYesNo(u8 taskId);
+void UseFlyItemYesNo(u8 taskId);
+void UseFlyItemYes(u8 taskId);
+void SetUpFlyUseCallback(u8 taskId);
+void DoFlyItem(u8 taskId, TaskFunc task);
+void BootUpFlash(u8 taskId);
+void DisplayBootUpFlashYesNo(u8 taskId);
+void UseFlashItemYesNo(u8 taskId);
+void UseFlashItemYes(u8 taskId);
+void SetUpFlashUseCallback(u8 taskId);
+void DoFlashItem(u8 taskId, TaskFunc task);
 void ItemUseOutOfBattle_CannotUse(u8 taskId);
 
 // EWRAM variables
@@ -107,6 +122,8 @@ static const struct YesNoFuncTable gUnknown_085920E8 =
 };
 
 static const u8 textCantThrowPokeBallNuzlocke[] = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
+
+static const u8 textCantThrowPokeBallSpeciesClause[] = _("You have already caught a POKéMON\nin this evolution line!{PAUSE_UNTIL_PRESS}");
 
 // .text
 
@@ -936,6 +953,10 @@ void ItemUseInBattle_PokeBall(u8 taskId)
     {
         DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallNuzlocke);
     }
+    else if (IsSpeciesClauseActive == 1)
+    {
+        DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallSpeciesClause);
+    }
     else if (gBattlerInMenuId == GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)) // Attempting to throw a ball with the second pokemon.
     {
         u8 textCantThrowPokeBall[] = _("Cannot throw a ball!\p");
@@ -1125,8 +1146,121 @@ void ItemUseInBattle_EnigmaBerry(u8 taskId)
     }
 }
 
+static const struct YesNoFuncTable gUseFlashItemYesNoTable =
+{
+    .yesFunc = UseFlashItemYes,
+    .noFunc = bag_menu_inits_lists_menu,
+};
+
+void ItemUseOutOfBattle_Flash(u8 taskId)
+{
+    if (FlagGet(FLAG_BADGE02_GET) != TRUE)
+    {
+        sub_81B1B5C(gText_CantUseUntilNewBadge, 1);
+        gTasks[taskId].func = sub_81B1C1C;
+    }
+    else
+    {
+        if (SetUpFieldMove_Flash())
+            DisplayItemMessage(taskId, 1, gText_BootedUpFlashItem, BootUpFlash);
+        else
+            DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
+    }
+}
+
+void BootUpFlash(u8 taskId)
+{
+    gTasks[taskId].func = DisplayBootUpFlashYesNo;
+}
+
+void DisplayBootUpFlashYesNo(u8 taskId)
+{
+    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+    {
+        DisplayItemMessage(taskId, 1, gText_UseFlashItem, UseFlashItemYesNo);
+    }
+}
+
+void UseFlashItemYesNo(u8 taskId)
+{
+    bag_menu_yes_no(taskId, 6, &gUseFlashItemYesNoTable);
+}
+
+void UseFlashItemYes(u8 taskId)
+{
+    gUnknown_03006328 = DoFlashItem;
+    SetUpFlashUseCallback(taskId);
+}
+
+void SetUpFlashUseCallback(u8 taskId)
+{
+    gUnknown_0203CE54->mainCallback2 = CB2_ReturnToField;
+    unknown_ItemMenu_Confirm(taskId);
+}
+
+void DoFlashItem(u8 taskId, TaskFunc task)
+{
+    sub_81371B4();
+}
+
+static const struct YesNoFuncTable gUseFlyItemYesNoTable =
+{
+    .yesFunc = UseFlyItemYes,
+    .noFunc = bag_menu_inits_lists_menu,
+};
+
+void ItemUseOutOfBattle_Fly(u8 taskId)
+{
+    if (FlagGet(FLAG_BADGE06_GET) != TRUE)
+    {
+        sub_81B1B5C(gText_CantUseUntilNewBadge, 1);
+        gTasks[taskId].func = sub_81B1C1C;
+    }
+    else
+    {
+        if (SetUpFieldMove_Fly())
+            DisplayItemMessage(taskId, 1, gText_BootedUpFlyItem, BootUpFly);
+        else
+            DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
+    }
+}
+
+void BootUpFly(u8 taskId)
+{
+    gTasks[taskId].func = DisplayBootUpFlyYesNo;
+}
+
+void DisplayBootUpFlyYesNo(u8 taskId)
+{
+    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+    {
+        DisplayItemMessage(taskId, 1, gText_UseFlyItem, UseFlyItemYesNo);
+    }
+}
+
+void UseFlyItemYesNo(u8 taskId)
+{
+    bag_menu_yes_no(taskId, 6, &gUseFlyItemYesNoTable);
+}
+
+void UseFlyItemYes(u8 taskId)
+{
+    gUnknown_03006328 = DoFlyItem;
+    SetUpFlyUseCallback(taskId);
+}
+
+void SetUpFlyUseCallback(u8 taskId)
+{
+    gUnknown_0203CE54->mainCallback2 = MCB2_FlyMap;
+    unknown_ItemMenu_Confirm(taskId);
+}
+
+void DoFlyItem(u8 taskId, TaskFunc task)
+{
+    sub_81B12C0(taskId);
+}
+
 void ItemUseOutOfBattle_CannotUse(u8 taskId)
 {
     DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
 }
-

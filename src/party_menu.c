@@ -228,7 +228,6 @@ static const u8* sub_81B88BC(void);
 static void sub_81B16D4(u8);
 static void sub_81B334C(void);
 static void sub_81B1708(u8);
-static void sub_81B1C1C(u8);
 static void UpdateCurrentPartySelection(s8*, s8);
 static void SetNewPartySelectTarget1(s8*, s8);
 static void SetNewPartySelectTarget2(s8*, s8);
@@ -281,7 +280,6 @@ static void sub_81B53FC(u8);
 static void sub_81B5430(u8);
 static void task_brm_cancel_1_on_keypad_a_or_b(u8);
 static void sub_81B5674(u8);
-static void sub_81B57DC(void);
 static void sub_81B5864(void);
 static void sub_81B56A4(u8);
 static void sub_81B56D8(u8);
@@ -387,7 +385,6 @@ static void CursorCb_Trade2(u8 taskId);
 static void CursorCb_Toss(u8 taskId);
 static void CursorCb_FieldMove(u8 taskId);
 static bool8 SetUpFieldMove_Surf(void);
-static bool8 SetUpFieldMove_Fly(void);
 static bool8 SetUpFieldMove_Waterfall(void);
 static bool8 SetUpFieldMove_Dive(void);
 
@@ -2267,7 +2264,7 @@ static void sub_81B1288(struct Pokemon *partySlot, struct Pokemon *pokemon)
     Free(temp);
 }
 
-static void sub_81B12C0(u8 taskId)
+void sub_81B12C0(u8 taskId)
 {
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
     gTasks[taskId].func = c3_0811FAB4;
@@ -2778,7 +2775,7 @@ static void sub_81B1BE8(u8 taskId)
     }
 }
 
-static void sub_81B1C1C(u8 taskId)
+void sub_81B1C1C(u8 taskId)
 {
     if (sub_81B1BD4() != TRUE)
     {
@@ -4832,7 +4829,7 @@ static void task_brm_cancel_1_on_keypad_a_or_b(u8 taskId)
         CursorCb_Cancel1(taskId);
 }
 
-static void sub_81B57DC(void)
+void sub_81B57DC(void)
 {
     if (FlagGet(FLAG_SYS_USE_FLASH) == TRUE)
         display_pokemon_menu_message(12);
@@ -4865,7 +4862,7 @@ static void sub_81B5864(void)
         display_pokemon_menu_message(8);
 }
 
-static bool8 SetUpFieldMove_Fly(void)
+bool8 SetUpFieldMove_Fly(void)
 {
     if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
         return TRUE;

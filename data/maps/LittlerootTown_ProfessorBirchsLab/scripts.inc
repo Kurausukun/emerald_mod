@@ -548,6 +548,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_1FA2F8:: @ 81FA2F8
 LittlerootTown_ProfessorBirchsLab_EventScript_1FA352:: @ 81FA352
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FADD7, MSGBOX_DEFAULT
 	giveitem_std ITEM_POKE_BALL, 5
+	callnative GlobalNuzlockeSet
 	compare VAR_RESULT, 0
 	call_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_1FA3CE
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FAE40, MSGBOX_DEFAULT
@@ -557,6 +558,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_1FA352:: @ 81FA352
 LittlerootTown_ProfessorBirchsLab_EventScript_1FA37F:: @ 81FA37F
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FAF3F, MSGBOX_DEFAULT
 	giveitem_std ITEM_POKE_BALL, 5
+	callnative GlobalNuzlockeSet
 	compare VAR_RESULT, 0
 	call_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_1FA3D7
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_1FAF8E, MSGBOX_DEFAULT
