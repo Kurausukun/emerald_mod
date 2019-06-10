@@ -4885,10 +4885,13 @@ static void HandleEndTurn_FinishBattle(void)
 								  | BATTLE_TYPE_x800000
 								  | BATTLE_TYPE_x2000000)))
         {
-            if (IsSpeciesClauseActive == 0)
+            if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
             {
-                if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
-                    NuzlockeFlagSet(GetCurrentRegionMapSectionId());
+                if (IsSpeciesClauseActive == 0)
+                {
+                    if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
+                        NuzlockeFlagSet(GetCurrentRegionMapSectionId());
+                }
             }
         }
         sub_8186444();
