@@ -5207,7 +5207,7 @@ static void HandleEndTurn_FinishBattle(void)
         sub_8186444();
         BeginFastPaletteFade(3);
         FadeOutMapMusic(5);
-        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
+        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
             DeleteFaintedPartyPokemon();
         gBattleMainFunc = FreeResetData_ReturnToOvOrDoEvolutions;
         gCB2_AfterEvolution = BattleMainCB2;
