@@ -522,8 +522,6 @@ void HealPlayerParty(void)
     // restore HP.
     for(i = 0; i < gPlayerPartyCount; i++)
     {
-        /*if (((!(GetMonData(&gPlayerParty[i], MON_DATA_STATUS) == AILMENT_FNT)) && GetNuzlockeFlag(GLOBAL_NUZLOCKE_SWITCH)) || (!(GetNuzlockeFlag(GLOBAL_NUZLOCKE_SWITCH))))
-        {*/
             u16 maxHP = GetMonData(&gPlayerParty[i], MON_DATA_MAX_HP);
             arg[0] = maxHP;
             arg[1] = maxHP >> 8;

@@ -4903,7 +4903,7 @@ static void HandleEndTurn_FinishBattle(void)
 		WasBarRedLast = 0;
         for (i = 0; i < PARTY_SIZE; i++)
             UndoMegaEvolution(i);
-        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
+        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
             DeleteFaintedPartyPokemon();
         gBattleMainFunc = FreeResetData_ReturnToOvOrDoEvolutions;
         gCB2_AfterEvolution = BattleMainCB2;
@@ -5750,5 +5750,3 @@ static void HandleAction_ActionFinished(void)
     gBattleScripting.multihitMoveEffect = 0;
     gBattleResources->battleScriptsStack->size = 0;
 }
-
-
