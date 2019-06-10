@@ -462,6 +462,7 @@ u16 sub_8068B48(void);
 u16 sub_8068BB0(void);
 void CreateObedientEnemyMon(void);
 void CalculateMonStats(struct Pokemon *mon);
+void CalculateMonStatsPomegSafety(struct Pokemon *mon);
 void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest);
 u8 GetLevelFromMonExp(struct Pokemon *mon);
 u8 GetLevelFromBoxMonExp(struct BoxPokemon *boxMon);
