@@ -1953,7 +1953,7 @@ u8 IsCaptureBlockedBySpeciesClause(u16 species)
     for (i = 0; i < EVOS_PER_LINE; i++)
     {
         if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gEvolutionLines[species][i]), FLAG_GET_CAUGHT))
-            return 0;
+            return 1;
     }
-    return 1;
+    return 0;
 }
