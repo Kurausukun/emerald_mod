@@ -4723,91 +4723,84 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         break;
                     case 2:
                         // revive
-                        if (!NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
+                        if (r10 & 0x10)
                         {
-                            if (r10 & 0x10)
+                            if (GetMonData(mon, MON_DATA_HP, NULL) != 0 || NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
                             {
-                                if (GetMonData(mon, MON_DATA_HP, NULL) != 0)
+                                var_3C++;
+                                break;
+                            }
+                            if (gMain.inBattle)
+                            {
+                                if (battlerId != 4)
                                 {
-                                    var_3C++;
-                                    break;
+                                    gAbsentBattlerFlags &= ~gBitTable[battlerId];
+                                    CopyPlayerPartyMonToBattleData(battlerId, pokemon_order_func(gBattlerPartyIndexes[battlerId]));
+                                    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
+                                        gBattleResults.numRevivesUsed++;
                                 }
-                                if (gMain.inBattle)
+                                else
                                 {
-                                    if (battlerId != 4)
+                                    gAbsentBattlerFlags &= ~gBitTable[gActiveBattler ^ 2];
+                                    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
+                                        gBattleResults.numRevivesUsed++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (GetMonData(mon, MON_DATA_HP, NULL) == 0)
+                            {
+                                var_3C++;
+                                break;
+                            }
+                        }
+                        dataUnsigned = itemEffect[var_3C++];
+                        switch (dataUnsigned)
+                        {
+                        case 0xFF:
+                            dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) - GetMonData(mon, MON_DATA_HP, NULL);
+                            break;
+                        case 0xFE:
+                            dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) / 2;
+                            if (dataUnsigned == 0)
+                                dataUnsigned = 1;
+                            break;
+                        case 0xFD:
+                            dataUnsigned = gBattleScripting.field_23;
+                            break;
+                        }
+                        if (GetMonData(mon, MON_DATA_MAX_HP, NULL) != GetMonData(mon, MON_DATA_HP, NULL))
+                        {
+                            if (e == 0)
+                            {
+                                dataUnsigned = GetMonData(mon, MON_DATA_HP, NULL) + dataUnsigned;
+                                if (dataUnsigned > GetMonData(mon, MON_DATA_MAX_HP, NULL))
+                                    dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL);
+                                SetMonData(mon, MON_DATA_HP, &dataUnsigned);
+                                if (gMain.inBattle && battlerId != 4)
+                                {
+                                    gBattleMons[battlerId].hp = dataUnsigned;
+                                    if (!(r10 & 0x10) && GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
                                     {
-                                        gAbsentBattlerFlags &= ~gBitTable[battlerId];
-                                        CopyPlayerPartyMonToBattleData(battlerId, pokemon_order_func(gBattlerPartyIndexes[battlerId]));
-                                        if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
-                                            gBattleResults.numRevivesUsed++;
-                                    }
-                                    else
-                                    {
-                                        gAbsentBattlerFlags &= ~gBitTable[gActiveBattler ^ 2];
-                                        if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleResults.numRevivesUsed < 255)
-                                            gBattleResults.numRevivesUsed++;
+                                        if (gBattleResults.numHealingItemsUsed < 255)
+                                            gBattleResults.numHealingItemsUsed++;
+                                        // I have to re-use this variable to match.
+                                        r5 = gActiveBattler;
+                                        gActiveBattler = battlerId;
+                                        BtlController_EmitGetMonData(0, REQUEST_ALL_BATTLE, 0);
+                                        MarkBattlerForControllerExec(gActiveBattler);
+                                        gActiveBattler = r5;
                                     }
                                 }
                             }
                             else
                             {
-                                if (GetMonData(mon, MON_DATA_HP, NULL) == 0)
-                                {
-                                    var_3C++;
-                                    break;
-                                }
+                                gBattleMoveDamage = -dataUnsigned;
                             }
-                            dataUnsigned = itemEffect[var_3C++];
-                            switch (dataUnsigned)
-                            {
-                            case 0xFF:
-                                dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) - GetMonData(mon, MON_DATA_HP, NULL);
-                                break;
-                            case 0xFE:
-                                dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) / 2;
-                                if (dataUnsigned == 0)
-                                    dataUnsigned = 1;
-                                break;
-                            case 0xFD:
-                                dataUnsigned = gBattleScripting.field_23;
-                                break;
-                            }
-                            if (GetMonData(mon, MON_DATA_MAX_HP, NULL) != GetMonData(mon, MON_DATA_HP, NULL))
-                            {
-                                if (e == 0)
-                                {
-                                    dataUnsigned = GetMonData(mon, MON_DATA_HP, NULL) + dataUnsigned;
-                                    if (dataUnsigned > GetMonData(mon, MON_DATA_MAX_HP, NULL))
-                                        dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL);
-                                    SetMonData(mon, MON_DATA_HP, &dataUnsigned);
-                                    if (gMain.inBattle && battlerId != 4)
-                                    {
-                                        gBattleMons[battlerId].hp = dataUnsigned;
-                                        if (!(r10 & 0x10) && GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
-                                        {
-                                            if (gBattleResults.numHealingItemsUsed < 255)
-                                                gBattleResults.numHealingItemsUsed++;
-                                            // I have to re-use this variable to match.
-                                            r5 = gActiveBattler;
-                                            gActiveBattler = battlerId;
-                                            BtlController_EmitGetMonData(0, REQUEST_ALL_BATTLE, 0);
-                                            MarkBattlerForControllerExec(gActiveBattler);
-                                            gActiveBattler = r5;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    gBattleMoveDamage = -dataUnsigned;
-                                }
-                                retVal = FALSE;
-                            }
-                            r10 &= 0xEF;
-                        }
-                        else
-                        {
                             retVal = FALSE;
                         }
+                        r10 &= 0xEF;
                         break;
                     case 3:
                         // Heal pp in all moves.
