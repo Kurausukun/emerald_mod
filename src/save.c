@@ -978,18 +978,6 @@ void sub_8153688(u8 taskId)
 
 void SavePlayerPartyOnly(void)
 {
-    s32 i;
-    struct Pokemon *monsParty = calloc(PARTY_SIZE, sizeof(struct Pokemon));
-
-    for (i = 0; i < PARTY_SIZE; i++)
-        monsParty[i] = gPlayerParty[i];
-    i = gPlayerPartyCount;
-
-    LoadPlayerParty();
+    SavePlayerParty();
     TrySavingData(SAVE_PARTY);
-
-    for (i = 0; i < PARTY_SIZE; i++)
-        gPlayerParty[i] = monsParty[i];
-
-    free(monsParty);
 }
