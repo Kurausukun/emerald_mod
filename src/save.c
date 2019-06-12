@@ -11,6 +11,7 @@
 #include "main.h"
 #include "trainer_hill.h"
 #include "link.h"
+#include "alloc.h"
 #include "constants/game_stat.h"
 
 static u16 CalculateChecksum(void *data, u16 size);
@@ -701,6 +702,12 @@ u8 HandleSavingData(u8 saveType)
         SaveSerializedGame();
         save_write_to_flash(0xFFFF, gRamSaveSectionLocations);
         break;
+    case SAVE_PARTY:
+        save_serialize_map();
+        SaveSerializedGame();                          
+        ClearSaveData_2(1, gRamSaveSectionLocations);                          
+        sav12_xor_get(1, gRamSaveSectionLocations);
+        break;
     }
     gTrainerHillVBlankCounter = backupVar;
     return 0;
@@ -967,4 +974,22 @@ void sub_8153688(u8 taskId)
         }
         break;
     }
+}
+
+void SavePlayerPartyOnly(void)
+{
+    s32 i;
+    struct Pokemon *monsParty = calloc(PARTY_SIZE, sizeof(struct Pokemon));
+
+    for (i = 0; i < PARTY_SIZE; i++)
+        monsParty[i] = gPlayerParty[i];
+    i = gPlayerPartyCount;
+
+    LoadPlayerParty();
+    TrySavingData(SAVE_PARTY);
+
+    for (i = 0; i < PARTY_SIZE; i++)
+        gPlayerParty[i] = monsParty[i];
+
+    free(monsParty);
 }
