@@ -52,7 +52,8 @@ enum
     SAVE_LINK2, // unknown 2nd link save
     SAVE_HALL_OF_FAME,
     SAVE_OVERWRITE_DIFFERENT_FILE,
-    SAVE_HALL_OF_FAME_ERASE_BEFORE // unused
+    SAVE_HALL_OF_FAME_ERASE_BEFORE, // unused
+    SAVE_PARTY
 };
 
 #define SECTOR_SAVE_SLOT_LENGTH 14
@@ -92,6 +93,7 @@ u8 sub_81534D0(u8);
 u32 TryReadSpecialSaveSection(u8 sector, u8* dst);
 u32 TryWriteSpecialSaveSection(u8 sector, u8* src);
 void sub_8153688(u8 taskId);
+void SavePlayerPartyOnly(void);
 
 // save_failed_screen.c
 void DoSaveFailedScreen(u8 saveType);
