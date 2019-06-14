@@ -1135,8 +1135,7 @@ void ItemUseOutOfBattle_Flash(u8 taskId)
 {
     if (FlagGet(FLAG_BADGE02_GET) != TRUE)
     {
-        sub_81B1B5C(gText_CantUseUntilNewBadge, 1);
-        gTasks[taskId].func = sub_81B1C1C;
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
     }
     else
     {
@@ -1192,8 +1191,7 @@ void ItemUseOutOfBattle_Fly(u8 taskId)
 {
     if (FlagGet(FLAG_BADGE06_GET) != TRUE)
     {
-        sub_81B1B5C(gText_CantUseUntilNewBadge, 1);
-        gTasks[taskId].func = sub_81B1C1C;
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
     }
     else
     {

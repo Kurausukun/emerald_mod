@@ -51,7 +51,7 @@ static void FaintFromFieldPoison(u8 partyIdx)
     SetMonData(pokemon, MON_DATA_STATUS, &status);
     GetMonData(pokemon, MON_DATA_NICKNAME, gStringVar1);
     StringGetEnd10(gStringVar1);
-	DeleteFaintedPartyPokemon();
+    DeleteFaintedPartyPokemon();
 }
 
 static bool32 MonFaintedFromPoison(u8 partyIdx)

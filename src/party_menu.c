@@ -4883,7 +4883,7 @@ static void hm_surf_run_dp02scr(void)
 
 static bool8 SetUpFieldMove_Surf(void)
 {
-    if (PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE)
+    if (FlagGet(FLAG_BADGE05_GET && IsPlayerFacingSurfableFishableWater() == TRUE)
     {
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
         gPostMenuFieldCallback = hm_surf_run_dp02scr;
