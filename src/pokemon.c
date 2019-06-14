@@ -61,6 +61,7 @@ static void EncryptBoxMon(struct BoxPokemon *boxMon);
 static void DecryptBoxMon(struct BoxPokemon *boxMon);
 static void sub_806E6CC(u8 taskId);
 static bool8 ShouldGetStatBadgeBoost(u16 flagId, u8 battlerId);
+//static u32 CreateShinyPersonality(u32 otId);
 
 // EWRAM vars
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
@@ -2724,6 +2725,14 @@ void CreateObedientMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u
     CreateMon(mon, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
     SetMonData(mon, MON_DATA_OBEDIENCE, &obedient);
 }
+
+//void CreateShinyMon(struct Pokemon *mon, u16 species, u8 level)
+//{
+//    u32 personality, shinyValue;
+//    personality = CreateShinyPersonality(T1_READ_32(gSaveBlock2Ptr->playerTrainerId));
+//    CreateMon(mon, species, level, 0, 1, personality, OT_ID_PLAYER_ID, 0);
+//    CalculateMonStats(mon);
+//}
 
 bool8 sub_80688F8(u8 caseId, u8 battlerId)
 {
@@ -6913,3 +6922,46 @@ void DeleteFaintedPartyPokemon(void)
     }
     CompactPartySlots();
 }
+
+//static u32 CreateShinyPersonality(u32 otId)
+//{
+//    u32 personality;
+//    u16 xored_otId;
+//    u16 personality1, personality2;
+//    u16 bit;
+//    u8 i;
+//    bool8 set;
+//    
+//    xored_otId = (otId & 0xFFFF) ^ (otId >> 0x10);
+//    //xored_otId ^ xored_personality <= 7, so xored_personality must be the same as xoredotId with the exception of last 3 bits
+//    xored_otId &= ~(7);
+//    xored_otId |= (Random() % 8);
+//
+//    personality1, personality2 = 0;
+//    for (i = 0; i < 16; i++)
+//    {
+//        bit = 1 << i;
+//        set = Random() & 1;
+//        if (xored_otId & bit) //bit is 1; 1 ^ X == 0 iff X is 1; then personality1 is 0 and personality2 is 1 or reversed
+//        {
+//            if (set)
+//                personality1 |= bit;
+//            else
+//                personality2 |= bit;
+//        }
+//        else //bit is 0; 0 ^ X == 0 iff X is 0; then personality1 is 0 and personality2 is 0 or personality is 1 and personality2 is 1
+//        {
+//            if (set)
+//            {
+//                personality1 |= bit;
+//                personality2 |= bit;
+//            }
+//        }
+//    }
+//    if (Random() & 1)
+//        personality = (personality1) | (personality2 << 0x10);
+//    else
+//        personality = (personality2) | (personality1 << 0x10);
+//
+//    return personality;
+//}

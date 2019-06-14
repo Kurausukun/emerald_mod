@@ -225,9 +225,6 @@ LittlerootTown_EventScript_1E8013:: @ 81E8013
 
 LittlerootTown_EventScript_1E8022:: @ 81E8022
 	msgbox LittlerootTown_Text_1E8ACF, MSGBOX_NPC
-    giveitem_std ITEM_FLASH
-    giveitem_std ITEM_FLY
-    closemessage
 	end
 
 LittlerootTown_EventScript_1E802B:: @ 81E802B

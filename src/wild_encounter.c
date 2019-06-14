@@ -22,6 +22,7 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/maps.h"
+#include "constants/region_map_sections.h"
 #include "constants/species.h"
 
 extern const u8 EventScript_RepelWoreOff[];
