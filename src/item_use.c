@@ -87,18 +87,12 @@ void sub_80FDA24(u8 a);
 void sub_80FD8E0(u8 taskId, s16 x, s16 y);
 void sub_80FDBEC(void);
 bool8 sub_80FDE2C(void);
-void BootUpFly(u8 taskId);
-void DisplayBootUpFlyYesNo(u8 taskId);
-void UseFlyItemYesNo(u8 taskId);
-void UseFlyItemYes(u8 taskId);
-void SetUpFlyUseCallback(u8 taskId);
-void DoFlyItem(u8 taskId, TaskFunc task);
-void BootUpFlash(u8 taskId);
-void DisplayBootUpFlashYesNo(u8 taskId);
-void UseFlashItemYesNo(u8 taskId);
-void UseFlashItemYes(u8 taskId);
+void UseFlashItem(u8 taskId);
 void SetUpFlashUseCallback(u8 taskId);
 void DoFlashItem(u8 taskId, TaskFunc task);
+void UseFlyItem(u8 taskId);
+void SetUpFlyUseCallback(u8 taskId);
+void DoFlyItem(u8 taskId, TaskFunc task);
 void ItemUseOutOfBattle_CannotUse(u8 taskId);
 
 // EWRAM variables
@@ -1146,46 +1140,25 @@ void ItemUseInBattle_EnigmaBerry(u8 taskId)
     }
 }
 
-static const struct YesNoFuncTable gUseFlashItemYesNoTable =
-{
-    .yesFunc = UseFlashItemYes,
-    .noFunc = bag_menu_inits_lists_menu,
-};
-
 void ItemUseOutOfBattle_Flash(u8 taskId)
 {
     if (FlagGet(FLAG_BADGE02_GET) != TRUE)
     {
-        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
+        if (!gTasks[taskId].data[3])
+            DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
+        else
+            DisplayItemMessageOnField(taskId, gText_CantUseUntilNewBadge, CleanUpAfterFailingToUseRegisteredKeyItemOnField);
     }
     else
     {
         if (SetUpFieldMove_Flash())
-            DisplayItemMessage(taskId, 1, gText_BootedUpFlashItem, BootUpFlash);
+            UseFlashItem(taskId);
         else
             DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
     }
 }
 
-void BootUpFlash(u8 taskId)
-{
-    gTasks[taskId].func = DisplayBootUpFlashYesNo;
-}
-
-void DisplayBootUpFlashYesNo(u8 taskId)
-{
-    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
-    {
-        DisplayItemMessage(taskId, 1, gText_UseFlashItem, UseFlashItemYesNo);
-    }
-}
-
-void UseFlashItemYesNo(u8 taskId)
-{
-    bag_menu_yes_no(taskId, 6, &gUseFlashItemYesNoTable);
-}
-
-void UseFlashItemYes(u8 taskId)
+void UseFlashItem(u8 taskId)
 {
     gUnknown_03006328 = DoFlashItem;
     SetUpFlashUseCallback(taskId);
@@ -1202,46 +1175,25 @@ void DoFlashItem(u8 taskId, TaskFunc task)
     sub_81371B4();
 }
 
-static const struct YesNoFuncTable gUseFlyItemYesNoTable =
-{
-    .yesFunc = UseFlyItemYes,
-    .noFunc = bag_menu_inits_lists_menu,
-};
-
 void ItemUseOutOfBattle_Fly(u8 taskId)
 {
     if (FlagGet(FLAG_BADGE06_GET) != TRUE)
     {
-        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
+        if (!gTasks[taskId].data[3])
+            DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
+        else
+            DisplayItemMessageOnField(taskId, gText_CantUseUntilNewBadge, CleanUpAfterFailingToUseRegisteredKeyItemOnField);
     }
     else
     {
         if (SetUpFieldMove_Fly())
-            DisplayItemMessage(taskId, 1, gText_BootedUpFlyItem, BootUpFly);
+            UseFlyItem(taskId);
         else
             DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
     }
 }
 
-void BootUpFly(u8 taskId)
-{
-    gTasks[taskId].func = DisplayBootUpFlyYesNo;
-}
-
-void DisplayBootUpFlyYesNo(u8 taskId)
-{
-    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
-    {
-        DisplayItemMessage(taskId, 1, gText_UseFlyItem, UseFlyItemYesNo);
-    }
-}
-
-void UseFlyItemYesNo(u8 taskId)
-{
-    bag_menu_yes_no(taskId, 6, &gUseFlyItemYesNoTable);
-}
-
-void UseFlyItemYes(u8 taskId)
+void UseFlyItem(u8 taskId)
 {
     gUnknown_03006328 = DoFlyItem;
     SetUpFlyUseCallback(taskId);
