@@ -227,3 +227,11 @@ BattleScript_TrainerSlideMsgRet::
 BattleScript_TrainerSlideMsgEnd2::
 	call BattleScript_TrainerSlideMsgRet
 	end2
+
+BattleScript_NuzlockeCantCatch::
+	printstring STRINGID_NUZLOCKEENCOUNTERUSED
+	end2
+
+BattleScript_SpeciesClause::
+	printstring STRINGID_SPECIESCLAUSE
+	end2

@@ -1414,6 +1414,27 @@ u8 GetCurrentRegionMapSectionId(void)
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId;
 }
 
+u8 GetCurrentNuzlockeRegionMapSectionId(void)
+{
+    switch(gSaveBlock1Ptr->location.mapNum)
+    {
+    default:
+        return GetCurrentRegionMapSectionId();
+    case MAP_NUM(SAFARI_ZONE_SOUTH):
+        return MAPSEC_SAFARI_ZONE_AREA1;
+    case MAP_NUM(SAFARI_ZONE_SOUTHWEST):
+        return MAPSEC_SAFARI_ZONE_AREA2;
+    case MAP_NUM(SAFARI_ZONE_NORTHWEST):
+        return MAPSEC_SAFARI_ZONE_AREA3;
+    case MAP_NUM(SAFARI_ZONE_NORTH):
+        return MAPSEC_SAFARI_ZONE_AREA4;
+    case MAP_NUM(SAFARI_ZONE_SOUTHEAST):
+        return MAPSEC_SAFARI_ZONE_AREA5;
+    case MAP_NUM(SAFARI_ZONE_NORTHEAST):
+        return MAPSEC_SAFARI_ZONE_AREA6;
+    }
+}
+
 u8 GetCurrentMapBattleScene(void)
 {
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->battleType;

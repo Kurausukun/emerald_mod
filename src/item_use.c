@@ -115,10 +115,6 @@ static const struct YesNoFuncTable gUnknown_085920E8 =
     .noFunc = bag_menu_inits_lists_menu,
 };
 
-static const u8 textCantThrowPokeBallNuzlocke[] = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
-
-static const u8 textCantThrowPokeBallSpeciesClause[] = _("You have already caught a POKéMON\nin this evolution line!{PAUSE_UNTIL_PRESS}");
-
 // .text
 
 void SetUpItemUseCallback(u8 taskId)
@@ -945,11 +941,11 @@ void ItemUseInBattle_PokeBall(u8 taskId)
     }
 	else if (IsCaptureBlockedByNuzlocke == 1)
     {
-        DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallNuzlocke);
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantThrowPokeBallNuzlocke);
     }
     else if (IsSpeciesClauseActive == 1)
     {
-        DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallSpeciesClause);
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantThrowPokeBallSpeciesClause);
     }
     else if (gBattlerInMenuId == GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)) // Attempting to throw a ball with the second pokemon.
     {

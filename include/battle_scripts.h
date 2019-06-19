@@ -322,6 +322,7 @@ extern const u8 BattleScript_ItemHurtRet[];
 extern const u8 BattleScript_ToxicOrb[];
 extern const u8 BattleScript_FlameOrb[];
 extern const u8 BattleScript_MoveEffectIncinerate[];
-extern const u8 BattleScript_NuzlockeEncounterUsed[];
+extern const u8 BattleScript_NuzlockeCantCatch[];
+extern const u8 BattleScript_SpeciesClause[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "event_data.h"
+#include "overworld.h"
 #include "pokedex.h"
 #include "constants/region_map_sections.h"
 

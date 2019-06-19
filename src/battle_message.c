@@ -1191,6 +1191,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_GRASSYTERRAINHEALS - 12] = sText_GrassyTerrainHeals,
     [STRINGID_ELECTRICTERRAINPREVENTS - 12] = sText_ElectricTerrainPreventsSleep,
     [STRINGID_PSYCHICTERRAINPREVENTS - 12] = sText_PsychicTerrainPreventsPriority,
+    [STRINGID_NUZLOCKEENCOUNTERUSED - 12] = gText_CantThrowPokeBallNuzlocke,
+    [STRINGID_SPECIESCLAUSE - 12] = gText_CantThrowPokeBallSpeciesClause
 };
 
 const u16 gTerrainStringIds[] =

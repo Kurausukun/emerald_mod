@@ -2719,4 +2719,7 @@ extern const u8 gText_NumberOfBattles[];
 extern const u8 gText_Unknown[];
 extern const u8 gText_TrainerCloseBy[];
 
+extern const u8 gText_CantThrowPokeBallNuzlocke[];
+extern const u8 gText_CantThrowPokeBallSpeciesClause[];
+
 #endif // GUARD_STRINGS_H

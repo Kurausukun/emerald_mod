@@ -15,6 +15,7 @@
 #include "strings.h"
 #include "task.h"
 #include "trainer_hill.h"
+#include "constants/region_map_sections.h"
 #include "constants/species.h"
 
 static bool32 IsMonValidSpecies(struct Pokemon *pokemon)
@@ -51,7 +52,8 @@ static void FaintFromFieldPoison(u8 partyIdx)
     SetMonData(pokemon, MON_DATA_STATUS, &status);
     GetMonData(pokemon, MON_DATA_NICKNAME, gStringVar1);
     StringGetEnd10(gStringVar1);
-    DeleteFaintedPartyPokemon();
+    if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
+        DeleteFaintedPartyPokemon();
 }
 
 static bool32 MonFaintedFromPoison(u8 partyIdx)
