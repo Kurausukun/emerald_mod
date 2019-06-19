@@ -3933,17 +3933,17 @@ static void HandleTurnActionSelectionState(void)
                         *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
                         return;
                     }
-					else if (IsCaptureBlockedByNuzlocke == 1)
+                    else if (IsCaptureBlockedByNuzlocke == 1)
                     {
                         BattleScriptExecute(BattleScript_NuzlockeCantCatch);
                         gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
-						return;
+                        return;
                     }
                     else if (IsSpeciesClauseActive == 1)
                     {
                         BattleScriptExecute(BattleScript_SpeciesClause);
                         gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
-						return;
+                        return;
                     }
                     break;
                 case B_ACTION_SAFARI_POKEBLOCK:
