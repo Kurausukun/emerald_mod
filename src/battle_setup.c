@@ -391,6 +391,11 @@ const u8 NuzlockeLUT[] =
     [MAPSEC_VICTORY_ROAD] = 0x3E,
     [MAPSEC_UNDERWATER_124] = 0x3F,
     [MAPSEC_UNDERWATER_126] = 0x3F,
+    [MAPSEC_ARTISAN_CAVE] = 0x40,
+    [MAPSEC_DESERT_UNDERPASS] = 0x41,
+    [MAPSEC_ALTERING_CAVE_2] = 0x42,
+    [MAPSEC_SAFARI_ZONE_AREA5] = 0x43,
+    [MAPSEC_SAFARI_ZONE_AREA6] = 0x44,
 	[GLOBAL_NUZLOCKE_SWITCH] = 0x47
 };
 
@@ -437,26 +442,26 @@ static void CreateBattleStartTask(u8 transition, u16 song)
 
 void BattleSetup_StartWildBattle(void)
 {
+    if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
+    {
+        IsSpeciesClauseActive = IsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
+        if (IsMonShiny(&gEnemyParty[0]))
+        {
+            IsSpeciesClauseActive = 0;
+            IsCaptureBlockedByNuzlocke = 0;
+        }
+        else if (NuzlockeFlagGet(GetCurrentNuzlockeRegionMapSectionId()) == 0)
+            IsCaptureBlockedByNuzlocke = 0;
+        else
+            IsCaptureBlockedByNuzlocke = 1;
+    }
+    else
+    {
+        IsCaptureBlockedByNuzlocke = 0;
+    }
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
-        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
-        {
-            IsSpeciesClauseActive = IsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
-            if (IsMonShiny(&gEnemyParty[0]))
-            {
-                IsSpeciesClauseActive = 0;
-				IsCaptureBlockedByNuzlocke = 0;
-            }
-            else if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
-                IsCaptureBlockedByNuzlocke = 0;
-            else
-                IsCaptureBlockedByNuzlocke = 1;
-        }
-        else
-        {
-            IsCaptureBlockedByNuzlocke = 0;
-        }
         DoStandardWildBattle();
 }
 

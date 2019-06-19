@@ -115,10 +115,6 @@ static const struct YesNoFuncTable gUnknown_085920E8 =
     .noFunc = BagMenu_InitListsMenu,
 };
 
-static const u8 textCantThrowPokeBallNuzlocke[] = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
-
-static const u8 textCantThrowPokeBallSpeciesClause[] = _("You have already caught a POKéMON\nin this evolution line!{PAUSE_UNTIL_PRESS}");
-
 // .text
 
 void SetUpItemUseCallback(u8 taskId)
@@ -935,11 +931,11 @@ void ItemUseInBattle_PokeBall(u8 taskId)
 {
     if (IsCaptureBlockedByNuzlocke == 1)
     {
-        DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallNuzlocke);
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantThrowPokeBallNuzlocke);
     }
     else if (IsSpeciesClauseActive == 1)
     {
-        DisplayCannotUseItemMessage(taskId, FALSE, textCantThrowPokeBallSpeciesClause);
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantThrowPokeBallSpeciesClause);
     }
     else if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
     {

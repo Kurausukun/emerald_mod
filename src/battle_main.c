@@ -4313,6 +4313,18 @@ static void HandleTurnActionSelectionState(void)
                         *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
                         return;
                     }
+					else if (IsCaptureBlockedByNuzlocke == 1)
+                    {
+                        BattleScriptExecute(BattleScript_NuzlockeCantCatch);
+                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+						return;
+                    }
+                    else if (IsSpeciesClauseActive == 1)
+                    {
+                        BattleScriptExecute(BattleScript_SpeciesClause);
+                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
+						return;
+                    }
                     break;
                 case B_ACTION_SAFARI_POKEBLOCK:
                     BtlController_EmitChooseItem(0, gBattleStruct->field_60[gActiveBattler]);
@@ -5199,8 +5211,8 @@ static void HandleEndTurn_FinishBattle(void)
             {
                 if (IsSpeciesClauseActive == 0)
                 {
-                    if (NuzlockeFlagGet(GetCurrentRegionMapSectionId()) == 0)
-                        NuzlockeFlagSet(GetCurrentRegionMapSectionId());
+                    if (NuzlockeFlagGet(GetCurrentNuzlockeRegionMapSectionId()) == 0)
+                        NuzlockeFlagSet(GetCurrentNuzlockeRegionMapSectionId());
                 }
             }
         }
