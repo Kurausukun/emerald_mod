@@ -396,7 +396,7 @@ const u8 NuzlockeLUT[] =
     [MAPSEC_ALTERING_CAVE_2] = 0x42,
     [MAPSEC_SAFARI_ZONE_AREA5] = 0x43,
     [MAPSEC_SAFARI_ZONE_AREA6] = 0x44,
-	[GLOBAL_NUZLOCKE_SWITCH] = 0x47
+    [GLOBAL_NUZLOCKE_SWITCH] = 0x47
 };
 
 #define tState data[0]
