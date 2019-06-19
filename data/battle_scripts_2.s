@@ -206,20 +206,6 @@ BattleScript_ActionWallyThrow:
 	waitmessage 0x40
 	end2
 
-BattleScript_TrainerSlideMsgRet::
-	handletrainerslidemsg BS_SCRIPTING, 0
-	trainerslidein 1
-	handletrainerslidemsg BS_SCRIPTING, 1
-	waitstate
-	trainerslideout 1
-	handletrainerslidemsg BS_SCRIPTING, 2
-	waitstate
-	return
-	
-BattleScript_TrainerSlideMsgEnd2::
-	call BattleScript_TrainerSlideMsgRet
-	end2
-
 BattleScript_NuzlockeCantCatch::
 	printstring STRINGID_NUZLOCKEENCOUNTERUSED
 	end2
