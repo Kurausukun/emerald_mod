@@ -187,7 +187,7 @@ Text_StrengthActivated: @ 8290A16
 
 EventScript_UseWaterfall:: @ 8290A49
 	lockall
-	checkitem ITEM_HM08, 1
+	checkitem ITEM_HM07, 1
 	compare VAR_RESULT, 0
 	goto_if_eq EventScript_CantWaterfall
 	setfieldeffectargument 0, 0
@@ -221,11 +221,10 @@ Text_MonUsedWaterfall: @ 8290AFC
 
 EventScript_UseDive:: @ 8290B0F
 	lockall
-	checkitem ITEM_HM07, 1
+	checkitem ITEM_HM08, 1
 	compare VAR_RESULT, 0
 	goto_if_eq EventScript_CantDive
 	setfieldeffectargument 0, 0
-	setfieldeffectargument 1, 1
 	msgbox Text_WantToDive, MSGBOX_YESNO
 	compare VAR_RESULT, 0
 	goto_if_eq EventScript_EndDive
@@ -245,11 +244,10 @@ EventScript_EndDive:: @ 8290B58
 
 EventScript_UseDiveUnderwater:: @ 8290B5A
 	lockall
-	checkitem ITEM_HM07, 1
+	checkitem ITEM_HM08, 1
 	compare VAR_RESULT, 0
 	goto_if_eq EventScript_CantSurface
 	setfieldeffectargument 0, 0
-	setfieldeffectargument 1, 1
 	msgbox Text_WantToSurface, MSGBOX_YESNO
 	compare VAR_RESULT, 0
 	goto_if_eq EventScript_EndSurface
