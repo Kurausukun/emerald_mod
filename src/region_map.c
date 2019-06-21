@@ -99,8 +99,6 @@ static void sub_8124D14(void);
 static void sub_8124D64(void);
 static void sub_8124E0C(void);
 
-u8 sub_81AB1F0(u8 a);
-
 // .rodata
 
 static const u16 sRegionMapCursorPal[] = INCBIN_U16("graphics/pokenav/cursor.gbapal");
@@ -1990,7 +1988,6 @@ static void sub_8124D64(void)
 
 static void sub_8124E0C(void)
 {
-    u8 taskId;
     switch (sFlyMap->unk_004)
     {
         case 0:
@@ -2032,7 +2029,6 @@ static void sub_8124E0C(void)
                 }
                 else
                 {
-                    taskId = sub_81AB1F0(gUnknown_0203CE58.location);
                     if (FlagGet(FLAG_BAG_FLY) == TRUE)
                     {
                         FlagClear(FLAG_BAG_FLY);

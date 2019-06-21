@@ -112,7 +112,6 @@ bool8 sub_8124658(void);
 void sub_812454C(void);
 void sub_8123030(u16 a0, u32 a1);
 void sub_8123418(void);
-void MCB2_FlyItemMap(void);
 
 extern const struct RegionMapLocation gRegionMapEntries[];
 
