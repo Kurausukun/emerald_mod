@@ -27,6 +27,8 @@
 #include "constants/heal_locations.h"
 #include "constants/map_types.h"
 #include "constants/rgb.h"
+#include "item_menu.h"
+#include "constants/flags.h"
 
 #define MAP_WIDTH 28
 #define MAP_HEIGHT 15
@@ -2027,7 +2029,13 @@ static void sub_8124E0C(void)
                 }
                 else
                 {
-                    SetMainCallback2(sub_81B58A8);
+                    if (FlagGet(FLAG_BAG_FLY) == TRUE)
+                    {
+                        FlagClear(FLAG_BAG_FLY);
+                        SetMainCallback2(CB2_BagMenuFromStartMenu);
+                    }
+                    else
+                        SetMainCallback2(sub_81B58A8);
                 }
                 if (sFlyMap != NULL)
                 {

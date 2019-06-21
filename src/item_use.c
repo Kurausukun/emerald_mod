@@ -1162,7 +1162,10 @@ void ItemUseOutOfBattle_Fly(u8 taskId)
     else
     {
         if (SetUpFieldMove_Fly())
+        {
+            FlagSet(FLAG_BAG_FLY);
             UseFlyItem(taskId);
+        }
         else
             DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
     }
