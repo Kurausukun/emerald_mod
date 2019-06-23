@@ -2174,7 +2174,6 @@ static void HandleReplaceMoveInput(u8 taskId)
                 sUnknown_0203CF21 = sMonSummaryScreen->firstMoveIndex;
                 gSpecialVar_0x8005 = sUnknown_0203CF21;
                 BeginCloseSummaryScreen(taskId);
-
             }
             else if (gMain.newKeys & B_BUTTON)
             {
