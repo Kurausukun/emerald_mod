@@ -85,7 +85,14 @@ void EnableVCountIntrAtLine150(void);
 
 void AgbMain()
 {
+#if MODERN
+    // Modern compilers are liberal with the stack on entry to this function,
+    // so RegisterRamReset may crash if it resets IWRAM.
+    RegisterRamReset(RESET_ALL & ~RESET_IWRAM);
+    DmaFill32(3, 0, IWRAM_START, 0x7E00);
+#else
     RegisterRamReset(RESET_ALL);
+#endif //MODERN
     *(vu16 *)BG_PLTT = 0x7FFF;
     InitGpuRegManager();
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
@@ -98,7 +105,6 @@ void AgbMain()
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
-    SeedRngWithRtc();
     ClearDma3Requests();
     ResetBgs();
     SetDefaultFontsPointer();
@@ -207,13 +213,6 @@ void EnableVCountIntrAtLine150(void)
     u16 gpuReg = (GetGpuReg(REG_OFFSET_DISPSTAT) & 0xFF) | (150 << 8);
     SetGpuReg(REG_OFFSET_DISPSTAT, gpuReg | DISPSTAT_VCOUNT_INTR);
     EnableInterrupts(INTR_FLAG_VCOUNT);
-}
-
-static void SeedRngWithRtc(void)
-{
-    u32 seed = RtcGetMinuteCount();
-    seed = (seed >> 16) ^ (seed & 0xFFFF);
-    SeedRng(seed);
 }
 
 void InitKeys(void)

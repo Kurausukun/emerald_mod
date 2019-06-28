@@ -1,8 +1,6 @@
 #include "global.h"
 #include "item_use.h"
 #include "battle.h"
-#include "battle_anim.h"
-#include "battle_setup.h"
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "berry.h"
@@ -17,7 +15,6 @@
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
 #include "field_weather.h"
-#include "fldeff.h"
 #include "item.h"
 #include "item_menu.h"
 #include "item_use.h"
@@ -31,7 +28,6 @@
 #include "party_menu.h"
 #include "pokeblock.h"
 #include "pokemon.h"
-#include "region_map.h"
 #include "script.h"
 #include "sound.h"
 #include "strings.h"
@@ -40,7 +36,6 @@
 #include "text.h"
 #include "constants/bg_event_constants.h"
 #include "constants/event_objects.h"
-#include "constants/field_effects.h"
 #include "constants/flags.h"
 #include "constants/item_effects.h"
 #include "constants/items.h"
@@ -87,12 +82,6 @@ void sub_80FDA24(u8 a);
 void sub_80FD8E0(u8 taskId, s16 x, s16 y);
 void sub_80FDBEC(void);
 bool8 sub_80FDE2C(void);
-void UseFlashItem(u8 taskId);
-void SetUpFlashUseCallback(u8 taskId);
-void DoFlashItem(u8 taskId, TaskFunc task);
-void UseFlyItem(u8 taskId);
-void SetUpFlyUseCallback(u8 taskId);
-void DoFlyItem(u8 taskId, TaskFunc task);
 void ItemUseOutOfBattle_CannotUse(u8 taskId);
 
 // EWRAM variables
@@ -929,15 +918,7 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
 
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-    if (IsCaptureBlockedByNuzlocke == 1)
-    {
-        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantThrowPokeBallNuzlocke);
-    }
-    else if (IsSpeciesClauseActive == 1)
-    {
-        DisplayCannotUseItemMessage(taskId, FALSE, gText_CantThrowPokeBallSpeciesClause);
-    }
-    else if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
+    if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
     {
         RemoveBagItem(gSpecialVar_ItemId, 1);
         if (!InBattlePyramid())
@@ -1113,79 +1094,6 @@ void ItemUseInBattle_EnigmaBerry(u8 taskId)
         ItemUseOutOfBattle_CannotUse(taskId);
         break;
     }
-}
-
-void ItemUseOutOfBattle_Flash(u8 taskId)
-{
-    if (FlagGet(FLAG_BADGE02_GET) != TRUE)
-    {
-        if (!gTasks[taskId].data[3])
-            DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
-        else
-            DisplayItemMessageOnField(taskId, gText_CantUseUntilNewBadge, CleanUpAfterFailingToUseRegisteredKeyItemOnField);
-    }
-    else
-    {
-        if (SetUpFieldMove_Flash())
-            UseFlashItem(taskId);
-        else
-            DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
-    }
-}
-
-void UseFlashItem(u8 taskId)
-{
-    gUnknown_03006328 = DoFlashItem;
-    SetUpFlashUseCallback(taskId);
-}
-
-void SetUpFlashUseCallback(u8 taskId)
-{
-    gBagMenu->mainCallback2 = CB2_ReturnToField;
-    unknown_ItemMenu_Confirm(taskId);
-}
-
-void DoFlashItem(u8 taskId, TaskFunc task)
-{
-    sub_81371B4();
-}
-
-void ItemUseOutOfBattle_Fly(u8 taskId)
-{
-    if (FlagGet(FLAG_BADGE06_GET) != TRUE)
-    {
-        if (!gTasks[taskId].data[3])
-            DisplayCannotUseItemMessage(taskId, FALSE, gText_CantUseUntilNewBadge);
-        else
-            DisplayItemMessageOnField(taskId, gText_CantUseUntilNewBadge, CleanUpAfterFailingToUseRegisteredKeyItemOnField);
-    }
-    else
-    {
-        if (SetUpFieldMove_Fly())
-        {
-            FlagSet(FLAG_BAG_FLY);
-            UseFlyItem(taskId);
-        }
-        else
-            DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
-    }
-}
-
-void UseFlyItem(u8 taskId)
-{
-    gUnknown_03006328 = DoFlyItem;
-    SetUpFlyUseCallback(taskId);
-}
-
-void SetUpFlyUseCallback(u8 taskId)
-{
-    gBagMenu->mainCallback2 = MCB2_FlyMap;
-    unknown_ItemMenu_Confirm(taskId);
-}
-
-void DoFlyItem(u8 taskId, TaskFunc task)
-{
-    sub_81B12C0(taskId);
 }
 
 void ItemUseOutOfBattle_CannotUse(u8 taskId)

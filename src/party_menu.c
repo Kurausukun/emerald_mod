@@ -107,8 +107,11 @@ struct Struct203CEC4
     u8 windowId[3];
     u8 actions[8];
     u8 listSize;
-    u16 palBuffer[0xB0];
-    u8 filler[0xA0];
+    // In vanilla Emerald, only the first 0xB0 hwords (0x160 bytes) are actually used.
+    // However, a full 0x100 hwords (0x200 bytes) are allocated.
+    // It is likely that the 0x160 value used below is a constant defined by
+    // bin2c, the utility used to encode the compressed palette data.
+    u16 palBuffer[BG_PLTT_SIZE / sizeof(u16)];
     s16 data[16];
 };
 
@@ -228,6 +231,7 @@ static const u8* sub_81B88BC(void);
 static void sub_81B16D4(u8);
 static void sub_81B334C(void);
 static void sub_81B1708(u8);
+static void sub_81B1C1C(u8);
 static void UpdateCurrentPartySelection(s8*, s8);
 static void SetNewPartySelectTarget1(s8*, s8);
 static void SetNewPartySelectTarget2(s8*, s8);
@@ -280,6 +284,7 @@ static void sub_81B53FC(u8);
 static void sub_81B5430(u8);
 static void task_brm_cancel_1_on_keypad_a_or_b(u8);
 static void sub_81B5674(u8);
+static void sub_81B57DC(void);
 static void sub_81B5864(void);
 static void sub_81B56A4(u8);
 static void sub_81B56D8(u8);
@@ -385,6 +390,7 @@ static void CursorCb_Trade2(u8 taskId);
 static void CursorCb_Toss(u8 taskId);
 static void CursorCb_FieldMove(u8 taskId);
 static bool8 SetUpFieldMove_Surf(void);
+static bool8 SetUpFieldMove_Fly(void);
 static bool8 SetUpFieldMove_Waterfall(void);
 static bool8 SetUpFieldMove_Dive(void);
 
@@ -1590,8 +1596,8 @@ static void InitPartyMenu(u8 a, u8 b, u8 c, u8 d, u8 messageId, TaskFunc task, M
         gUnknown_0203CEC4->task = task;
         gUnknown_0203CEC4->exitCallback = NULL;
         gUnknown_0203CEC4->unk8_1 = 0;
-        gUnknown_0203CEC4->unk8_2 = 0xFF;
-        gUnknown_0203CEC4->unk9_0 = 0xFF;
+        gUnknown_0203CEC4->unk8_2 = 0x7F;
+        gUnknown_0203CEC4->unk9_0 = 0x7F;
 
         if (a == 4)
             gUnknown_0203CEC4->unk8_0 = TRUE;
@@ -2302,7 +2308,7 @@ static void sub_81B1288(struct Pokemon *partySlot, struct Pokemon *pokemon)
     Free(temp);
 }
 
-void sub_81B12C0(u8 taskId)
+static void sub_81B12C0(u8 taskId)
 {
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
     gTasks[taskId].func = c3_0811FAB4;
@@ -2813,7 +2819,7 @@ static void sub_81B1BE8(u8 taskId)
     }
 }
 
-void sub_81B1C1C(u8 taskId)
+static void sub_81B1C1C(u8 taskId)
 {
     if (sub_81B1BD4() != TRUE)
     {
@@ -4867,7 +4873,7 @@ static void task_brm_cancel_1_on_keypad_a_or_b(u8 taskId)
         CursorCb_Cancel1(taskId);
 }
 
-void sub_81B57DC(void)
+static void sub_81B57DC(void)
 {
     if (FlagGet(FLAG_SYS_USE_FLASH) == TRUE)
         display_pokemon_menu_message(12);
@@ -4883,7 +4889,7 @@ static void hm_surf_run_dp02scr(void)
 
 static bool8 SetUpFieldMove_Surf(void)
 {
-    if (FlagGet(FLAG_BADGE05_GET) && FlagGet(FLAG_RECEIVED_HM03) && IsPlayerFacingSurfableFishableWater() == TRUE)
+    if (PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE)
     {
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
         gPostMenuFieldCallback = hm_surf_run_dp02scr;
@@ -4900,7 +4906,7 @@ static void sub_81B5864(void)
         display_pokemon_menu_message(8);
 }
 
-bool8 SetUpFieldMove_Fly(void)
+static bool8 SetUpFieldMove_Fly(void)
 {
     if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
         return TRUE;

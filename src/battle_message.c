@@ -878,8 +878,6 @@ const u8 * const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_PKMNBOXLANETTESPCFULL - 12] = gText_PkmnBoxLanettesPCFull,
     [STRINGID_TRAINER1WINTEXT - 12] = sText_Trainer1WinText,
     [STRINGID_TRAINER2WINTEXT - 12] = sText_Trainer2WinText,
-    [STRINGID_NUZLOCKEENCOUNTERUSED - 12] = gText_CantThrowPokeBallNuzlocke,
-    [STRINGID_SPECIESCLAUSE - 12] = gText_CantThrowPokeBallSpeciesClause
 };
 
 const u16 gMissStringIds[] =

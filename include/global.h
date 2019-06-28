@@ -2,6 +2,7 @@
 #define GUARD_GLOBAL_H
 
 #include <string.h>
+#include <limits.h>
 #include "config.h" // we need to define config before gba headers as print stuff needs the functions nulled before defines.
 #include "gba/gba.h"
 #include "constants/global.h"
@@ -61,6 +62,10 @@
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) >= (b) ? (a) : (b))
+
+#if MODERN
+#define abs(x) (((x) < 0) ? -(x) : (x))
+#endif
 
 // Extracts the upper 16 bits of a 32-bit number
 #define HIHALF(n) (((n) & 0xFFFF0000) >> 16)
@@ -971,8 +976,7 @@ struct SaveBlock1
     /*0x3D5A*/ u8 filler3D5A[0xA];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    /*0x3D88*/ u8 NuzlockeEncounterFlags[9];
-    // sizeof: 0x3D94
+    // sizeof: 0x3D88
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
@@ -993,73 +997,5 @@ struct TradeRoomPlayer
     struct MapPosition pos;
     u16 field_C;
 };
-
-/*typedef struct NuzlockeEncounterFlags_s
-{
-    u8 Route101Flag:1;
-    u8 Route102Flag:1;
-    u8 Route103Flag:1;
-    u8 Route104Flag:1;
-    u8 Route105Flag:1;
-    u8 Route106Flag:1;
-    u8 Route107Flag:1;
-    u8 Route108Flag:1;
-    u8 Route109Flag:1;
-    u8 Route110Flag:1;
-    u8 Route111Flag:1;
-    u8 Route112Flag:1;
-    u8 Route113Flag:1;
-    u8 Route114Flag:1;
-    u8 Route115Flag:1;
-    u8 Route116Flag:1;
-    u8 Route117Flag:1;
-    u8 Route118Flag:1;
-    u8 Route119Flag:1;
-    u8 Route120Flag:1;
-    u8 Route121Flag:1;
-    u8 Route122Flag:1;
-    u8 Route123Flag:1;
-    u8 Route124Flag:1;
-    u8 Route125Flag:1;
-    u8 Route126Flag:1;
-    u8 Route127Flag:1;
-    u8 Route128Flag:1;
-    u8 Route129Flag:1;
-    u8 Route130Flag:1;
-    u8 Route131Flag:1;
-    u8 Route132Flag:1;
-    u8 Route133Flag:1;
-    u8 Route134Flag:1;
-    u8 PetalburgCityFlag:1;
-    u8 DewfordTownFlag:1;
-    u8 SlateportCityFlag:1;
-    u8 LilycoveCityFlag:1;
-    u8 MossdeepCityFlag:1;
-    u8 PacifidlogTownFlag:1;
-    u8 SootopolisCityFlag:1;
-    u8 EverGrandeCityFlag:1;
-    u8 PetalburgWoodsFlag:1;
-    u8 RusturfTunnelFlag:1;
-    u8 GraniteCaveFlag:1;
-    u8 FieryPathFlag:1;
-    u8 MeteorFallsFlag:1;
-    u8 JaggedPassFlag:1;
-    u8 MirageTowerFlag:1;
-    u8 AbandonedShipFlag:1;
-    u8 NewMauvilleFlag:1;
-    u8 SafariZoneArea1Flag:1;
-    u8 SafariZoneArea2Flag:1;
-    u8 SafariZoneArea3Flag:1;
-    u8 SafariZoneArea4Flag:1;
-    u8 MtPyreFlag:1;
-    u8 ShoalCaveFlag:1;
-    u8 AquaHideoutFlag:1;
-    u8 MagmaHideoutFlag:1;
-    u8 SeafloorCavernFlag:1;
-    u8 CaveOfOriginFlag:1;
-    u8 SkyPillarFlag:1;
-    u8 VictoryRoadFlag:1;
-    u8 UnderwaterFlag:1;
-} NuzlockeEncounterFlags;*/
 
 #endif // GUARD_GLOBAL_H

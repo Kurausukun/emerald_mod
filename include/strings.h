@@ -404,10 +404,6 @@ extern const u8 gText_CantStoreImportantItems[];
 extern const u8 gText_DepositedVar2Var1s[];
 extern const u8 gText_NoRoomForItems[];
 extern const u8 gText_ThreeDashes[];
-extern const u8 gText_UseFlyItem[];
-extern const u8 gText_BootedUpFlyItem[];
-extern const u8 gText_UseFlashItem[];
-extern const u8 gText_BootedUpFlashItem[];
 
 // party menu text
 extern const u8 gText_PkmnHPRestoredByVar2[];
@@ -489,7 +485,6 @@ extern const u8 gText_CryOf[];
 extern const u8 gText_SizeComparedTo[];
 extern const u8 gText_PokedexRegistration[];
 extern const u8 gText_UnkCtrlF908Clear01[];
-extern const u8 sText_TenDashes2[];
 extern const u8 gText_5MarksPokemon[];
 extern const u8 gText_UnkHeight[];
 extern const u8 gText_UnkWeight[];
@@ -2718,8 +2713,5 @@ extern const u8 gText_NumberRegistered[];
 extern const u8 gText_NumberOfBattles[];
 extern const u8 gText_Unknown[];
 extern const u8 gText_TrainerCloseBy[];
-
-extern const u8 gText_CantThrowPokeBallNuzlocke[];
-extern const u8 gText_CantThrowPokeBallSpeciesClause[];
 
 #endif // GUARD_STRINGS_H

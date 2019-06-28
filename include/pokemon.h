@@ -2,7 +2,6 @@
 #define GUARD_POKEMON_H
 
 #include "constants/pokemon.h"
-#include "constants/species.h"
 #include "sprite.h"
 
 #define MON_DATA_PERSONALITY        0
@@ -416,7 +415,6 @@ struct Evolution
 };
 
 #define EVOS_PER_MON 5
-#define EVOS_PER_LINE 6
 
 extern u8 gPlayerPartyCount;
 extern struct Pokemon gPlayerParty[PARTY_SIZE];
@@ -439,7 +437,6 @@ extern const u8 gStatStageRatios[][2];
 extern const u16 gLinkPlayerFacilityClasses[];
 extern const struct SpriteTemplate gUnknown_08329D98[];
 extern const s8 gNatureStatTable[][5];
-extern const u16 gEvolutionLines[NUM_SPECIES][EVOS_PER_LINE];
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
@@ -465,7 +462,6 @@ u16 sub_8068B48(void);
 u16 sub_8068BB0(void);
 void CreateObedientEnemyMon(void);
 void CalculateMonStats(struct Pokemon *mon);
-void CalculateMonStatsPomegSafety(struct Pokemon *mon);
 void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest);
 u8 GetLevelFromMonExp(struct Pokemon *mon);
 u8 GetLevelFromBoxMonExp(struct BoxPokemon *boxMon);
@@ -601,7 +597,5 @@ bool8 sub_806F104(void);
 struct Unknown_806F160_Struct *sub_806F2AC(u8 id, u8 arg1);
 void sub_806F47C(u8 id);
 u8 *sub_806F4F8(u8 id, u8 arg1);
-void DeletePartyMon(u8 position);
-void DeleteFaintedPartyPokemon(void);
 
 #endif // GUARD_POKEMON_H

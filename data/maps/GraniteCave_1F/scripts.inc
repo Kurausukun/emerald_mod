@@ -7,7 +7,6 @@ GraniteCave_1F_EventScript_22DA5E:: @ 822DA5E
 	goto_if_set FLAG_RECEIVED_HM05, GraniteCave_1F_EventScript_22DA8A
 	msgbox GraniteCave_1F_Text_22DA94, MSGBOX_DEFAULT
 	giveitem_std ITEM_HM05
-	giveitem_std ITEM_FLASH
 	setflag FLAG_RECEIVED_HM05
 	msgbox GraniteCave_1F_Text_22DBB7, MSGBOX_DEFAULT
 	release

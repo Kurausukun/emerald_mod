@@ -461,7 +461,7 @@ u32 MapGridGetMetatileBehaviorAt(int x, int y)
     return GetBehaviorByMetatileId(metatile) & 0xff;
 }
 
-u8 MapGridGetMetatileLayerTypeAt(int x, int y)
+u8 MapGridGetMetatileLayerTypeAt(s32 x, s32 y)
 {
     u16 metatile;
     metatile = MapGridGetMetatileIdAt(x, y);
@@ -756,7 +756,7 @@ void sub_80887F8(struct MapConnection *connection, int direction, int x, int y)
     }
 }
 
-bool8 CameraMove(int x, int y)
+bool8 CameraMove(s32 x, s32 y)
 {
     unsigned int direction;
     struct MapConnection *connection;

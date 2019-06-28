@@ -205,11 +205,3 @@ BattleScript_ActionWallyThrow:
 	printstring STRINGID_YOUTHROWABALLNOWRIGHT
 	waitmessage 0x40
 	end2
-
-BattleScript_NuzlockeCantCatch::
-	printstring STRINGID_NUZLOCKEENCOUNTERUSED
-	end2
-
-BattleScript_SpeciesClause::
-	printstring STRINGID_SPECIESCLAUSE
-	end2

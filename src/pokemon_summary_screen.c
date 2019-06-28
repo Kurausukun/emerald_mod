@@ -2169,11 +2169,19 @@ static void HandleReplaceMoveInput(u8 taskId)
             }
             else if (gMain.newKeys & A_BUTTON)
             {
-                StopPokemonAnimations();
-                PlaySE(SE_SELECT);
-                sUnknown_0203CF21 = sMonSummaryScreen->firstMoveIndex;
-                gSpecialVar_0x8005 = sUnknown_0203CF21;
-                BeginCloseSummaryScreen(taskId);
+                if (CanReplaceMove() == TRUE)
+                {
+                    StopPokemonAnimations();
+                    PlaySE(SE_SELECT);
+                    sUnknown_0203CF21 = sMonSummaryScreen->firstMoveIndex;
+                    gSpecialVar_0x8005 = sUnknown_0203CF21;
+                    BeginCloseSummaryScreen(taskId);
+                }
+                else
+                {
+                    PlaySE(SE_HAZURE);
+                    ShowHMMovesCantBeForgottenWindow(taskId);
+                }
             }
             else if (gMain.newKeys & B_BUTTON)
             {

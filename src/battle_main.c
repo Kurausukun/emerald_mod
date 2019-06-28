@@ -28,7 +28,6 @@
 #include "main.h"
 #include "alloc.h"
 #include "m4a.h"
-#include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
 #include "pokeball.h"
@@ -55,7 +54,6 @@
 #include "constants/hold_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
-#include "constants/region_map_sections.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/species.h"
@@ -4313,18 +4311,6 @@ static void HandleTurnActionSelectionState(void)
                         *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
                         return;
                     }
-                    else if (IsCaptureBlockedByNuzlocke == 1)
-                    {
-                        BattleScriptExecute(BattleScript_NuzlockeCantCatch);
-                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
-                        return;
-                    }
-                    else if (IsSpeciesClauseActive == 1)
-                    {
-                        BattleScriptExecute(BattleScript_SpeciesClause);
-                        gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
-                        return;
-                    }
                     break;
                 case B_ACTION_SAFARI_POKEBLOCK:
                     BtlController_EmitChooseItem(0, gBattleStruct->field_60[gActiveBattler]);
@@ -5191,36 +5177,10 @@ static void HandleEndTurn_FinishBattle(void)
         {
             sub_80EE184();
         }
-		
-		if (!(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE         
-		                          | BATTLE_TYPE_LINK
-		                          | BATTLE_TYPE_TRAINER
-		                          | BATTLE_TYPE_FIRST_BATTLE
-		                          | BATTLE_TYPE_20
-		                          | BATTLE_TYPE_MULTI
-		                          | BATTLE_TYPE_BATTLE_TOWER
-		                          | BATTLE_TYPE_WALLY_TUTORIAL
-		                          | BATTLE_TYPE_LEGENDARY
-		                          | BATTLE_TYPE_REGI
-		                          | BATTLE_TYPE_TWO_OPPONENTS
-								  | BATTLE_TYPE_INGAME_PARTNER
-								  | BATTLE_TYPE_x800000
-								  | BATTLE_TYPE_x2000000)))
-        {
-            if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
-            {
-                if (IsSpeciesClauseActive == 0)
-                {
-                    if (NuzlockeFlagGet(GetCurrentNuzlockeRegionMapSectionId()) == 0)
-                        NuzlockeFlagSet(GetCurrentNuzlockeRegionMapSectionId());
-                }
-            }
-        }
+
         sub_8186444();
         BeginFastPaletteFade(3);
         FadeOutMapMusic(5);
-        if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH) == 1)
-            DeleteFaintedPartyPokemon();
         gBattleMainFunc = FreeResetData_ReturnToOvOrDoEvolutions;
         gCB2_AfterEvolution = BattleMainCB2;
     }
@@ -5927,3 +5887,5 @@ static void HandleAction_ActionFinished(void)
     gBattleScripting.multihitMoveEffect = 0;
     gBattleResources->battleScriptsStack->size = 0;
 }
+
+

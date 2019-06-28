@@ -27,6 +27,7 @@ struct FlashStruct
 
 // static functions
 static void hm2_flash(void);
+static void sub_81371B4(void);
 static bool8 sub_8137304(void);
 static void sub_81373F0(void);
 static void sub_8137404(u8 taskId);
@@ -100,7 +101,7 @@ static void hm2_flash(void)
     gTasks[taskId].data[9] = (uintptr_t)sub_81371B4;
 }
 
-void sub_81371B4(void)
+static void sub_81371B4(void)
 {
     PlaySE(SE_W115);
     FlagSet(FLAG_SYS_USE_FLASH);
