@@ -1,13 +1,7 @@
-ifneq (,$(wildcard $(DEVKITARM)/base_tools))
-include $(DEVKITARM)/base_tools
-else
-PREFIX := $(DEVKITARM)/bin/arm-none-eabi-
-OBJCOPY := $(PREFIX)objcopy
-CC := $(PREFIX)gcc
-AS := $(PREFIX)as
-endif
-export CPP := $(PREFIX)cpp
-export LD := $(PREFIX)ld
+export OBJCOPY := arm-none-eabi-objcopy
+export AS := arm-none-eabi-as
+export CPP := arm-none-eabi-cpp
+export LD := arm-none-eabi-ld
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -43,26 +37,19 @@ ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=$(MODERN)
 
 ifeq ($(MODERN),0)
 CC1             := tools/agbcc/bin/agbcc$(EXE)
-override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm
+override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2
 ROM := pokeemerald.gba
 OBJ_DIR := build/emerald
 LIBPATH := -L ../../tools/agbcc/lib
 else
-CC1             := $(shell $(PREFIX)gcc --print-prog-name=cc1)
+CC1             := $(shell arm-none-eabi-gcc --print-prog-name=cc1)
 override CFLAGS += -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -quiet -fno-toplevel-reorder -fno-aggressive-loop-optimizations -Wno-pointer-to-int-cast
 ROM := pokeemerald_modern.gba
 OBJ_DIR := build/modern
-LIBPATH := -L $(DEVKITARM)/lib/gcc/arm-none-eabi/*/thumb -L $(DEVKITARM)/arm-none-eabi/lib/thumb
+LIBPATH := -L /usr/local/arm-none-eabi/lib/gcc/arm-none-eabi/* -L /usr/local/arm-none-eabi/arm-none-eabi/lib
 endif
 
-ifeq ($(DEBUG),1)
-CFLAGS += -g
-endif
-
-CPPFLAGS := -iquote include -Wno-trigraphs -DMODERN=$(MODERN)
-ifeq ($(MODERN),0)
-CPPFLAGS += -I tools/agbcc/include -I tools/agbcc
-endif
+CPPFLAGS := -I /usr/local/arm-none-eabi/include -iquote include -Wno-trigraphs -DMODERN=$(MODERN)
 
 LDFLAGS = -Map ../../$(MAP)
 
@@ -222,13 +209,11 @@ $(OBJ_DIR)/sym_ewram.ld: sym_ewram.txt
 
 ifeq ($(MODERN),0)
 LD_SCRIPT := ld_script.txt
-LD_SCRIPT_DEPS := $(OBJ_DIR)/sym_bss.ld $(OBJ_DIR)/sym_common.ld $(OBJ_DIR)/sym_ewram.ld
 else
 LD_SCRIPT := ld_script_modern.txt
-LD_SCRIPT_DEPS := 
 endif
 
-$(OBJ_DIR)/ld_script.ld: $(LD_SCRIPT) $(LD_SCRIPT_DEPS)
+$(OBJ_DIR)/ld_script.ld: $(LD_SCRIPT) $(OBJ_DIR)/sym_bss.ld $(OBJ_DIR)/sym_common.ld $(OBJ_DIR)/sym_ewram.ld
 	cd $(OBJ_DIR) && sed "s#tools/#../../tools/#g" ../../$(LD_SCRIPT) > ld_script.ld
 
 $(ELF): $(OBJ_DIR)/ld_script.ld $(OBJS)
