@@ -870,8 +870,11 @@ u8 GetSpeciesBackAnimSet(u16 species)
 static void Task_HandleMonAnimation(u8 taskId)
 {
     u32 i;
+#if MODERN == 1
+    struct Sprite *sprite = (struct Sprite*)(u32)((((u16)(gTasks[taskId].tPtrLO) << 0x10)) | ((u16)(gTasks[taskId].tPtrHI)));
+#else
     struct Sprite *sprite = (struct Sprite*)(u32)((gTasks[taskId].tPtrLO << 0x10) | (gTasks[taskId].tPtrHI));
-
+#endif
     if (gTasks[taskId].tState == 0)
     {
         gTasks[taskId].tSaved0 = sprite->data[0];
