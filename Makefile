@@ -1,7 +1,14 @@
-export OBJCOPY := arm-none-eabi-objcopy
-export AS := arm-none-eabi-as
-export CPP := arm-none-eabi-cpp
-export LD := arm-none-eabi-ld
+TOOLCHAIN := $(DEVKITARM)
+ifneq (,$(wildcard $(TOOLCHAIN)/base_tools))
+include $(TOOLCHAIN)/base_tools
+else
+PREFIX := $(TOOLCHAIN)/bin/arm-none-eabi-
+OBJCOPY := $(PREFIX)objcopy
+CC := $(PREFIX)gcc
+AS := $(PREFIX)as
+endif
+export CPP := $(PREFIX)cpp
+export LD := $(PREFIX)ld
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -35,21 +42,26 @@ MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 
 ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=$(MODERN)
 
+GCC_VER   := $(shell $(CC) -dumpversion)
+
 ifeq ($(MODERN),0)
 CC1             := tools/agbcc/bin/agbcc$(EXE)
-override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2
+override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm
 ROM := pokeemerald.gba
 OBJ_DIR := build/emerald
 LIBPATH := -L ../../tools/agbcc/lib
 else
-CC1             := $(shell arm-none-eabi-gcc --print-prog-name=cc1)
-override CFLAGS += -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -quiet -fno-toplevel-reorder -fno-aggressive-loop-optimizations -Wno-pointer-to-int-cast
+CC1             := $(shell $(PREFIX)gcc --print-prog-name=cc1) -quiet
+override CFLAGS += -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -fno-aggressive-loop-optimizations -Wno-pointer-to-int-cast
 ROM := pokeemerald_modern.gba
 OBJ_DIR := build/modern
-LIBPATH := -L /usr/local/arm-none-eabi/lib/gcc/arm-none-eabi/* -L /usr/local/arm-none-eabi/arm-none-eabi/lib
+LIBPATH := -L $(TOOLCHAIN)/lib/gcc/arm-none-eabi/$(GCC_VER)/thumb -L $(TOOLCHAIN)/arm-none-eabi/lib/thumb
 endif
 
-CPPFLAGS := -I /usr/local/arm-none-eabi/include -iquote include -Wno-trigraphs -DMODERN=$(MODERN)
+CPPFLAGS := -iquote include -Wno-trigraphs -DMODERN=$(MODERN)
+ifeq ($(MODERN),0)
+CPPFLAGS += -I tools/agbcc/include -I tools/agbcc
+endif
 
 LDFLAGS = -Map ../../$(MAP)
 
@@ -110,7 +122,7 @@ compare: $(ROM)
 
 clean: tidy
 	rm -f sound/direct_sound_samples/*.bin
-	rm -f $(SONG_OBJS) $(MID_OBJS) $(MID_SUBDIR)/*.s
+	rm -f $(MID_SUBDIR)/*.s
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec rm {} +
 	rm -f $(DATA_ASM_SUBDIR)/layouts/layouts.inc $(DATA_ASM_SUBDIR)/layouts/layouts_table.inc
 	rm -f $(DATA_ASM_SUBDIR)/maps/connections.inc $(DATA_ASM_SUBDIR)/maps/events.inc $(DATA_ASM_SUBDIR)/maps/groups.inc $(DATA_ASM_SUBDIR)/maps/headers.inc
@@ -119,9 +131,9 @@ clean: tidy
 
 tidy:
 	rm -f $(ROM) $(ELF) $(MAP)
+	rm -r $(OBJ_DIR)
 ifeq ($(MODERN),0)
 	@$(MAKE) tidy MODERN=1
-	rm -r build/*
 endif
 
 include graphics_file_rules.mk
@@ -209,11 +221,13 @@ $(OBJ_DIR)/sym_ewram.ld: sym_ewram.txt
 
 ifeq ($(MODERN),0)
 LD_SCRIPT := ld_script.txt
+LD_SCRIPT_DEPS := $(OBJ_DIR)/sym_bss.ld $(OBJ_DIR)/sym_common.ld $(OBJ_DIR)/sym_ewram.ld
 else
 LD_SCRIPT := ld_script_modern.txt
+LD_SCRIPT_DEPS := 
 endif
 
-$(OBJ_DIR)/ld_script.ld: $(LD_SCRIPT) $(OBJ_DIR)/sym_bss.ld $(OBJ_DIR)/sym_common.ld $(OBJ_DIR)/sym_ewram.ld
+$(OBJ_DIR)/ld_script.ld: $(LD_SCRIPT) $(LD_SCRIPT_DEPS)
 	cd $(OBJ_DIR) && sed "s#tools/#../../tools/#g" ../../$(LD_SCRIPT) > ld_script.ld
 
 $(ELF): $(OBJ_DIR)/ld_script.ld $(OBJS)
