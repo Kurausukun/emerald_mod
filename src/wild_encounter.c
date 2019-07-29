@@ -22,7 +22,6 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/maps.h"
-//#include "constants/region_map_sections.h"
 #include "constants/species.h"
 
 extern const u8 EventScript_RepelWoreOff[];
@@ -37,6 +36,7 @@ static void ApplyFluteEncounterRateMod(u32 *encRate);
 static void ApplyCleanseTagEncounterRateMod(u32 *encRate);
 static bool8 TryGetAbilityInfluencedWildMonIndex(const struct WildPokemon *wildMon, u8 type, u8 ability, u8 *monIndex);
 static bool8 IsAbilityAllowingEncounter(u8 level);
+static struct Coords16 Route119TileNumToCoords(u32 tileNumWanted);
 
 // EWRAM vars
 EWRAM_DATA static u8 sWildEncountersDisabled = 0;
@@ -133,96 +133,108 @@ static void FeebasSeedRng(u16 seed)
     sFeebasRngValue = seed;
 }
 
-void HighlightFeebasSpots() {
-    u16 nWaterTiles = 447;
-    u16 nFeebasGenerated = 0;
-    u16 nFeebasHighlighted = 0;
-    u16 currentWaterTile = 0;
-    u16 feebasTiles[NUM_FEEBAS_SPOTS];
-    u16 x;
-    u16 y;
-    u8 index;
-     // Seed Feebas RNG
-    FeebasSeedRng(gSaveBlock1Ptr->easyChatPairs[0].unk2);
-    for(nFeebasGenerated = 0; nFeebasGenerated < NUM_FEEBAS_SPOTS; nFeebasGenerated++) {
-        u16 randomTile = FeebasRandom() % nWaterTiles;
-        if(randomTile == 0) {
-            randomTile == nWaterTiles;
-        }
-        if(randomTile == 0 || randomTile > 3) {
-            feebasTiles[nFeebasGenerated] = randomTile;
+static struct Coords16 Route119TileNumToCoords(u32 tileNumWanted)
+{
+    struct Coords16 coords = {0};
+    u32 xCur = 0, yCur = 0;
+    s32 width = gMapHeader.mapLayout->width;
+    s32 height = gMapHeader.mapLayout->height;
+    u32 yMin = gRoute119WaterTileData[0 * 3 + 0];
+    u32 tileNumCurr = gRoute119WaterTileData[0 * 3 + 2];
+
+    for (yCur = yMin; yCur < height; yCur++)
+    {
+        for (xCur = 0; xCur < width; xCur++)
+        {
+            u8 tileBehaviorId = MapGridGetMetatileBehaviorAt(xCur + 7, yCur + 7);
+            if (MetatileBehavior_IsSurfableAndNotWaterfall(tileBehaviorId) == TRUE)
+            {
+                tileNumCurr++;
+                if (tileNumCurr == tileNumWanted)
+                    goto RET;
+            }
         }
     }
-     for (y = 0; y < gMapHeader.mapLayout->height + 7; y++) {
-        for (x = 0; x < gMapHeader.mapLayout->width + 7; x++) {
-            if (MetatileBehavior_IsSurfableAndNotWaterfall(MapGridGetMetatileBehaviorAt(x, y)) == TRUE) {
-                currentWaterTile++;
-                if(nFeebasHighlighted < NUM_FEEBAS_SPOTS) {
-                    for(index = 0; index < NUM_FEEBAS_SPOTS; index++) {
-                        if(currentWaterTile == feebasTiles[index]) {
-							switch (MapGridGetMetatileIdAt(x, y))
-							{
-							case 0x02C:
-							    MapGridSetMetatileIdAt(x, y, 0x2A9);
-							    break;
-							case 0x034:
-							    MapGridSetMetatileIdAt(x, y, 0x2CB);
-							    break;
-							case 0x03C:
-							    MapGridSetMetatileIdAt(x, y, 0x2AA);
-							    break;
-							case 0x11D:
-							    MapGridSetMetatileIdAt(x, y, 0x31B);
-							    break;
-							case 0x125:
-							    MapGridSetMetatileIdAt(x, y, 0x31A);
-							    break;
-							case 0x12C:
-							    MapGridSetMetatileIdAt(x, y, 0x318);
-							    break;
-							case 0x12D:
-							    MapGridSetMetatileIdAt(x, y, 0x319);
-							    break;
-							case 0x170:
-							    MapGridSetMetatileIdAt(x, y, 0x308);
-							    break;
-							case 0x178:
-							    MapGridSetMetatileIdAt(x, y, 0x2FD);
-							    break;
-							case 0x179:
-							    MapGridSetMetatileIdAt(x, y, 0x305);
-							    break;
-							case 0x189:
-							    MapGridSetMetatileIdAt(x, y, 0x31F);
-							    break;
-							case 0x190:
-							    MapGridSetMetatileIdAt(x, y, 0x310);
-								break;
-							case 0x192:
-							    MapGridSetMetatileIdAt(x, y, 0x31E);
-							    break;
-							case 0x198:
-							    MapGridSetMetatileIdAt(x, y, 0x311);
-							    break;
-							case 0x19A:
-							    MapGridSetMetatileIdAt(x, y, 0x30D);
-							    break;
-							case 0x20F:
-							    MapGridSetMetatileIdAt(x, y, 0x2D3);
-							    break;
-							case 0x266:
-							    MapGridSetMetatileIdAt(x, y, 0x312);
-							    break;
-							case 0x267:
-							    MapGridSetMetatileIdAt(x, y, 0x315);
-							default:
-								break;
-							}
-                            nFeebasHighlighted++;
-                        }
-                    }
-                }
-            }
+
+RET:
+    coords.x = xCur;
+    coords.y = yCur;
+    return coords;
+}
+
+void HighlightFeebasSpots() {
+    struct Coords16 feebasCoords[NUM_FEEBAS_SPOTS];
+    u16 feebasSpots[NUM_FEEBAS_SPOTS];
+	u8 i;
+
+    FeebasSeedRng(gSaveBlock1Ptr->easyChatPairs[0].unk2);
+    for (i = 0; i != NUM_FEEBAS_SPOTS;)
+    {
+        feebasSpots[i] = FeebasRandom() % 447;
+        if (feebasSpots[i] == 0)
+            feebasSpots[i] = 447;
+        if (feebasSpots[i] < 1 || feebasSpots[i] >= 4)
+            i++;
+    }
+
+    for (i = 0; i < NUM_FEEBAS_SPOTS; i++)
+    {
+        feebasCoords[i] = Route119TileNumToCoords(feebasSpots[i]);
+        switch (MapGridGetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7))
+        {
+        case 0x02C:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x2A9);
+            break;
+        case 0x034:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x2CB);
+            break;
+        case 0x03C:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x2AA);
+            break;
+        case 0x11D:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x31B);
+            break;
+        case 0x125:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x31A);
+            break;
+        case 0x12C:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x318);
+            break;
+        case 0x12D:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x319);
+            break;
+        case 0x170:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x308);
+            break;
+        case 0x178:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x2FD);
+            break;
+        case 0x179:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x305);
+            break;
+        case 0x189:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x31F);
+            break;
+        case 0x190:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x310);
+            break;
+        case 0x192:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x31E);
+            break;
+        case 0x198:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x311);
+            break;
+        case 0x19A:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x30D);
+            break;
+        case 0x20F:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x2D3);
+            break;
+        case 0x266:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x312);
+            break;
+        case 0x267:
+            MapGridSetMetatileIdAt(feebasCoords[i].x + 7, feebasCoords[i].y + 7, 0x315);
         }
     }
 }
