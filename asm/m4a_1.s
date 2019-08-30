@@ -960,7 +960,7 @@ C_downsampler_loop:
         AND     R3, R11, R3, LSL#1
         ORR     R7, R3, R7, LSR#8
 
-		MOV		R0, #0x85
+        MOV     R0, #0x85
         STR     R6, [R9, R0, LSL#5]
         STR     R7, [R9], #4
         MOV     R0, #0
