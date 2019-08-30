@@ -149,7 +149,7 @@ struct SoundChannel
 
 #define MAX_DIRECTSOUND_CHANNELS 12
 
-#define PCM_DMA_BUF_SIZE 1584 // size of Direct Sound buffer
+#define PCM_DMA_BUF_SIZE 4256 // size of Direct Sound buffer
 
 struct SoundInfo
 {
@@ -157,7 +157,7 @@ struct SoundInfo
     // values during sensitive operations for locking purposes.
     // This field should be volatile but isn't. This could potentially cause
     // race conditions.
-    u32 ident;
+    vu32 ident;
 
     vu8 pcmDmaCounter;
 
