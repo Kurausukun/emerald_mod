@@ -37,7 +37,6 @@
 #include "new_game.h"
 #include "palette.h"
 #include "play_time.h"
-#include "pokemon_storage_system.h"
 #include "random.h"
 #include "roamer.h"
 #include "rotating_gate.h"
@@ -187,15 +186,15 @@ static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *playerStr
 static u16 GetCenterScreenMetatileBehavior(void);
 
 // IWRAM bss vars
-IWRAM_DATA static void *sUnusedOverworldCallback;
-IWRAM_DATA static u8 sPlayerTradingStates[4];
+static void *sUnusedOverworldCallback;
+static u8 sPlayerTradingStates[4];
 // This callback is called with a player's key code. It then returns an
 // adjusted key code, effectively intercepting the input before anything
 // can process it.
-IWRAM_DATA static u16 (*sPlayerKeyInterceptCallback)(u32);
-IWRAM_DATA static bool8 sUnknown_03000E18;
-IWRAM_DATA static u8 sRfuKeepAliveTimer;
-IWRAM_DATA static u32 sUnusedVar;
+static u16 (*sPlayerKeyInterceptCallback)(u32);
+static bool8 sUnknown_03000E18;
+static u8 sRfuKeepAliveTimer;
+static u32 sUnusedVar;
 
 // IWRAM common
 u16 *gBGTilemapBuffers1;
@@ -384,31 +383,12 @@ static void (*const gMovementStatusHandler[])(struct LinkPlayerEventObject *, st
 // code
 void DoWhiteOut(void)
 {
-    if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
-    {
-        if (GetFirstBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
-        {
-            DoSoftReset();
-        }
-        else
-        {
-            ScriptContext2_RunNewScript(EventScript_WhiteOut);
-            SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
-            MoveFirstBoxPokemon();
-            Overworld_ResetStateAfterWhiteOut();
-            SetWarpDestinationToLastHealLocation();
-            WarpIntoMap();
-        }
-    }
-    else
-    {
-        ScriptContext2_RunNewScript(EventScript_WhiteOut);
-        SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
-        HealPlayerParty();
-        Overworld_ResetStateAfterWhiteOut();
-        SetWarpDestinationToLastHealLocation();
-        WarpIntoMap();
-    }
+    ScriptContext2_RunNewScript(EventScript_WhiteOut);
+    SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
+    HealPlayerParty();
+    Overworld_ResetStateAfterWhiteOut();
+    SetWarpDestinationToLastHealLocation();
+    WarpIntoMap();
 }
 
 void Overworld_ResetStateAfterFly(void)
@@ -1060,7 +1040,7 @@ static bool16 ShouldLegendaryMusicPlayAtLocation(struct WarpData *warp)
         case MAP_NUM(ROUTE128):
             return TRUE;
         default:
-            if (VarGet(VAR_RAYQUAZA_STATE) < 4)
+            if (VarGet(VAR_SOOTOPOLIS_CITY_STATE) < 4)
                 return FALSE;
             switch (warp->mapNum)
             {
@@ -1101,9 +1081,9 @@ static bool16 IsInfiltratedWeatherInstitute(struct WarpData *warp)
 
 static bool16 IsInflitratedSpaceCenter(struct WarpData *warp)
 {
-    if (VarGet(VAR_MOSSDEEP_STATE) == 0)
+    if (VarGet(VAR_MOSSDEEP_CITY_STATE) == 0)
         return FALSE;
-    else if (VarGet(VAR_MOSSDEEP_STATE) > 2)
+    else if (VarGet(VAR_MOSSDEEP_CITY_STATE) > 2)
         return FALSE;
     else if (warp->mapGroup != MAP_GROUP(MOSSDEEP_CITY_SPACE_CENTER_1F))
         return FALSE;
@@ -1412,27 +1392,6 @@ u8 GetSavedWarpRegionMapSectionId(void)
 u8 GetCurrentRegionMapSectionId(void)
 {
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId;
-}
-
-u8 GetCurrentNuzlockeRegionMapSectionId(void)
-{
-    switch(gSaveBlock1Ptr->location.mapNum)
-    {
-    default:
-        return GetCurrentRegionMapSectionId();
-    case MAP_NUM(SAFARI_ZONE_SOUTH):
-        return MAPSEC_SAFARI_ZONE_AREA1;
-    case MAP_NUM(SAFARI_ZONE_SOUTHWEST):
-        return MAPSEC_SAFARI_ZONE_AREA2;
-    case MAP_NUM(SAFARI_ZONE_NORTHWEST):
-        return MAPSEC_SAFARI_ZONE_AREA3;
-    case MAP_NUM(SAFARI_ZONE_NORTH):
-        return MAPSEC_SAFARI_ZONE_AREA4;
-    case MAP_NUM(SAFARI_ZONE_SOUTHEAST):
-        return MAPSEC_SAFARI_ZONE_AREA5;
-    case MAP_NUM(SAFARI_ZONE_NORTHEAST):
-        return MAPSEC_SAFARI_ZONE_AREA6;
-    }
 }
 
 u8 GetCurrentMapBattleScene(void)

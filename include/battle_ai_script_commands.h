@@ -6,11 +6,7 @@
 #define AI_CHOICE_FLEE 4
 #define AI_CHOICE_WATCH 5
 
-s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef);
-s32 AI_CalcPartyMonDamage(u16 move, u8 battlerAtk, u8 battlerDef, struct Pokemon *mon);
-u16 AI_GetTypeEffectiveness(u16 move, u8 battlerAtk, u8 battlerDef);
-void BattleAI_SetupItems(void);
-void BattleAI_SetupFlags(void);
+void BattleAI_HandleItemUseBeforeAISetup(u8 defaultScoreMoves);
 void BattleAI_SetupAIData(u8 defaultScoreMoves);
 u8 BattleAI_ChooseMoveOrAction(void);
 void ClearBattlerMoveHistory(u8 battlerId);

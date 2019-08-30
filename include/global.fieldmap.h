@@ -8,6 +8,8 @@
 #define METATILE_COLLISION_SHIFT 10
 #define METATILE_ELEVATION_MASK 0xF000
 
+#define METATILE_ID(tileset, name) (METATILE_##tileset##_##name)
+
 enum
 {
     CONNECTION_SOUTH = 1,
@@ -261,19 +263,6 @@ enum
     ACRO_BIKE_WHEELIE_MOVING,
     ACRO_BIKE_STATE5,
     ACRO_BIKE_STATE6,
-};
-
-enum
-{
-    DIR_NONE,
-    DIR_SOUTH,
-    DIR_NORTH,
-    DIR_WEST,
-    DIR_EAST,
-    DIR_SOUTHWEST,
-    DIR_SOUTHEAST,
-    DIR_NORTHWEST,
-    DIR_NORTHEAST,
 };
 
 enum

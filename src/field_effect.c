@@ -232,7 +232,7 @@ static void Fldeff_MoveDeoxysRock_Step(u8 taskId);
 
 // Static RAM declarations
 
-static IWRAM_DATA u8 sActiveList[32];
+static u8 sActiveList[32];
 
 // External declarations
 extern struct CompressedSpritePalette gMonPaletteTable[]; // GF made a mistake and did not extern it as const.
@@ -2544,14 +2544,14 @@ bool8 FldEff_FieldMoveShowMon(void)
 
 bool8 FldEff_FieldMoveShowMonInit(void)
 {
-    //struct Pokemon *pokemon;
-    //u32 flag = gFieldEffectArguments[0] & 0x80000000;
-    //pokemon = &gPlayerParty[(u8)gFieldEffectArguments[0]];
-    //gFieldEffectArguments[0] = GetMonData(pokemon, MON_DATA_SPECIES);
-    //gFieldEffectArguments[1] = GetMonData(pokemon, MON_DATA_OT_ID);
-    //gFieldEffectArguments[2] = GetMonData(pokemon, MON_DATA_PERSONALITY);
-    //gFieldEffectArguments[0] |= flag;
-    //FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON);
+    struct Pokemon *pokemon;
+    u32 flag = gFieldEffectArguments[0] & 0x80000000;
+    pokemon = &gPlayerParty[(u8)gFieldEffectArguments[0]];
+    gFieldEffectArguments[0] = GetMonData(pokemon, MON_DATA_SPECIES);
+    gFieldEffectArguments[1] = GetMonData(pokemon, MON_DATA_OT_ID);
+    gFieldEffectArguments[2] = GetMonData(pokemon, MON_DATA_PERSONALITY);
+    gFieldEffectArguments[0] |= flag;
+    FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON);
     FieldEffectActiveListRemove(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
     return FALSE;
 }

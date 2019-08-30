@@ -13,8 +13,8 @@ Route103_MapScript1_1EC3A4: @ 81EC3A4
 	end
 
 Route103_EventScript_1EC3AE:: @ 81EC3AE
-	setmetatile 45, 5, 159, 1
-	setmetatile 45, 6, 167, 0
+	setmetatile 45, 5, METATILE_General_CaveEntrance_Top, 1
+	setmetatile 45, 6, METATILE_General_CaveEntrance_Bottom, 0
 	return
 
 Route103_EventScript_1EC3C1:: @ 81EC3C1
@@ -143,7 +143,7 @@ Route103_EventScript_1EC5A2:: @ 81EC5A2
 	setvar VAR_BIRCH_LAB_STATE, 4
 	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCHS_LAB_RIVAL
 	setflag FLAG_DEFEATED_RIVAL_ROUTE103
-	setvar VAR_OLDALE_STATE, 1
+	setvar VAR_OLDALE_RIVAL_STATE, 1
 	clearflag FLAG_HIDE_OLDALE_TOWN_RIVAL
 	savebgm MUS_DUMMY
 	fadedefaultbgm

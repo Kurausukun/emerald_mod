@@ -258,17 +258,6 @@ const struct SpriteTemplate gUnknown_085CE11C =
     .callback = sub_815A6C4,
 };
 
-const struct SpriteTemplate gToxicSpikesSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_TOXIC_SPIKES,
-    .paletteTag = ANIM_TAG_TOXIC_SPIKES,
-    .oam = &gUnknown_0852490C,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = sub_815A6C4,
-};
-
 const union AnimCmd gUnknown_085CE134[] =
 {
     ANIMCMD_FRAME(0, 3),
@@ -1190,39 +1179,6 @@ const union AffineAnimCmd gSlackOffSquishAffineAnimCmds[] =
     AFFINEANIMCMD_END,
 };
 
-const struct SpriteTemplate gMegaStoneSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MEGA_STONE,
-    .paletteTag = ANIM_TAG_MEGA_STONE,
-    .oam = &gUnknown_08524AFC,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gUnknown_08596894,
-    .callback = sub_80A77C8,
-};
-
-const struct SpriteTemplate gMegaParticlesSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MEGA_PARTICLES,
-    .paletteTag = ANIM_TAG_MEGA_PARTICLES,
-    .oam = &gUnknown_08524A8C,
-    .anims = gUnknown_085921C8,
-    .images = NULL,
-    .affineAnims = gUnknown_085921DC,
-    .callback = AnimPowerAbsorptionOrb,
-};
-
-const struct SpriteTemplate gMegaSymbolSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MEGA_SYMBOL,
-    .paletteTag = ANIM_TAG_MEGA_SYMBOL,
-    .oam = &gUnknown_08524A34,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = sub_8112B78,
-};
-
 void sub_815A0D4(struct Sprite *sprite)
 {
     sprite->pos1.x += gBattleAnimArgs[0];
@@ -1662,7 +1618,7 @@ void sub_815AAA4(struct Sprite *sprite)
 
     if (gBattleAnimArgs[2] == 0)
     {
-        sprite->oam.matrixNum = 8;
+        sprite->oam.matrixNum = ST_OAM_HFLIP;
         sprite->pos2.x = -12;
         sprite->data[1] = 2;
     }
@@ -2326,7 +2282,7 @@ void sub_815B7D0(u8 taskId)
         }
         break;
     case 2:
-        HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, gTasks[taskId].data[10], gBattleAnimArgs[1]);
+        HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, gTasks[taskId].data[10]);
         sub_80A6BFC(&animBg, gBattleAnimAttacker);
 
         if (IsContest())
@@ -2413,7 +2369,7 @@ void sub_815BB18(u8 taskId)
 
 void sub_815BB58(u8 taskId)
 {
-    HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, TRUE, FALSE);
+    HandleSpeciesGfxDataChange(gBattleAnimAttacker, gBattleAnimTarget, TRUE);
     DestroyAnimVisualTask(taskId);
 }
 
@@ -2548,13 +2504,10 @@ void sub_815BE04(struct Sprite *sprite)
 
 static void sub_815BF44(struct Sprite *sprite)
 {
-    int var0;
-    s8 var1;
-
-    var0 = (u16)sprite->data[2] + (u16)sprite->data[3];
-    var1 = var0 >> 8;
-    sprite->pos2.y -= var1;
-    sprite->data[3] = var0 & 0xFF;
+    s16 delta = sprite->data[3] + sprite->data[2];
+    sprite->pos2.y -= delta >> 8;
+    sprite->data[3] += sprite->data[2];
+    sprite->data[3] &= 0xFF;
     if (sprite->data[4] == 0 && sprite->pos2.y < -8)
     {
         gSprites[sprite->data[6]].invisible = 0;
@@ -2587,19 +2540,12 @@ static void sub_815BFF4(struct Sprite *sprite)
 
 static void sub_815C050(struct Sprite *sprite)
 {
-    u16 d2;
-    register u16 d3 asm("r1");
-    int var0;
-    s8 var1;
-
     if (!sprite->invisible)
     {
-        d2 = sprite->data[2];
-        d3 = sprite->data[3];
-        var0 = d2 + d3;
-        var1 = var0 >> 8;
-        sprite->pos2.y -= var1;
-        sprite->data[3] = var0 & 0xFF;
+        s16 delta = sprite->data[3] + sprite->data[2];
+        sprite->pos2.y -= delta >> 8;
+        sprite->data[3] += sprite->data[2];
+        sprite->data[3] &= 0xFF;
         if (--sprite->data[1] == -1)
         {
             sprite->invisible = 1;
@@ -4221,7 +4167,7 @@ void AnimSmellingSaltsHand(struct Sprite *sprite)
     sprite->pos1.y = GetBattlerSpriteCoord(battler, 3);
     if (gBattleAnimArgs[1] == 0)
     {
-        sprite->oam.matrixNum |= 0x8;
+        sprite->oam.matrixNum |= ST_OAM_HFLIP;
         sprite->pos1.x = GetBattlerSpriteCoordAttr(battler, BATTLER_COORD_ATTR_LEFT) - 8;
     }
     else
@@ -4371,7 +4317,7 @@ void AnimHelpingHandClap(struct Sprite *sprite)
 {
     if (gBattleAnimArgs[0] == 0)
     {
-        sprite->oam.matrixNum |= 0x8; // horizontal flip
+        sprite->oam.matrixNum |= ST_OAM_HFLIP;
         sprite->pos1.x = 100;
         sprite->data[7] = 1;
     }
@@ -4599,7 +4545,7 @@ void AnimForesightMagnifyingGlass(struct Sprite *sprite)
     }
 
     if (GetBattlerSide(sprite->data[7]) == B_SIDE_OPPONENT)
-        sprite->oam.matrixNum = 8; // horizontal flip
+        sprite->oam.matrixNum = ST_OAM_HFLIP;
 
     sprite->oam.priority = GetBattlerSpriteBGPriority(sprite->data[7]);
     sprite->oam.objMode = ST_OAM_OBJ_BLEND;

@@ -8,14 +8,12 @@
 #include "fldeff_misc.h"
 #include "frontier_util.h"
 #include "party_menu.h"
-#include "pokemon.h"
 #include "pokenav.h"
 #include "script.h"
 #include "string_util.h"
 #include "strings.h"
 #include "task.h"
 #include "trainer_hill.h"
-#include "constants/region_map_sections.h"
 #include "constants/species.h"
 
 static bool32 IsMonValidSpecies(struct Pokemon *pokemon)
@@ -52,8 +50,6 @@ static void FaintFromFieldPoison(u8 partyIdx)
     SetMonData(pokemon, MON_DATA_STATUS, &status);
     GetMonData(pokemon, MON_DATA_NICKNAME, gStringVar1);
     StringGetEnd10(gStringVar1);
-    if (NuzlockeFlagGet(GLOBAL_NUZLOCKE_SWITCH))
-        DeleteFaintedPartyPokemon();
 }
 
 static bool32 MonFaintedFromPoison(u8 partyIdx)

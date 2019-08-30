@@ -560,7 +560,6 @@ gSongTable:: @ 86B49F0
 	song mus_rg_t_tower, 0, 0       @ Trainer Tower (FRLG)
 	song mus_rg_slowmasara, 0, 0    @ Epilogue (FRLG)
 	song mus_rg_tvnoize, 0, 0       @ Teachy TV Menu (FRLG)
-	song mus_hinsi, 4, 4			@ Low-HP Music (New)
 	song ph_trap_blend, 2, 2
 	song ph_trap_held, 2, 2
 	song ph_trap_solo, 2, 2

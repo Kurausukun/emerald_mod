@@ -16,7 +16,6 @@ MeteorFalls_StevensCave_EventScript_23B182:: @ 823B182
 	trainerbattle_no_intro TRAINER_STEVEN, MeteorFalls_StevensCave_Text_23B32D
 	msgbox MeteorFalls_StevensCave_Text_23B358, MSGBOX_DEFAULT
 	setflag FLAG_DEFEATED_METEOR_FALLS_STEVEN
-	callnative GlobalNuzlockeClear
 	release
 	end
 

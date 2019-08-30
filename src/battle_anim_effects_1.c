@@ -78,10 +78,6 @@ void sub_8103164(struct Sprite *);
 void sub_8103208(struct Sprite *);
 void sub_8103284(struct Sprite *);
 void sub_8103390(struct Sprite *);
-void AnimRockPolishStreak(struct Sprite *);
-void AnimRockPolishSparkle(struct Sprite *);
-void AnimPoisonJabProjectile(struct Sprite *);
-void AnimNightSlash(struct Sprite *);
 static void AnimMovePowderParticleStep(struct Sprite *);
 static void AnimSolarbeamSmallOrbStep(struct Sprite *);
 static void AnimAbsorptionOrbStep(struct Sprite *);
@@ -2179,261 +2175,6 @@ const struct SpriteTemplate gUnknown_0859324C =
     .callback = sub_8103390,
 };
 
-const struct SpriteTemplate gPowerOrbs_Float =
-{
-	.tileTag = ANIM_TAG_RED_ORB,
-	.paletteTag = ANIM_TAG_RED_ORB,
-	.oam = &gUnknown_0852490C,
-	.anims = gUnknown_085922E4,
-	.images = NULL,
-	.affineAnims = gDummySpriteAffineAnimTable,
-	.callback = AnimSporeParticle,
-};
-
-const union AnimCmd gRockPolishStreak_AnimCmd[] =
-{
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_FRAME(4, 2),
-    ANIMCMD_FRAME(8, 3),
-    ANIMCMD_FRAME(12, 15),
-    ANIMCMD_FRAME(8, 3),
-    ANIMCMD_FRAME(4, 2),
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_END,
-};
-
-const union AnimCmd *const gRockPolishStreak_AnimCmds[] =
-{
-    gRockPolishStreak_AnimCmd,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd0[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x0, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd1[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x10, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd2[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x20, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd3[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x30, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd4[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x40, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd5[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x50, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd6[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x60, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd7[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x70, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd8[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x80, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmd9[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0x90, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdA[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xA0, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdB[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xB0, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdC[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xC0, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdD[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xD0, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdE[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xE0, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd gRockPolishStreak_AffineAnimCmdF[] =
-{
-    AFFINEANIMCMD_FRAME(0x100, 0x100, 0xF0, 0),
-    AFFINEANIMCMD_END,
-};
-
-const union AffineAnimCmd *const gRockPolishStreak_AffineAnimCmds[] =
-{
-    gRockPolishStreak_AffineAnimCmd0,
-    gRockPolishStreak_AffineAnimCmd1,
-    gRockPolishStreak_AffineAnimCmd2,
-    gRockPolishStreak_AffineAnimCmd3,
-    gRockPolishStreak_AffineAnimCmd4,
-    gRockPolishStreak_AffineAnimCmd5,
-    gRockPolishStreak_AffineAnimCmd6,
-    gRockPolishStreak_AffineAnimCmd7,
-    gRockPolishStreak_AffineAnimCmd8,
-    gRockPolishStreak_AffineAnimCmd9,
-    gRockPolishStreak_AffineAnimCmdA,
-    gRockPolishStreak_AffineAnimCmdB,
-    gRockPolishStreak_AffineAnimCmdC,
-    gRockPolishStreak_AffineAnimCmdD,
-    gRockPolishStreak_AffineAnimCmdE,
-    gRockPolishStreak_AffineAnimCmdF,
-};
-
-const struct SpriteTemplate gRockPolishStreakSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_WHITE_STREAK,
-    .paletteTag = ANIM_TAG_WHITE_STREAK,
-    .oam = &gUnknown_08524B0C,
-    .anims = gRockPolishStreak_AnimCmds,
-    .images = NULL,
-    .affineAnims = gRockPolishStreak_AffineAnimCmds,
-    .callback = AnimRockPolishStreak,
-};
-
-const union AnimCmd gRockPolishSparkle_AnimCmd1[] =
-{
-    ANIMCMD_FRAME(0, 7),
-    ANIMCMD_FRAME(4, 7),
-    ANIMCMD_FRAME(8, 7),
-    ANIMCMD_FRAME(12, 7),
-    ANIMCMD_END,
-};
-
-const union AnimCmd *const gRockPolishSparkle_AnimCmds[] =
-{
-    gRockPolishSparkle_AnimCmd1,
-};
-
-const struct SpriteTemplate gRockPolishSparkleSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_SPARKLE_3,
-    .paletteTag = ANIM_TAG_SPARKLE_3,
-    .oam = &gUnknown_0852490C,
-    .anims = gRockPolishSparkle_AnimCmds,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimRockPolishSparkle,
-};
-
-const struct SpriteTemplate gPoisonJabProjectileSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_PURPLE_JAB,
-    .paletteTag = ANIM_TAG_PURPLE_JAB,
-    .oam = &gUnknown_08524B14,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimPoisonJabProjectile,
-};
-
-const union AnimCmd gNightSlashLeftAnimCmd0[] =
-{
-    ANIMCMD_FRAME(0, 4),
-    ANIMCMD_FRAME(16, 4),
-    ANIMCMD_FRAME(32, 4),
-    ANIMCMD_FRAME(48, 4),
-    ANIMCMD_END,
-};
-
-const union AnimCmd gNightSlashLeftAnimCmd1[] =
-{
-    ANIMCMD_FRAME(48, 4),
-    ANIMCMD_END,
-};
-
-const union AnimCmd *const gNightSlashLeftAnimTable[] =
-{
-    gNightSlashLeftAnimCmd0,
-    gNightSlashLeftAnimCmd1,
-};
-
-const struct SpriteTemplate gNightSlashLeftSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_SLASH,
-    .paletteTag = ANIM_TAG_SLASH,
-    .oam = &gUnknown_08524914,
-    .anims = gNightSlashLeftAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimNightSlash,
-};
-
-const union AnimCmd gNightSlashRightAnimCmd0[] =
-{
-    ANIMCMD_FRAME(0, 4, .vFlip = TRUE, .hFlip = TRUE),
-    ANIMCMD_FRAME(16, 4, .vFlip = TRUE, .hFlip = TRUE),
-    ANIMCMD_FRAME(32, 4, .vFlip = TRUE, .hFlip = TRUE),
-    ANIMCMD_FRAME(48, 4, .vFlip = TRUE, .hFlip = TRUE),
-    ANIMCMD_END,
-};
-
-const union AnimCmd gNightSlashRightAnimCmd1[] =
-{
-    ANIMCMD_FRAME(48, 4, .vFlip = TRUE, .hFlip = TRUE),
-    ANIMCMD_END,
-};
-
-const union AnimCmd *const gNightSlashRightAnimTable[] =
-{
-    gNightSlashRightAnimCmd0,
-    gNightSlashRightAnimCmd1,
-};
-
-const struct SpriteTemplate gNightSlashRightSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_SLASH,
-    .paletteTag = ANIM_TAG_SLASH,
-    .oam = &gUnknown_08524914,
-    .anims = gNightSlashRightAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimNightSlash,
-};
-
 // Animates the falling particles that horizontally wave back and forth.
 // Used by Sleep Powder, Stun Spore, and Poison Powder.
 // arg 0: initial x pixel offset
@@ -2806,7 +2547,7 @@ static void AnimPetalDanceSmallFlowerStep(struct Sprite* sprite)
     {
         sprite->pos2.x += Sin(sprite->data[5], 8);
         if ((u16)(sprite->data[5] - 59) < 5 || (u16)(sprite->data[5] - 187) < 5)
-            sprite->oam.matrixNum ^= 0x8; // horizontal flip
+            sprite->oam.matrixNum ^= ST_OAM_HFLIP;
 
         sprite->data[5] += 5;
         sprite->data[5] &= 0xFF;
@@ -4639,19 +4380,19 @@ void sub_8101898(struct Sprite* sprite)
     {
         sprite->pos1.x -= 0x18;
         sprite->pos1.y += 0x18;
-        sprite->oam.matrixNum = 16;
+        sprite->oam.matrixNum = ST_OAM_VFLIP;
     }
     else if ((s16)sprite->oam.affineParam == 3)
     {
         sprite->pos1.x += 0x18;
         sprite->pos1.y -= 0x18;
-        sprite->oam.matrixNum = 8;
+        sprite->oam.matrixNum = ST_OAM_HFLIP;
     }
     else
     {
         sprite->pos1.x += 0x18;
         sprite->pos1.y += 0x18;
-        sprite->oam.matrixNum = 24;
+        sprite->oam.matrixNum = ST_OAM_HFLIP | ST_OAM_VFLIP;
     }
 
     sprite->oam.tileNum = (sprite->oam.tileNum + 16);
@@ -5364,7 +5105,7 @@ void sub_8102844(struct Sprite* sprite)
     sprite->data[7] = sprite->pos1.y;
     if (IsContest())
     {
-        sprite->oam.matrixNum = 8;
+        sprite->oam.matrixNum = ST_OAM_HFLIP;
         sprite->pos1.x += 40;
         sprite->pos1.y += 20;
         sprite->data[2] = sprite->pos1.x << 7;
@@ -5389,7 +5130,7 @@ void sub_8102844(struct Sprite* sprite)
         sprite->data[3] = -0x1400 / sprite->data[1];
         sprite->data[4] = sprite->pos1.y << 7;
         sprite->data[5] = 0xA00 / sprite->data[1];
-        sprite->oam.matrixNum = 24;
+        sprite->oam.matrixNum = (ST_OAM_HFLIP | ST_OAM_VFLIP);
     }
 
     sprite->callback = sub_810296C;
@@ -5574,21 +5315,19 @@ static void sub_8102D8C(s16 a, s16 b, s16* c, s16* d, s8 e)
 
 static void sub_8102DE4(struct Sprite* sprite)
 {
-    int b;
-    s16 a;
-    int c;
+    s16 y, yDelta;
     u8 index;
+
     sprite->data[0]++;
-    b = sprite->data[0] * 5 - ((sprite->data[0] * 5 / 256) << 8);
+    yDelta = sprite->data[0] * 5 - ((sprite->data[0] * 5 / 256) << 8);
     sprite->data[4] += sprite->data[6];
     sprite->data[5] += sprite->data[7];
     sprite->pos1.x = sprite->data[4] >> 4;
     sprite->pos1.y = sprite->data[5] >> 4;
-    sprite->pos2.y = Sin(b, 15);
-    a = (u16)sprite->pos1.y;
-    c = (u16)sprite->pos1.x;
+    sprite->pos2.y = Sin(yDelta, 15);
 
-    if ((u32)((c + 16) << 16) > (0x110) << 16 || a < -16 || a > 0x80)
+    y = sprite->pos1.y;
+    if (sprite->pos1.x < -16 || sprite->pos1.x > 256 || y < -16 || y > 128)
     {
         DestroySpriteAndMatrix(sprite);
     }
@@ -5609,12 +5348,8 @@ static void sub_8102DE4(struct Sprite* sprite)
 
 void sub_8102EB0(struct Sprite* sprite)
 {
-    int a;
     if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
-    {
-        a = gBattleAnimArgs[1];
-        (u16)gBattleAnimArgs[1] = -a;
-    }
+        gBattleAnimArgs[1] *= -1;
 
     sprite->pos1.x = GetBattlerSpriteCoord(gBattleAnimAttacker, 2) + gBattleAnimArgs[1];
     sprite->pos1.y = GetBattlerSpriteCoord(gBattleAnimAttacker, 3) + gBattleAnimArgs[2];
@@ -5652,7 +5387,7 @@ void sub_8102FB8(struct Sprite* sprite)
     s16 a;
     if (gBattleAnimArgs[0] == 1)
     {
-        sprite->oam.matrixNum = 8;
+        sprite->oam.matrixNum = ST_OAM_HFLIP;
         a = 16;
     }
     else
@@ -5800,8 +5535,8 @@ static void sub_8103300(struct Sprite* sprite)
 
 static void sub_8103320(struct Sprite* sprite)
 {
-    s16 temp;
-    s16 temp2;
+    s16 x1, x2;
+
     sprite->data[1] += 4;
     if (sprite->data[1] > 254)
     {
@@ -5823,20 +5558,21 @@ static void sub_8103320(struct Sprite* sprite)
     if (sprite->data[1] > 0x9F)
         sprite->subpriority = sprite->data[2];
 
-    temp = gSineTable[sprite->data[1]];
-    sprite->pos2.x = (temp2 = temp >> 3) + (temp2 >> 1);
+    x1 = gSineTable[sprite->data[1]];
+    x2 = x1 >> 3;
+    sprite->pos2.x = (x1 >> 3) + (x2 >> 1);
 }
 
 void sub_8103390(struct Sprite* sprite)
 {
-    u8 bank;
+    u8 battler;
     if (gBattleAnimArgs[0] == 0)
-        bank = gBattleAnimAttacker;
+        battler = gBattleAnimAttacker;
     else
-        bank = gBattleAnimTarget;
+        battler = gBattleAnimTarget;
 
-    sub_810310C(bank, sprite);
-    if (GetBattlerSide(bank) == B_SIDE_PLAYER)
+    sub_810310C(battler, sprite);
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
     {
         StartSpriteAnim(sprite, 0);
         sprite->data[0] = 2;
@@ -5865,62 +5601,4 @@ static void sub_810342C(struct Sprite* sprite)
 {
     if (++sprite->data[1] > 5)
         DestroyAnimSprite(sprite);
-}
-
-// Animates a white streak by giving it a random rotation.
-// arg 0: initial x pixel offset
-// arg 1: initial y pixel offset
-void AnimRockPolishStreak(struct Sprite *sprite)
-{
-    int affineAnimNum = Random2() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
-    InitSpritePosToAnimAttacker(sprite, TRUE);
-    StartSpriteAffineAnim(sprite, affineAnimNum);
-    StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
-    sprite->callback = RunStoredCallbackWhenAnimEnds;
-}
-
-// Places a blue sparkle that plays its default animation.
-// arg 0: initial x pixel offset
-// arg 1: initial y pixel offset
-void AnimRockPolishSparkle(struct Sprite *sprite)
-{
-    InitSpritePosToAnimAttacker(sprite, TRUE);
-    StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
-    sprite->callback = RunStoredCallbackWhenAnimEnds;
-}
-
-// Moves a projectile towards the center of the target mon.  The sprite is rotated to look
-// like it's traveling along that path.
-// arg 0: initial x pixel offset
-// arg 1: initial y pixel offset
-// arg 2: duration
-void AnimPoisonJabProjectile(struct Sprite *sprite)
-{
-    s16 targetXPos;
-    s16 targetYPos;
-    u16 rotation;
-
-    InitSpritePosToAnimTarget(sprite, TRUE);
-    targetXPos = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2);
-    targetYPos = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
-    rotation = ArcTan2Neg(targetXPos - sprite->pos1.x, targetYPos - sprite->pos1.y);
-    TrySetSpriteRotScale(sprite, FALSE, 0x100, 0x100, rotation);
-    sprite->data[0] = gBattleAnimArgs[2];
-    sprite->data[2] = targetXPos;
-    sprite->data[4] = targetYPos;
-    sprite->callback = StartAnimLinearTranslation;
-    StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
-}
-
-void AnimTask_BlendNightSlash(u8 taskId)
-{
-    int paletteOffset = IndexOfSpritePaletteTag(ANIM_TAG_SLASH) * 16 + 256;
-    BlendPalette(paletteOffset, 16, 6, RGB_RED);
-    DestroyAnimVisualTask(taskId);
-}
-
-void AnimNightSlash(struct Sprite *sprite)
-{
-    sprite->callback = sub_8101F40;
-    sprite->callback(sprite);
 }

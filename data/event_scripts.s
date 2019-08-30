@@ -1,6 +1,7 @@
 #include "constants/global.h"
 #include "constants/battle_frontier.h"
 #include "constants/battle_setup.h"
+#include "constants/contest.h"
 #include "constants/easy_chat.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement_constants.h"
@@ -19,7 +20,9 @@
 #include "constants/vars.h"
 #include "constants/weather.h"
 #include "constants/trainer_hill.h"
+#include "constants/lilycove_lady.h"
 #include "constants/battle.h"
+#include "constants/metatile_labels.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
 	.include "constants/constants.inc"
@@ -848,86 +851,86 @@ Std_MsgboxAutoclose:: @ 8271494
 	return
 
 EventScript_ResetAllBerries:: @ 827149D
-	setberrytree 2, 7, 5
-	setberrytree 1, 3, 5
-	setberrytree 11, 7, 5
-	setberrytree 13, 3, 5
-	setberrytree 4, 7, 5
-	setberrytree 76, 1, 5
-	setberrytree 8, 1, 5
-	setberrytree 10, 6, 5
-	setberrytree 25, 20, 5
-	setberrytree 26, 2, 5
-	setberrytree 66, 2, 5
-	setberrytree 67, 20, 5
-	setberrytree 69, 22, 5
-	setberrytree 70, 22, 5
-	setberrytree 71, 22, 5
-	setberrytree 55, 17, 5
-	setberrytree 56, 17, 5
-	setberrytree 5, 1, 5
-	setberrytree 6, 6, 5
-	setberrytree 7, 1, 5
-	setberrytree 16, 18, 5
-	setberrytree 17, 18, 5
-	setberrytree 18, 18, 5
-	setberrytree 29, 19, 5
-	setberrytree 28, 19, 5
-	setberrytree 27, 19, 5
-	setberrytree 24, 4, 5
-	setberrytree 23, 3, 5
-	setberrytree 22, 3, 5
-	setberrytree 21, 4, 5
-	setberrytree 19, 16, 5
-	setberrytree 20, 16, 5
-	setberrytree 80, 7, 5
-	setberrytree 81, 7, 5
-	setberrytree 77, 8, 5
-	setberrytree 78, 8, 5
-	setberrytree 68, 8, 5
-	setberrytree 31, 10, 5
-	setberrytree 33, 10, 5
-	setberrytree 34, 21, 5
-	setberrytree 35, 21, 5
-	setberrytree 36, 21, 5
-	setberrytree 83, 24, 5
-	setberrytree 84, 24, 5
-	setberrytree 85, 10, 5
-	setberrytree 86, 6, 5
-	setberrytree 37, 5, 5
-	setberrytree 38, 5, 5
-	setberrytree 39, 5, 5
-	setberrytree 40, 3, 5
-	setberrytree 41, 3, 5
-	setberrytree 42, 3, 5
-	setberrytree 46, 19, 5
-	setberrytree 45, 20, 5
-	setberrytree 44, 18, 5
-	setberrytree 43, 16, 5
-	setberrytree 47, 8, 5
-	setberrytree 48, 5, 5
-	setberrytree 49, 4, 5
-	setberrytree 50, 2, 5
-	setberrytree 52, 18, 5
-	setberrytree 53, 18, 5
-	setberrytree 62, 6, 5
-	setberrytree 64, 6, 5
-	setberrytree 58, 21, 5
-	setberrytree 59, 21, 5
-	setberrytree 60, 25, 5
-	setberrytree 61, 25, 5
-	setberrytree 79, 23, 5
-	setberrytree 14, 23, 5
-	setberrytree 15, 21, 5
-	setberrytree 30, 21, 5
-	setberrytree 65, 25, 5
-	setberrytree 72, 25, 5
-	setberrytree 73, 23, 5
-	setberrytree 74, 23, 5
-	setberrytree 87, 3, 5
-	setberrytree 88, 10, 5
-	setberrytree 89, 4, 5
-	setberrytree 82, 36, 5
+	setberrytree 2, ITEM_TO_BERRY(ITEM_ORAN_BERRY), 5
+	setberrytree 1, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 11, ITEM_TO_BERRY(ITEM_ORAN_BERRY), 5
+	setberrytree 13, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 4, ITEM_TO_BERRY(ITEM_ORAN_BERRY), 5
+	setberrytree 76, ITEM_TO_BERRY(ITEM_CHERI_BERRY), 5
+	setberrytree 8, ITEM_TO_BERRY(ITEM_CHERI_BERRY), 5
+	setberrytree 10, ITEM_TO_BERRY(ITEM_LEPPA_BERRY), 5
+	setberrytree 25, ITEM_TO_BERRY(ITEM_PINAP_BERRY), 5
+	setberrytree 26, ITEM_TO_BERRY(ITEM_CHESTO_BERRY), 5
+	setberrytree 66, ITEM_TO_BERRY(ITEM_CHESTO_BERRY), 5
+	setberrytree 67, ITEM_TO_BERRY(ITEM_PINAP_BERRY), 5
+	setberrytree 69, ITEM_TO_BERRY(ITEM_KELPSY_BERRY), 5
+	setberrytree 70, ITEM_TO_BERRY(ITEM_KELPSY_BERRY), 5
+	setberrytree 71, ITEM_TO_BERRY(ITEM_KELPSY_BERRY), 5
+	setberrytree 55, ITEM_TO_BERRY(ITEM_BLUK_BERRY), 5
+	setberrytree 56, ITEM_TO_BERRY(ITEM_BLUK_BERRY), 5
+	setberrytree 5, ITEM_TO_BERRY(ITEM_CHERI_BERRY), 5
+	setberrytree 6, ITEM_TO_BERRY(ITEM_LEPPA_BERRY), 5
+	setberrytree 7, ITEM_TO_BERRY(ITEM_CHERI_BERRY), 5
+	setberrytree 16, ITEM_TO_BERRY(ITEM_NANAB_BERRY), 5
+	setberrytree 17, ITEM_TO_BERRY(ITEM_NANAB_BERRY), 5
+	setberrytree 18, ITEM_TO_BERRY(ITEM_NANAB_BERRY), 5
+	setberrytree 29, ITEM_TO_BERRY(ITEM_WEPEAR_BERRY), 5
+	setberrytree 28, ITEM_TO_BERRY(ITEM_WEPEAR_BERRY), 5
+	setberrytree 27, ITEM_TO_BERRY(ITEM_WEPEAR_BERRY), 5
+	setberrytree 24, ITEM_TO_BERRY(ITEM_RAWST_BERRY), 5
+	setberrytree 23, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 22, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 21, ITEM_TO_BERRY(ITEM_RAWST_BERRY), 5
+	setberrytree 19, ITEM_TO_BERRY(ITEM_RAZZ_BERRY), 5
+	setberrytree 20, ITEM_TO_BERRY(ITEM_RAZZ_BERRY), 5
+	setberrytree 80, ITEM_TO_BERRY(ITEM_ORAN_BERRY), 5
+	setberrytree 81, ITEM_TO_BERRY(ITEM_ORAN_BERRY), 5
+	setberrytree 77, ITEM_TO_BERRY(ITEM_PERSIM_BERRY), 5
+	setberrytree 78, ITEM_TO_BERRY(ITEM_PERSIM_BERRY), 5
+	setberrytree 68, ITEM_TO_BERRY(ITEM_PERSIM_BERRY), 5
+	setberrytree 31, ITEM_TO_BERRY(ITEM_SITRUS_BERRY), 5
+	setberrytree 33, ITEM_TO_BERRY(ITEM_SITRUS_BERRY), 5
+	setberrytree 34, ITEM_TO_BERRY(ITEM_POMEG_BERRY), 5
+	setberrytree 35, ITEM_TO_BERRY(ITEM_POMEG_BERRY), 5
+	setberrytree 36, ITEM_TO_BERRY(ITEM_POMEG_BERRY), 5
+	setberrytree 83, ITEM_TO_BERRY(ITEM_HONDEW_BERRY), 5
+	setberrytree 84, ITEM_TO_BERRY(ITEM_HONDEW_BERRY), 5
+	setberrytree 85, ITEM_TO_BERRY(ITEM_SITRUS_BERRY), 5
+	setberrytree 86, ITEM_TO_BERRY(ITEM_LEPPA_BERRY), 5
+	setberrytree 37, ITEM_TO_BERRY(ITEM_ASPEAR_BERRY), 5
+	setberrytree 38, ITEM_TO_BERRY(ITEM_ASPEAR_BERRY), 5
+	setberrytree 39, ITEM_TO_BERRY(ITEM_ASPEAR_BERRY), 5
+	setberrytree 40, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 41, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 42, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 46, ITEM_TO_BERRY(ITEM_WEPEAR_BERRY), 5
+	setberrytree 45, ITEM_TO_BERRY(ITEM_PINAP_BERRY), 5
+	setberrytree 44, ITEM_TO_BERRY(ITEM_NANAB_BERRY), 5
+	setberrytree 43, ITEM_TO_BERRY(ITEM_RAZZ_BERRY), 5
+	setberrytree 47, ITEM_TO_BERRY(ITEM_PERSIM_BERRY), 5
+	setberrytree 48, ITEM_TO_BERRY(ITEM_ASPEAR_BERRY), 5
+	setberrytree 49, ITEM_TO_BERRY(ITEM_RAWST_BERRY), 5
+	setberrytree 50, ITEM_TO_BERRY(ITEM_CHESTO_BERRY), 5
+	setberrytree 52, ITEM_TO_BERRY(ITEM_NANAB_BERRY), 5
+	setberrytree 53, ITEM_TO_BERRY(ITEM_NANAB_BERRY), 5
+	setberrytree 62, ITEM_TO_BERRY(ITEM_LEPPA_BERRY), 5
+	setberrytree 64, ITEM_TO_BERRY(ITEM_LEPPA_BERRY), 5
+	setberrytree 58, ITEM_TO_BERRY(ITEM_POMEG_BERRY), 5
+	setberrytree 59, ITEM_TO_BERRY(ITEM_POMEG_BERRY), 5
+	setberrytree 60, ITEM_TO_BERRY(ITEM_GREPA_BERRY), 5
+	setberrytree 61, ITEM_TO_BERRY(ITEM_GREPA_BERRY), 5
+	setberrytree 79, ITEM_TO_BERRY(ITEM_QUALOT_BERRY), 5
+	setberrytree 14, ITEM_TO_BERRY(ITEM_QUALOT_BERRY), 5
+	setberrytree 15, ITEM_TO_BERRY(ITEM_POMEG_BERRY), 5
+	setberrytree 30, ITEM_TO_BERRY(ITEM_POMEG_BERRY), 5
+	setberrytree 65, ITEM_TO_BERRY(ITEM_GREPA_BERRY), 5
+	setberrytree 72, ITEM_TO_BERRY(ITEM_GREPA_BERRY), 5
+	setberrytree 73, ITEM_TO_BERRY(ITEM_QUALOT_BERRY), 5
+	setberrytree 74, ITEM_TO_BERRY(ITEM_QUALOT_BERRY), 5
+	setberrytree 87, ITEM_TO_BERRY(ITEM_PECHA_BERRY), 5
+	setberrytree 88, ITEM_TO_BERRY(ITEM_SITRUS_BERRY), 5
+	setberrytree 89, ITEM_TO_BERRY(ITEM_RAWST_BERRY), 5
+	setberrytree 82, ITEM_TO_BERRY(ITEM_LIECHI_BERRY), 5
 	return
 
 EventScript_ResetAllMapFlags:: @ 82715DE
@@ -1117,7 +1120,7 @@ EverGrandeCity_HallOfFame_EventScript_2717C1:: @ 82717C1
 	call_if_unset FLAG_RECEIVED_BELDUM, EverGrandeCity_HallOfFame_EventScript_27183F
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_RIVAL_BEDROOM
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_BEDROOM
-	compare VAR_0x40D3, 0
+	compare VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 0
 	call_if_eq EverGrandeCity_HallOfFame_EventScript_271851
 	return
 
@@ -1144,7 +1147,7 @@ EverGrandeCity_HallOfFame_EventScript_271843:: @ 8271843
 	return
 
 EverGrandeCity_HallOfFame_EventScript_271851:: @ 8271851
-	setvar VAR_0x40D3, 1
+	setvar VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1
 	return
 
 EventScript_WhiteOut:: @ 8271857
@@ -1716,10 +1719,11 @@ Route109_EventScript_271E95:: @ 8271E95
 	return
 
 EventScript_UseSurf:: @ 8271EA0
-	checkitem ITEM_HM03, 1
-	compare VAR_RESULT, 0
+	checkpartymove MOVE_SURF
+	compare VAR_RESULT, 6
 	goto_if_eq EventScript_CantSurf
-	setfieldeffectargument 0, 0
+	bufferpartymonnick 0, VAR_RESULT
+	setfieldeffectargument 0, VAR_RESULT
 	lockall
 	msgbox gText_WantToUseSurf, MSGBOX_YESNO
 	compare VAR_RESULT, 0
@@ -2291,21 +2295,22 @@ EverGrandeCity_DrakesRoom_EventScript_2723F8:: @ 82723F8
 EverGrandeCity_GlaciasRoom_EventScript_2723F8:: @ 82723F8
 EverGrandeCity_PhoebesRoom_EventScript_2723F8:: @ 82723F8
 EverGrandeCity_SidneysRoom_EventScript_2723F8:: @ 82723F8
+PokemonLeague_EliteFour_SetAdvanceToNextRoomMetatiles:: @ 82723F8
 	applymovement EVENT_OBJ_ID_PLAYER, EverGrandeCity_SidneysRoom_Movement_2725C6
 	waitmovement 0
 	playse SE_DOOR
-	setmetatile 6, 1, 836, 0
-	setmetatile 6, 2, 837, 0
-	setmetatile 0, 2, 734, 1
-	setmetatile 1, 2, 733, 1
-	setmetatile 2, 2, 734, 1
-	setmetatile 3, 2, 733, 1
-	setmetatile 4, 2, 734, 1
-	setmetatile 8, 2, 733, 1
-	setmetatile 9, 2, 734, 1
-	setmetatile 10, 2, 733, 1
-	setmetatile 11, 2, 734, 1
-	setmetatile 12, 2, 733, 1
+	setmetatile 6, 1, METATILE_EliteFour_OpenDoor_Frame, 0
+	setmetatile 6, 2, METATILE_EliteFour_OpenDoor_Opening, 0
+	setmetatile 0, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 1, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 2, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 3, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 4, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 8, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 9, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 10, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 11, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 12, 2, METATILE_EliteFour_LeftSpotlightOff, 1
 	special DrawWholeMapView
 	return
 
@@ -2316,12 +2321,12 @@ EverGrandeCity_SidneysRoom_EventScript_272475:: @ 8272475
 	applymovement EVENT_OBJ_ID_PLAYER, EverGrandeCity_SidneysRoom_Movement_2725BA
 	waitmovement 0
 	playse SE_TRACK_DOOR
-	setmetatile 5, 12, 518, 1
-	setmetatile 6, 12, 518, 1
-	setmetatile 7, 12, 518, 1
-	setmetatile 5, 13, 526, 1
-	setmetatile 6, 13, 526, 1
-	setmetatile 7, 13, 526, 1
+	setmetatile 5, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 6, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 7, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 5, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
+	setmetatile 6, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
+	setmetatile 7, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
 	special DrawWholeMapView
 	return
 
@@ -2329,36 +2334,36 @@ EverGrandeCity_DrakesRoom_EventScript_2724BC:: @ 82724BC
 EverGrandeCity_GlaciasRoom_EventScript_2724BC:: @ 82724BC
 EverGrandeCity_PhoebesRoom_EventScript_2724BC:: @ 82724BC
 EverGrandeCity_SidneysRoom_EventScript_2724BC:: @ 82724BC
-	setmetatile 6, 1, 836, 0
-	setmetatile 6, 2, 837, 0
-	setmetatile 5, 12, 518, 1
-	setmetatile 6, 12, 518, 1
-	setmetatile 7, 12, 518, 1
-	setmetatile 5, 13, 526, 1
-	setmetatile 6, 13, 526, 1
-	setmetatile 7, 13, 526, 1
-	setmetatile 0, 2, 734, 1
-	setmetatile 1, 2, 733, 1
-	setmetatile 2, 2, 734, 1
-	setmetatile 3, 2, 733, 1
-	setmetatile 4, 2, 734, 1
-	setmetatile 8, 2, 733, 1
-	setmetatile 9, 2, 734, 1
-	setmetatile 10, 2, 733, 1
-	setmetatile 11, 2, 734, 1
-	setmetatile 12, 2, 733, 1
+	setmetatile 6, 1, METATILE_EliteFour_OpenDoor_Frame, 0
+	setmetatile 6, 2, METATILE_EliteFour_OpenDoor_Opening, 0
+	setmetatile 5, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 6, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 7, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 5, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
+	setmetatile 6, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
+	setmetatile 7, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
+	setmetatile 0, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 1, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 2, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 3, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 4, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 8, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 9, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 10, 2, METATILE_EliteFour_LeftSpotlightOff, 1
+	setmetatile 11, 2, METATILE_EliteFour_RightSpotlightOff, 1
+	setmetatile 12, 2, METATILE_EliteFour_LeftSpotlightOff, 1
 	return
 
 EverGrandeCity_DrakesRoom_EventScript_27255F:: @ 827255F
 EverGrandeCity_GlaciasRoom_EventScript_27255F:: @ 827255F
 EverGrandeCity_PhoebesRoom_EventScript_27255F:: @ 827255F
 EverGrandeCity_SidneysRoom_EventScript_27255F:: @ 827255F
-	setmetatile 5, 12, 518, 1
-	setmetatile 6, 12, 518, 1
-	setmetatile 7, 12, 518, 1
-	setmetatile 5, 13, 526, 1
-	setmetatile 6, 13, 526, 1
-	setmetatile 7, 13, 526, 1
+	setmetatile 5, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 6, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 7, 12, METATILE_EliteFour_EntryDoor_ClosedTop, 1
+	setmetatile 5, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
+	setmetatile 6, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
+	setmetatile 7, 13, METATILE_EliteFour_EntryDoor_ClosedBottom, 1
 	return
 
 SlateportCity_Movement_272596: @ 8272596
@@ -2553,7 +2558,7 @@ gUnknown_08272A3F:: @ 8272A3F
 	.string "Please come again!$"
 
 gUnknown_08272A52:: @ 8272A52
-	.string "{PLAYER}{STRING 5}, welcome!\pWhat can I do for you?$"
+	.string "{PLAYER}{KUN}, welcome!\pWhat can I do for you?$"
 
 gUnknown_08272A78:: @ 8272A78
 	.string "Obtained the {STR_VAR_2}!$"
@@ -2994,163 +2999,163 @@ EventScript_2738FF:: @ 82738FF
 	end
 
 UnusualWeather_EventScript_PlaceTilesRoute114North:: @ 8273913
-	setmetatile 7, 3, 839, 1
-	setmetatile 7, 4, 847, 0
+	setmetatile 7, 3, METATILE_Fallarbor_RedCaveEntrance_Top, 1
+	setmetatile 7, 4, METATILE_Fallarbor_RedCaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute114South:: @ 8273926
-	setmetatile 6, 45, 601, 1
-	setmetatile 6, 46, 609, 0
+	setmetatile 6, 45, METATILE_Fallarbor_BrownCaveEntrance_Top, 1
+	setmetatile 6, 46, METATILE_Fallarbor_BrownCaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute115West:: @ 8273939
-	setmetatile 21, 5, 601, 1
-	setmetatile 21, 6, 609, 0
+	setmetatile 21, 5, METATILE_Fallarbor_BrownCaveEntrance_Top, 1
+	setmetatile 21, 6, METATILE_Fallarbor_BrownCaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute115East:: @ 827394C
-	setmetatile 36, 9, 601, 1
-	setmetatile 36, 10, 609, 0
+	setmetatile 36, 9, METATILE_Fallarbor_BrownCaveEntrance_Top, 1
+	setmetatile 36, 10, METATILE_Fallarbor_BrownCaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute116North:: @ 827395F
-	setmetatile 59, 12, 159, 1
-	setmetatile 59, 13, 167, 0
+	setmetatile 59, 12, METATILE_General_CaveEntrance_Top, 1
+	setmetatile 59, 13, METATILE_General_CaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute116South:: @ 8273972
-	setmetatile 79, 5, 159, 1
-	setmetatile 79, 6, 167, 0
+	setmetatile 79, 5, METATILE_General_CaveEntrance_Top, 1
+	setmetatile 79, 6, METATILE_General_CaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute118East:: @ 8273985
-	setmetatile 42, 5, 159, 1
-	setmetatile 42, 6, 167, 0
+	setmetatile 42, 5, METATILE_General_CaveEntrance_Top, 1
+	setmetatile 42, 6, METATILE_General_CaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute118West:: @ 8273998
-	setmetatile 9, 5, 159, 1
-	setmetatile 9, 6, 167, 0
+	setmetatile 9, 5, METATILE_General_CaveEntrance_Top, 1
+	setmetatile 9, 6, METATILE_General_CaveEntrance_Bottom, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute105North:: @ 82739AB
-	setmetatile 10, 28, 334, 0
-	setmetatile 11, 28, 334, 0
-	setmetatile 9, 29, 334, 0
-	setmetatile 10, 29, 335, 0
-	setmetatile 11, 29, 335, 0
-	setmetatile 12, 29, 334, 0
-	setmetatile 9, 30, 334, 0
-	setmetatile 10, 30, 335, 0
-	setmetatile 11, 30, 335, 0
-	setmetatile 12, 30, 334, 0
-	setmetatile 10, 31, 334, 0
-	setmetatile 11, 31, 334, 0
+	setmetatile 10, 28, METATILE_General_RoughWater, 0
+	setmetatile 11, 28, METATILE_General_RoughWater, 0
+	setmetatile 9, 29, METATILE_General_RoughWater, 0
+	setmetatile 10, 29, METATILE_General_RoughDeepWater, 0
+	setmetatile 11, 29, METATILE_General_RoughDeepWater, 0
+	setmetatile 12, 29, METATILE_General_RoughWater, 0
+	setmetatile 9, 30, METATILE_General_RoughWater, 0
+	setmetatile 10, 30, METATILE_General_RoughDeepWater, 0
+	setmetatile 11, 30, METATILE_General_RoughDeepWater, 0
+	setmetatile 12, 30, METATILE_General_RoughWater, 0
+	setmetatile 10, 31, METATILE_General_RoughWater, 0
+	setmetatile 11, 31, METATILE_General_RoughWater, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute105South:: @ 8273A18
-	setmetatile 20, 53, 334, 0
-	setmetatile 21, 53, 334, 0
-	setmetatile 19, 54, 334, 0
-	setmetatile 20, 54, 335, 0
-	setmetatile 21, 54, 335, 0
-	setmetatile 22, 54, 334, 0
-	setmetatile 19, 55, 334, 0
-	setmetatile 20, 55, 335, 0
-	setmetatile 21, 55, 335, 0
-	setmetatile 22, 55, 334, 0
-	setmetatile 20, 56, 334, 0
-	setmetatile 21, 56, 334, 0
+	setmetatile 20, 53, METATILE_General_RoughWater, 0
+	setmetatile 21, 53, METATILE_General_RoughWater, 0
+	setmetatile 19, 54, METATILE_General_RoughWater, 0
+	setmetatile 20, 54, METATILE_General_RoughDeepWater, 0
+	setmetatile 21, 54, METATILE_General_RoughDeepWater, 0
+	setmetatile 22, 54, METATILE_General_RoughWater, 0
+	setmetatile 19, 55, METATILE_General_RoughWater, 0
+	setmetatile 20, 55, METATILE_General_RoughDeepWater, 0
+	setmetatile 21, 55, METATILE_General_RoughDeepWater, 0
+	setmetatile 22, 55, METATILE_General_RoughWater, 0
+	setmetatile 20, 56, METATILE_General_RoughWater, 0
+	setmetatile 21, 56, METATILE_General_RoughWater, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute125West:: @ 8273A85
-	setmetatile 8, 16, 334, 0
-	setmetatile 9, 16, 334, 0
-	setmetatile 7, 17, 334, 0
-	setmetatile 8, 17, 335, 0
-	setmetatile 9, 17, 335, 0
-	setmetatile 10, 17, 334, 0
-	setmetatile 7, 18, 334, 0
-	setmetatile 8, 18, 335, 0
-	setmetatile 9, 18, 335, 0
-	setmetatile 10, 18, 334, 0
-	setmetatile 8, 19, 334, 0
-	setmetatile 9, 19, 334, 0
+	setmetatile 8, 16, METATILE_General_RoughWater, 0
+	setmetatile 9, 16, METATILE_General_RoughWater, 0
+	setmetatile 7, 17, METATILE_General_RoughWater, 0
+	setmetatile 8, 17, METATILE_General_RoughDeepWater, 0
+	setmetatile 9, 17, METATILE_General_RoughDeepWater, 0
+	setmetatile 10, 17, METATILE_General_RoughWater, 0
+	setmetatile 7, 18, METATILE_General_RoughWater, 0
+	setmetatile 8, 18, METATILE_General_RoughDeepWater, 0
+	setmetatile 9, 18, METATILE_General_RoughDeepWater, 0
+	setmetatile 10, 18, METATILE_General_RoughWater, 0
+	setmetatile 8, 19, METATILE_General_RoughWater, 0
+	setmetatile 9, 19, METATILE_General_RoughWater, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute125East:: @ 8273AF2
-	setmetatile 53, 18, 334, 0
-	setmetatile 54, 18, 334, 0
-	setmetatile 52, 19, 334, 0
-	setmetatile 53, 19, 335, 0
-	setmetatile 54, 19, 335, 0
-	setmetatile 55, 19, 334, 0
-	setmetatile 52, 20, 334, 0
-	setmetatile 53, 20, 335, 0
-	setmetatile 54, 20, 335, 0
-	setmetatile 55, 20, 334, 0
-	setmetatile 53, 21, 334, 0
-	setmetatile 54, 21, 334, 0
+	setmetatile 53, 18, METATILE_General_RoughWater, 0
+	setmetatile 54, 18, METATILE_General_RoughWater, 0
+	setmetatile 52, 19, METATILE_General_RoughWater, 0
+	setmetatile 53, 19, METATILE_General_RoughDeepWater, 0
+	setmetatile 54, 19, METATILE_General_RoughDeepWater, 0
+	setmetatile 55, 19, METATILE_General_RoughWater, 0
+	setmetatile 52, 20, METATILE_General_RoughWater, 0
+	setmetatile 53, 20, METATILE_General_RoughDeepWater, 0
+	setmetatile 54, 20, METATILE_General_RoughDeepWater, 0
+	setmetatile 55, 20, METATILE_General_RoughWater, 0
+	setmetatile 53, 21, METATILE_General_RoughWater, 0
+	setmetatile 54, 21, METATILE_General_RoughWater, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute127North:: @ 8273B5F
-	setmetatile 57, 9, 334, 0
-	setmetatile 58, 9, 334, 0
-	setmetatile 56, 10, 334, 0
-	setmetatile 57, 10, 335, 0
-	setmetatile 58, 10, 335, 0
-	setmetatile 59, 10, 334, 0
-	setmetatile 56, 11, 334, 0
-	setmetatile 57, 11, 335, 0
-	setmetatile 58, 11, 335, 0
-	setmetatile 59, 11, 334, 0
-	setmetatile 57, 12, 334, 0
-	setmetatile 58, 12, 334, 0
+	setmetatile 57, 9, METATILE_General_RoughWater, 0
+	setmetatile 58, 9, METATILE_General_RoughWater, 0
+	setmetatile 56, 10, METATILE_General_RoughWater, 0
+	setmetatile 57, 10, METATILE_General_RoughDeepWater, 0
+	setmetatile 58, 10, METATILE_General_RoughDeepWater, 0
+	setmetatile 59, 10, METATILE_General_RoughWater, 0
+	setmetatile 56, 11, METATILE_General_RoughWater, 0
+	setmetatile 57, 11, METATILE_General_RoughDeepWater, 0
+	setmetatile 58, 11, METATILE_General_RoughDeepWater, 0
+	setmetatile 59, 11, METATILE_General_RoughWater, 0
+	setmetatile 57, 12, METATILE_General_RoughWater, 0
+	setmetatile 58, 12, METATILE_General_RoughWater, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute127South:: @ 8273BCC
-	setmetatile 61, 30, 334, 0
-	setmetatile 62, 30, 334, 0
-	setmetatile 60, 31, 334, 0
-	setmetatile 61, 31, 335, 0
-	setmetatile 62, 31, 335, 0
-	setmetatile 63, 31, 334, 0
-	setmetatile 60, 32, 334, 0
-	setmetatile 61, 32, 335, 0
-	setmetatile 62, 32, 335, 0
-	setmetatile 63, 32, 334, 0
-	setmetatile 61, 33, 334, 0
-	setmetatile 62, 33, 334, 0
+	setmetatile 61, 30, METATILE_General_RoughWater, 0
+	setmetatile 62, 30, METATILE_General_RoughWater, 0
+	setmetatile 60, 31, METATILE_General_RoughWater, 0
+	setmetatile 61, 31, METATILE_General_RoughDeepWater, 0
+	setmetatile 62, 31, METATILE_General_RoughDeepWater, 0
+	setmetatile 63, 31, METATILE_General_RoughWater, 0
+	setmetatile 60, 32, METATILE_General_RoughWater, 0
+	setmetatile 61, 32, METATILE_General_RoughDeepWater, 0
+	setmetatile 62, 32, METATILE_General_RoughDeepWater, 0
+	setmetatile 63, 32, METATILE_General_RoughWater, 0
+	setmetatile 61, 33, METATILE_General_RoughWater, 0
+	setmetatile 62, 33, METATILE_General_RoughWater, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute129West:: @ 8273C39
-	setmetatile 16, 14, 334, 0
-	setmetatile 17, 14, 334, 0
-	setmetatile 15, 15, 334, 0
-	setmetatile 16, 15, 335, 0
-	setmetatile 17, 15, 335, 0
-	setmetatile 18, 15, 334, 0
-	setmetatile 15, 16, 334, 0
-	setmetatile 16, 16, 335, 0
-	setmetatile 17, 16, 335, 0
-	setmetatile 18, 16, 334, 0
-	setmetatile 16, 17, 334, 0
-	setmetatile 17, 17, 334, 0
+	setmetatile 16, 14, METATILE_General_RoughWater, 0
+	setmetatile 17, 14, METATILE_General_RoughWater, 0
+	setmetatile 15, 15, METATILE_General_RoughWater, 0
+	setmetatile 16, 15, METATILE_General_RoughDeepWater, 0
+	setmetatile 17, 15, METATILE_General_RoughDeepWater, 0
+	setmetatile 18, 15, METATILE_General_RoughWater, 0
+	setmetatile 15, 16, METATILE_General_RoughWater, 0
+	setmetatile 16, 16, METATILE_General_RoughDeepWater, 0
+	setmetatile 17, 16, METATILE_General_RoughDeepWater, 0
+	setmetatile 18, 16, METATILE_General_RoughWater, 0
+	setmetatile 16, 17, METATILE_General_RoughWater, 0
+	setmetatile 17, 17, METATILE_General_RoughWater, 0
 	return
 
 UnusualWeather_EventScript_PlaceTilesRoute129East:: @ 8273CA6
-	setmetatile 42, 19, 334, 0
-	setmetatile 43, 19, 334, 0
-	setmetatile 41, 20, 334, 0
-	setmetatile 42, 20, 335, 0
-	setmetatile 43, 20, 335, 0
-	setmetatile 44, 20, 334, 0
-	setmetatile 41, 21, 334, 0
-	setmetatile 42, 21, 335, 0
-	setmetatile 43, 21, 335, 0
-	setmetatile 44, 21, 334, 0
-	setmetatile 42, 22, 334, 0
-	setmetatile 43, 22, 334, 0
+	setmetatile 42, 19, METATILE_General_RoughWater, 0
+	setmetatile 43, 19, METATILE_General_RoughWater, 0
+	setmetatile 41, 20, METATILE_General_RoughWater, 0
+	setmetatile 42, 20, METATILE_General_RoughDeepWater, 0
+	setmetatile 43, 20, METATILE_General_RoughDeepWater, 0
+	setmetatile 44, 20, METATILE_General_RoughWater, 0
+	setmetatile 41, 21, METATILE_General_RoughWater, 0
+	setmetatile 42, 21, METATILE_General_RoughDeepWater, 0
+	setmetatile 43, 21, METATILE_General_RoughDeepWater, 0
+	setmetatile 44, 21, METATILE_General_RoughWater, 0
+	setmetatile 42, 22, METATILE_General_RoughWater, 0
+	setmetatile 43, 22, METATILE_General_RoughWater, 0
 	return
 
 Route105_EventScript_273D13:: @ 8273D13
@@ -3224,163 +3229,163 @@ UnusualWeather_EventScript_CleanupMapTiles:: @ 8273D6D
 	return
 
 UnusualWeather_EventScript_CleanupRoute114North:: @ 8273E23
-	setmetatile 7, 3, 617, 1
-	setmetatile 7, 4, 617, 1
+	setmetatile 7, 3, METATILE_Fallarbor_RedRockWall, 1
+	setmetatile 7, 4, METATILE_Fallarbor_RedRockWall, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute114South:: @ 8273E36
-	setmetatile 6, 45, 613, 1
-	setmetatile 6, 46, 613, 1
+	setmetatile 6, 45, METATILE_Fallarbor_BrownRockWall, 1
+	setmetatile 6, 46, METATILE_Fallarbor_BrownRockWall, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute115West:: @ 8273E49
-	setmetatile 21, 5, 613, 1
-	setmetatile 21, 6, 613, 1
+	setmetatile 21, 5, METATILE_Fallarbor_BrownRockWall, 1
+	setmetatile 21, 6, METATILE_Fallarbor_BrownRockWall, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute115East:: @ 8273E5C
-	setmetatile 36, 9, 613, 1
-	setmetatile 36, 10, 613, 1
+	setmetatile 36, 9, METATILE_Fallarbor_BrownRockWall, 1
+	setmetatile 36, 10, METATILE_Fallarbor_BrownRockWall, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute116North:: @ 8273E6F
-	setmetatile 59, 12, 124, 1
-	setmetatile 59, 13, 124, 1
+	setmetatile 59, 12, METATILE_General_RockWall_RockBase, 1
+	setmetatile 59, 13, METATILE_General_RockWall_RockBase, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute116South:: @ 8273E82
-	setmetatile 79, 5, 124, 1
-	setmetatile 79, 6, 124, 1
+	setmetatile 79, 5, METATILE_General_RockWall_RockBase, 1
+	setmetatile 79, 6, METATILE_General_RockWall_RockBase, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute118East:: @ 8273E95
-	setmetatile 42, 5, 124, 1
-	setmetatile 42, 6, 121, 1
+	setmetatile 42, 5, METATILE_General_RockWall_RockBase, 1
+	setmetatile 42, 6, METATILE_General_RockWall_GrassBase, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute118West:: @ 8273EA8
-	setmetatile 9, 5, 124, 1
-	setmetatile 9, 6, 121, 1
+	setmetatile 9, 5, METATILE_General_RockWall_RockBase, 1
+	setmetatile 9, 6, METATILE_General_RockWall_GrassBase, 1
 	return
 
 UnusualWeather_EventScript_CleanupRoute105North:: @ 8273EBB
-	setmetatile 10, 28, 368, 0
-	setmetatile 11, 28, 368, 0
-	setmetatile 9, 29, 368, 0
-	setmetatile 10, 29, 368, 0
-	setmetatile 11, 29, 368, 0
-	setmetatile 12, 29, 368, 0
-	setmetatile 9, 30, 368, 0
-	setmetatile 10, 30, 368, 0
-	setmetatile 11, 30, 368, 0
-	setmetatile 12, 30, 368, 0
-	setmetatile 10, 31, 368, 0
-	setmetatile 11, 31, 368, 0
+	setmetatile 10, 28, METATILE_General_CalmWater, 0
+	setmetatile 11, 28, METATILE_General_CalmWater, 0
+	setmetatile 9, 29, METATILE_General_CalmWater, 0
+	setmetatile 10, 29, METATILE_General_CalmWater, 0
+	setmetatile 11, 29, METATILE_General_CalmWater, 0
+	setmetatile 12, 29, METATILE_General_CalmWater, 0
+	setmetatile 9, 30, METATILE_General_CalmWater, 0
+	setmetatile 10, 30, METATILE_General_CalmWater, 0
+	setmetatile 11, 30, METATILE_General_CalmWater, 0
+	setmetatile 12, 30, METATILE_General_CalmWater, 0
+	setmetatile 10, 31, METATILE_General_CalmWater, 0
+	setmetatile 11, 31, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_EventScript_CleanupRoute105South:: @ 8273F28
-	setmetatile 20, 53, 368, 0
-	setmetatile 21, 53, 368, 0
-	setmetatile 19, 54, 368, 0
-	setmetatile 20, 54, 368, 0
-	setmetatile 21, 54, 368, 0
-	setmetatile 22, 54, 368, 0
-	setmetatile 19, 55, 368, 0
-	setmetatile 20, 55, 368, 0
-	setmetatile 21, 55, 368, 0
-	setmetatile 22, 55, 368, 0
-	setmetatile 20, 56, 368, 0
-	setmetatile 21, 56, 368, 0
+	setmetatile 20, 53, METATILE_General_CalmWater, 0
+	setmetatile 21, 53, METATILE_General_CalmWater, 0
+	setmetatile 19, 54, METATILE_General_CalmWater, 0
+	setmetatile 20, 54, METATILE_General_CalmWater, 0
+	setmetatile 21, 54, METATILE_General_CalmWater, 0
+	setmetatile 22, 54, METATILE_General_CalmWater, 0
+	setmetatile 19, 55, METATILE_General_CalmWater, 0
+	setmetatile 20, 55, METATILE_General_CalmWater, 0
+	setmetatile 21, 55, METATILE_General_CalmWater, 0
+	setmetatile 22, 55, METATILE_General_CalmWater, 0
+	setmetatile 20, 56, METATILE_General_CalmWater, 0
+	setmetatile 21, 56, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_EventScript_CleanupRoute125West:: @ 8273F95
-	setmetatile 8, 16, 368, 0
-	setmetatile 9, 16, 368, 0
-	setmetatile 7, 17, 368, 0
-	setmetatile 8, 17, 368, 0
-	setmetatile 9, 17, 368, 0
-	setmetatile 10, 17, 368, 0
-	setmetatile 7, 18, 368, 0
-	setmetatile 8, 18, 368, 0
-	setmetatile 9, 18, 368, 0
-	setmetatile 10, 18, 368, 0
-	setmetatile 8, 19, 368, 0
-	setmetatile 9, 19, 368, 0
+	setmetatile 8, 16, METATILE_General_CalmWater, 0
+	setmetatile 9, 16, METATILE_General_CalmWater, 0
+	setmetatile 7, 17, METATILE_General_CalmWater, 0
+	setmetatile 8, 17, METATILE_General_CalmWater, 0
+	setmetatile 9, 17, METATILE_General_CalmWater, 0
+	setmetatile 10, 17, METATILE_General_CalmWater, 0
+	setmetatile 7, 18, METATILE_General_CalmWater, 0
+	setmetatile 8, 18, METATILE_General_CalmWater, 0
+	setmetatile 9, 18, METATILE_General_CalmWater, 0
+	setmetatile 10, 18, METATILE_General_CalmWater, 0
+	setmetatile 8, 19, METATILE_General_CalmWater, 0
+	setmetatile 9, 19, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_EventScript_CleanupRoute125East:: @ 8274002
-	setmetatile 53, 18, 368, 0
-	setmetatile 54, 18, 368, 0
-	setmetatile 52, 19, 368, 0
-	setmetatile 53, 19, 368, 0
-	setmetatile 54, 19, 368, 0
-	setmetatile 55, 19, 368, 0
-	setmetatile 52, 20, 368, 0
-	setmetatile 53, 20, 368, 0
-	setmetatile 54, 20, 368, 0
-	setmetatile 55, 20, 368, 0
-	setmetatile 53, 21, 368, 0
-	setmetatile 54, 21, 368, 0
+	setmetatile 53, 18, METATILE_General_CalmWater, 0
+	setmetatile 54, 18, METATILE_General_CalmWater, 0
+	setmetatile 52, 19, METATILE_General_CalmWater, 0
+	setmetatile 53, 19, METATILE_General_CalmWater, 0
+	setmetatile 54, 19, METATILE_General_CalmWater, 0
+	setmetatile 55, 19, METATILE_General_CalmWater, 0
+	setmetatile 52, 20, METATILE_General_CalmWater, 0
+	setmetatile 53, 20, METATILE_General_CalmWater, 0
+	setmetatile 54, 20, METATILE_General_CalmWater, 0
+	setmetatile 55, 20, METATILE_General_CalmWater, 0
+	setmetatile 53, 21, METATILE_General_CalmWater, 0
+	setmetatile 54, 21, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_EventScript_CleanupRoute127North:: @ 827406F
-	setmetatile 57, 9, 368, 0
-	setmetatile 58, 9, 368, 0
-	setmetatile 56, 10, 368, 0
-	setmetatile 57, 10, 368, 0
-	setmetatile 58, 10, 368, 0
-	setmetatile 59, 10, 368, 0
-	setmetatile 56, 11, 368, 0
-	setmetatile 57, 11, 368, 0
-	setmetatile 58, 11, 368, 0
-	setmetatile 59, 11, 368, 0
-	setmetatile 57, 12, 368, 0
-	setmetatile 58, 12, 368, 0
+	setmetatile 57, 9, METATILE_General_CalmWater, 0
+	setmetatile 58, 9, METATILE_General_CalmWater, 0
+	setmetatile 56, 10, METATILE_General_CalmWater, 0
+	setmetatile 57, 10, METATILE_General_CalmWater, 0
+	setmetatile 58, 10, METATILE_General_CalmWater, 0
+	setmetatile 59, 10, METATILE_General_CalmWater, 0
+	setmetatile 56, 11, METATILE_General_CalmWater, 0
+	setmetatile 57, 11, METATILE_General_CalmWater, 0
+	setmetatile 58, 11, METATILE_General_CalmWater, 0
+	setmetatile 59, 11, METATILE_General_CalmWater, 0
+	setmetatile 57, 12, METATILE_General_CalmWater, 0
+	setmetatile 58, 12, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_EventScript_CleanupRoute127South:: @ 82740DC
-	setmetatile 61, 30, 368, 0
-	setmetatile 62, 30, 368, 0
-	setmetatile 60, 31, 368, 0
-	setmetatile 61, 31, 368, 0
-	setmetatile 62, 31, 368, 0
-	setmetatile 63, 31, 368, 0
-	setmetatile 60, 32, 368, 0
-	setmetatile 61, 32, 368, 0
-	setmetatile 62, 32, 368, 0
-	setmetatile 63, 32, 368, 0
-	setmetatile 61, 33, 368, 0
-	setmetatile 62, 33, 368, 0
+	setmetatile 61, 30, METATILE_General_CalmWater, 0
+	setmetatile 62, 30, METATILE_General_CalmWater, 0
+	setmetatile 60, 31, METATILE_General_CalmWater, 0
+	setmetatile 61, 31, METATILE_General_CalmWater, 0
+	setmetatile 62, 31, METATILE_General_CalmWater, 0
+	setmetatile 63, 31, METATILE_General_CalmWater, 0
+	setmetatile 60, 32, METATILE_General_CalmWater, 0
+	setmetatile 61, 32, METATILE_General_CalmWater, 0
+	setmetatile 62, 32, METATILE_General_CalmWater, 0
+	setmetatile 63, 32, METATILE_General_CalmWater, 0
+	setmetatile 61, 33, METATILE_General_CalmWater, 0
+	setmetatile 62, 33, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_EventScript_CleanupRoute129West:: @ 8274149
-	setmetatile 16, 14, 368, 0
-	setmetatile 17, 14, 368, 0
-	setmetatile 15, 15, 368, 0
-	setmetatile 16, 15, 368, 0
-	setmetatile 17, 15, 368, 0
-	setmetatile 18, 15, 368, 0
-	setmetatile 15, 16, 368, 0
-	setmetatile 16, 16, 368, 0
-	setmetatile 17, 16, 368, 0
-	setmetatile 18, 16, 368, 0
-	setmetatile 16, 17, 368, 0
-	setmetatile 17, 17, 368, 0
+	setmetatile 16, 14, METATILE_General_CalmWater, 0
+	setmetatile 17, 14, METATILE_General_CalmWater, 0
+	setmetatile 15, 15, METATILE_General_CalmWater, 0
+	setmetatile 16, 15, METATILE_General_CalmWater, 0
+	setmetatile 17, 15, METATILE_General_CalmWater, 0
+	setmetatile 18, 15, METATILE_General_CalmWater, 0
+	setmetatile 15, 16, METATILE_General_CalmWater, 0
+	setmetatile 16, 16, METATILE_General_CalmWater, 0
+	setmetatile 17, 16, METATILE_General_CalmWater, 0
+	setmetatile 18, 16, METATILE_General_CalmWater, 0
+	setmetatile 16, 17, METATILE_General_CalmWater, 0
+	setmetatile 17, 17, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_EventScript_CleanupRoute129East:: @ 82741B6
-	setmetatile 42, 19, 368, 0
-	setmetatile 43, 19, 368, 0
-	setmetatile 41, 20, 368, 0
-	setmetatile 42, 20, 368, 0
-	setmetatile 43, 20, 368, 0
-	setmetatile 44, 20, 368, 0
-	setmetatile 41, 21, 368, 0
-	setmetatile 42, 21, 368, 0
-	setmetatile 43, 21, 368, 0
-	setmetatile 44, 21, 368, 0
-	setmetatile 42, 22, 368, 0
-	setmetatile 43, 22, 368, 0
+	setmetatile 42, 19, METATILE_General_CalmWater, 0
+	setmetatile 43, 19, METATILE_General_CalmWater, 0
+	setmetatile 41, 20, METATILE_General_CalmWater, 0
+	setmetatile 42, 20, METATILE_General_CalmWater, 0
+	setmetatile 43, 20, METATILE_General_CalmWater, 0
+	setmetatile 44, 20, METATILE_General_CalmWater, 0
+	setmetatile 41, 21, METATILE_General_CalmWater, 0
+	setmetatile 42, 21, METATILE_General_CalmWater, 0
+	setmetatile 43, 21, METATILE_General_CalmWater, 0
+	setmetatile 44, 21, METATILE_General_CalmWater, 0
+	setmetatile 42, 22, METATILE_General_CalmWater, 0
+	setmetatile 43, 22, METATILE_General_CalmWater, 0
 	return
 
 UnusualWeather_Underwater_SetupEscapeWarp:: @ 8274223
@@ -4278,23 +4283,23 @@ GraniteCave_B1F_Movement_2A8369: @ 82A8369
 	step_end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A836B:: @ 82A836B
-	special sub_818DAEC
+	special Script_GetLilycoveLadyId
 	switch VAR_RESULT
-	case 0, LilycoveCity_PokemonCenter_1F_EventScript_2A8554
-	case 1, LilycoveCity_PokemonCenter_1F_EventScript_2A8395
-	case 2, LilycoveCity_PokemonCenter_1F_EventScript_2A882A
+	case LILYCOVE_LADY_QUIZ, LilycoveCity_PokemonCenter_1F_EventScript_2A8554
+	case LILYCOVE_LADY_FAVOR, LilycoveCity_PokemonCenter_1F_EventScript_2A8395
+	case LILYCOVE_LADY_CONTEST, LilycoveCity_PokemonCenter_1F_EventScript_2A882A
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8395:: @ 82A8395
 	lock
 	faceplayer
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8A69, MSGBOX_DEFAULT
-	specialvar VAR_RESULT, sub_818DBE8
-	compare VAR_RESULT, 0
+	specialvar VAR_RESULT, GetFavorLadyState
+	compare VAR_RESULT, LILYCOVE_LADY_STATE_READY
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A83D0
-	compare VAR_RESULT, 1
+	compare VAR_RESULT, LILYCOVE_LADY_STATE_COMPLETED
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A83C6
-	compare VAR_RESULT, 2
+	compare VAR_RESULT, LILYCOVE_LADY_STATE_PRIZE
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8510
 	end
 
@@ -4304,9 +4309,9 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A83C6:: @ 82A83C6
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A83D0:: @ 82A83D0
-	special sub_818DC2C
+	special BufferFavorLadyRequest
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8A7D, MSGBOX_DEFAULT
-	specialvar VAR_RESULT, sub_818DC60
+	specialvar VAR_RESULT, HasAnotherPlayerGivenFavorLadyItem
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8435
 	compare VAR_RESULT, 1
@@ -4314,9 +4319,9 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A83D0:: @ 82A83D0
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A83F7:: @ 82A83F7
-	special sub_818DCC8
-	special sub_818DD14
-	specialvar VAR_RESULT, sub_818DD54
+	special BufferFavorLadyItemName
+	special BufferFavorLadyPlayerName
+	specialvar VAR_RESULT, DidFavorLadyLikeItem
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8419
 	compare VAR_RESULT, 1
@@ -4354,7 +4359,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A845E:: @ 82A845E
 LilycoveCity_PokemonCenter_1F_EventScript_2A846C:: @ 82A846C
 	fadescreen 1
 	setvar VAR_RESULT, 0
-	special sub_818DD78
+	special Script_FavorLadyOpenBagMenu
 	waitstate
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A848E
@@ -4371,7 +4376,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A848E:: @ 82A848E
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A84AD:: @ 82A84AD
-	specialvar VAR_RESULT, sub_818DE44
+	specialvar VAR_RESULT, Script_DoesFavorLadyLikeItem
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A84C9
 	compare VAR_RESULT, 1
@@ -4379,13 +4384,13 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A84AD:: @ 82A84AD
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A84C9:: @ 82A84C9
-	special sub_818DC2C
+	special BufferFavorLadyRequest
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8C0F, MSGBOX_DEFAULT
 	release
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A84D6:: @ 82A84D6
-	specialvar VAR_RESULT, sub_818DE5C
+	specialvar VAR_RESULT, IsFavorLadyThresholdMet
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A84F2
 	compare VAR_RESULT, 1
@@ -4393,20 +4398,20 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A84D6:: @ 82A84D6
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A84F2:: @ 82A84F2
-	special sub_818DC2C
+	special BufferFavorLadyRequest
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8C6F, MSGBOX_DEFAULT
 	release
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A84FF:: @ 82A84FF
-	special sub_818DC2C
+	special BufferFavorLadyRequest
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8CC8, MSGBOX_DEFAULT
 	goto LilycoveCity_PokemonCenter_1F_EventScript_2A8510
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8510:: @ 82A8510
 	setvar VAR_0x8004, 0
-	specialvar VAR_0x8004, sub_818DEA0
+	specialvar VAR_0x8004, FavorLadyGetPrize
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8D5D, MSGBOX_DEFAULT
 	giveitem_std VAR_0x8004
 	compare VAR_RESULT, 0
@@ -4421,7 +4426,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8545:: @ 82A8545
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A854F:: @ 82A854F
-	special sub_818DEDC
+	special SetFavorLadyState_Complete
 	release
 	end
 
@@ -4429,27 +4434,27 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8554:: @ 82A8554
 	lock
 	faceplayer
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8E2B, MSGBOX_DEFAULT
-	specialvar VAR_RESULT, sub_818E038
-	compare VAR_RESULT, 0
+	specialvar VAR_RESULT, GetQuizLadyState
+	compare VAR_RESULT, LILYCOVE_LADY_STATE_READY
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8585
-	compare VAR_RESULT, 1
+	compare VAR_RESULT, LILYCOVE_LADY_STATE_COMPLETED
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A85AC
-	compare VAR_RESULT, 2
+	compare VAR_RESULT, LILYCOVE_LADY_STATE_PRIZE
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A86EC
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8585:: @ 82A8585
-	specialvar VAR_RESULT, sub_818E06C
-	compare VAR_RESULT, 0
+	specialvar VAR_RESULT, GetQuizAuthor
+	compare VAR_RESULT, QUIZ_AUTHOR_PLAYER
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A85C8
-	compare VAR_RESULT, 1
+	compare VAR_RESULT, QUIZ_AUTHOR_OTHER_PLAYER
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A85D2
-	compare VAR_RESULT, 2
+	compare VAR_RESULT, QUIZ_AUTHOR_LADY
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A85E0
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A85AC:: @ 82A85AC
-	specialvar VAR_RESULT, sub_818E2D8
+	specialvar VAR_RESULT, IsQuizLadyWaitingForChallenger
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8759
 	compare VAR_RESULT, 1
@@ -4486,7 +4491,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8612:: @ 82A8612
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A861C:: @ 82A861C
-	special sub_818E3BC
+	special ClearQuizLadyPlayerAnswer
 	compare VAR_0x8004, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A864C
 	compare VAR_0x8004, EASY_CHAT_TYPE_QUIZ_ANSWER
@@ -4500,13 +4505,13 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8635:: @ 82A8635
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A864C:: @ 82A864C
-	special sub_811A858
+	special QuizLadyShowQuizQuestion
 	waitstate
 	goto LilycoveCity_PokemonCenter_1F_EventScript_2A8635
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8656:: @ 82A8656
-	special sub_818E2FC
+	special QuizLadyGetPlayerAnswer
 	waitstate
 	goto LilycoveCity_PokemonCenter_1F_EventScript_2A8635
 	end
@@ -4525,9 +4530,9 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A867F:: @ 82A867F
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8689:: @ 82A8689
-	special sub_818E37C
+	special SetQuizLadyState_Complete
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A8F4D, MSGBOX_DEFAULT
-	specialvar VAR_RESULT, sub_818E308
+	specialvar VAR_RESULT, IsQuizAnswerCorrect
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A86C7
 	compare VAR_RESULT, 1
@@ -4543,8 +4548,8 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A86B0:: @ 82A86B0
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A86C7:: @ 82A86C7
-	special sub_818E538
-	special sub_818E274
+	special BufferQuizCorrectAnswer
+	special BufferQuizPrizeName
 	playse SE_HAZURE
 	delay 10
 	playse SE_HAZURE
@@ -4553,8 +4558,9 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A86C7:: @ 82A86C7
 	goto LilycoveCity_PokemonCenter_1F_EventScript_2A8759
 	end
 
+@ VAR_RESULT is essentially ignored, both jumps are identical
 LilycoveCity_PokemonCenter_1F_EventScript_2A86EC:: @ 82A86EC
-	specialvar VAR_RESULT, sub_818E298
+	specialvar VAR_RESULT, BufferQuizAuthorNameAndCheckIfLady
 	compare VAR_RESULT, 1
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8708
 	compare VAR_RESULT, 0
@@ -4573,8 +4579,8 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8716:: @ 82A8716
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8724:: @ 82A8724
 	setvar VAR_0x8005, 0
-	special sub_818E358
-	special sub_818E37C
+	special BufferQuizPrizeItem
+	special SetQuizLadyState_Complete
 	giveitem_std VAR_0x8005
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A874C
@@ -4583,7 +4589,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8724:: @ 82A8724
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A874C:: @ 82A874C
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A906A, MSGBOX_DEFAULT
-	special sub_818E39C
+	special SetQuizLadyState_GivePrize
 	release
 	end
 
@@ -4596,7 +4602,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8759:: @ 82A8759
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8778:: @ 82A8778
-	special sub_818E3EC
+	special QuizLadyPickNewQuestion
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A9131, MSGBOX_DEFAULT
 	release
 	end
@@ -4607,7 +4613,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8785:: @ 82A8785
 LilycoveCity_PokemonCenter_1F_EventScript_2A878D:: @ 82A878D
 	fadescreen 1
 	setvar VAR_RESULT, 0
-	special sub_818E3E0
+	special Script_QuizLadyOpenBagMenu
 	waitstate
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A87AF
@@ -4625,13 +4631,13 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A87AF:: @ 82A87AF
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A87CE:: @ 82A87CE
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A9270, MSGBOX_DEFAULT
-	special sub_818E430
-	special sub_818E3BC
-	setvar VAR_0x8004, 16
+	special ClearQuizLadyQuestionAndAnswer
+	special ClearQuizLadyPlayerAnswer
+	setvar VAR_0x8004, EASY_CHAT_TYPE_QUIZ_QUESTION
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A87E1:: @ 82A87E1
 	fadescreen 1
-	special sub_818E47C
+	special QuizLadySetCustomQuestion
 	waitstate
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A87F8
@@ -4647,9 +4653,9 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A87F8:: @ 82A87F8
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8817:: @ 82A8817
-	special sub_818E490
-	special sub_818E4A4
-	special sub_818E510
+	special QuizLadyTakePrizeForCustomQuiz
+	special QuizLadyRecordCustomQuizData
+	special QuizLadySetWaitingForChallenger
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A9336, MSGBOX_DEFAULT
 	release
 	end
@@ -4658,15 +4664,16 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A882A:: @ 82A882A
 	lock
 	faceplayer
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A93A7, MSGBOX_DEFAULT
-	specialvar VAR_RESULT, sub_818E8B4
+	specialvar VAR_RESULT, HasPlayerGivenContestLadyPokeblock
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8850
 	compare VAR_RESULT, 1
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A886C
 	end
 
+@ Redundant with above script, VAR_RESULT will always be 0 here
 LilycoveCity_PokemonCenter_1F_EventScript_2A8850:: @ 82A8850
-	specialvar VAR_RESULT, sub_818E8E0
+	specialvar VAR_RESULT, ShouldContestLadyShowGoOnAir
 	compare VAR_RESULT, 0
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8876
 	compare VAR_RESULT, 1
@@ -4679,7 +4686,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A886C:: @ 82A886C
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A8876:: @ 82A8876
-	special sub_818E914
+	special Script_BufferContestLadyCategoryAndMonName
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A93F4, MSGBOX_DEFAULT
 	checkitem ITEM_POKEBLOCK_CASE, 1
 	compare VAR_RESULT, 0
@@ -4698,7 +4705,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A88B0:: @ 82A88B0
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A88BA:: @ 82A88BA
 	fadescreen 1
-	special sub_818E92C
+	special OpenPokeblockCaseForContestLady
 	waitstate
 	compare VAR_RESULT, 65535
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A88D7
@@ -4716,11 +4723,12 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A88D7:: @ 82A88D7
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A88F6:: @ 82A88F6
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A9571, MSGBOX_DEFAULT
-	special sub_818E940
-	special sub_818E960
+	special SetContestLadyGivenPokeblock
+	special GetContestLadyMonSpecies
 	goto LilycoveCity_PokemonCenter_1F_EventScript_2A890A
 	end
 
+@ VAR_0x8004 here is the return value from GivePokeblockToContestLady
 LilycoveCity_PokemonCenter_1F_EventScript_2A890A:: @ 82A890A
 	applymovement 4, LilycoveCity_PokemonCenter_1F_Movement_2A89B8
 	waitmovement 0
@@ -4742,6 +4750,7 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A893F:: @ 82A893F
 	waitmovement 0
 	delay 60
 
+@ VAR_0x8004 here is the return value from GivePokeblockToContestLady
 LilycoveCity_PokemonCenter_1F_EventScript_2A894C:: @ 82A894C
 	applymovement 4, LilycoveCity_PokemonCenter_1F_Movement_2A89C0
 	waitmovement 0
@@ -4758,13 +4767,13 @@ LilycoveCity_PokemonCenter_1F_EventScript_2A8970:: @ 82A8970
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A897E:: @ 82A897E
-	special sub_818E914
+	special Script_BufferContestLadyCategoryAndMonName
 	msgbox LilycoveCity_PokemonCenter_1F_Text_2A9605, MSGBOX_DEFAULT
 	goto LilycoveCity_PokemonCenter_1F_EventScript_2A898F
 	end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A898F:: @ 82A898F
-	specialvar VAR_RESULT, sub_818E8E0
+	specialvar VAR_RESULT, ShouldContestLadyShowGoOnAir
 	compare VAR_RESULT, 1
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A89A1
 	release
@@ -4807,18 +4816,18 @@ LilycoveCity_PokemonCenter_1F_Movement_2A89C2: @ 82A89C2
 	step_end
 
 LilycoveCity_PokemonCenter_1F_EventScript_2A89C7:: @ 82A89C7
-	specialvar VAR_RESULT, sub_818E990
-	special sub_818E914
-	special sub_818E960
-	compare VAR_RESULT, 0
+	specialvar VAR_RESULT, GetContestLadyCategory
+	special Script_BufferContestLadyCategoryAndMonName
+	special GetContestLadyMonSpecies
+	compare VAR_RESULT, CONTEST_CATEGORY_COOL
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8A0A
-	compare VAR_RESULT, 1
+	compare VAR_RESULT, CONTEST_CATEGORY_BEAUTY
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8A1D
-	compare VAR_RESULT, 2
+	compare VAR_RESULT, CONTEST_CATEGORY_CUTE
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8A30
-	compare VAR_RESULT, 3
+	compare VAR_RESULT, CONTEST_CATEGORY_SMART
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8A43
-	compare VAR_RESULT, 4
+	compare VAR_RESULT, CONTEST_CATEGORY_TOUGH
 	goto_if_eq LilycoveCity_PokemonCenter_1F_EventScript_2A8A56
 	end
 

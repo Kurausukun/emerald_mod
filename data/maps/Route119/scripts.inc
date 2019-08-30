@@ -1,7 +1,6 @@
 Route119_MapScripts:: @ 81F4424
 	map_script MAP_SCRIPT_ON_RESUME, Route119_MapScript1_1F442F
 	map_script MAP_SCRIPT_ON_TRANSITION, Route119_OnTransition
-	map_script MAP_SCRIPT_ON_LOAD, Route119_MapScript1_FeebasTest
 	.byte 0
 
 Route119_MapScript1_1F442F: @ 81F442F
@@ -140,7 +139,6 @@ Route119_EventScript_1F45E4:: @ 81F45E4
 
 Route119_EventScript_1F45FF:: @ 81F45FF
 	giveitem_std ITEM_HM02
-	giveitem_std ITEM_FLY
 	setflag FLAG_RECEIVED_HM02
 	return
 
@@ -495,10 +493,6 @@ Route119_EventScript_1F49EC:: @ 81F49EC
 	clearflag FLAG_REGISTER_WINONA_POKENAV
 	addvar VAR_SCOTT_STATE, 1
 	releaseall
-	end
-
-Route119_MapScript1_FeebasTest::
-	callnative HighlightFeebasSpots
 	end
 
 Route119_Text_1F49FD: @ 81F49FD

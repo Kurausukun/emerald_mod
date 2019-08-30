@@ -1,11 +1,11 @@
+#include <string.h>
 #include "gba/m4a_internal.h"
 
 extern const u8 gCgb3Vol[];
 
 #define BSS_CODE __attribute__((section(".bss.code")))
 
-BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0xC00] = {0};
-BSS_CODE ALIGNED(4) u32 hq_buffer_ptr[0x260] = {0};
+BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0x800] = {0};
 
 struct SoundInfo gSoundInfo;
 struct PokemonCrySong gPokemonCrySongs[MAX_POKEMON_CRIES];
@@ -18,7 +18,6 @@ struct MusicPlayerInfo gMPlayInfo_BGM;
 struct MusicPlayerInfo gMPlayInfo_SE1;
 struct MusicPlayerInfo gMPlayInfo_SE2;
 struct MusicPlayerInfo gMPlayInfo_SE3;
-struct MusicPlayerInfo gMPlayInfo_BGM_HINSI;
 u8 gMPlayMemAccArea[0x10];
 
 u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust)
@@ -77,7 +76,7 @@ void m4aSoundInit(void)
     SoundInit(&gSoundInfo);
     MPlayExtender(gCgbChans);
     m4aSoundMode(SOUND_MODE_DA_BIT_8
-               | SOUND_MODE_FREQ_36314
+               | SOUND_MODE_FREQ_13379
                | (12 << SOUND_MODE_MASVOL_SHIFT)
                | (5 << SOUND_MODE_MAXCHN_SHIFT));
 
@@ -373,7 +372,7 @@ void SoundInit(struct SoundInfo *soundInfo)
 
     soundInfo->MPlayJumpTable = (u32)gMPlayJumpTable;
 
-    SampleFreqSet(SOUND_MODE_FREQ_36314);
+    SampleFreqSet(SOUND_MODE_FREQ_13379);
 
     soundInfo->ident = ID_NUMBER;
 }

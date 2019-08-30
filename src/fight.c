@@ -414,28 +414,6 @@ const struct SpriteTemplate gUnknown_08596104 =
     .callback = sub_810DA7C,
 };
 
-const struct SpriteTemplate gPalmSpriteTemplate =
-{
-	.tileTag = ANIM_TAG_PURPLE_HAND_OUTLINE,
-	.paletteTag = ANIM_TAG_PURPLE_HAND_OUTLINE,
-	.oam = &gUnknown_08524914,
-	.anims = gUnknown_08595E54,
-	.images = NULL,
-	.affineAnims = gDummySpriteAffineAnimTable,
-	.callback = AnimBasicFistOrFoot,
-};
-
-const struct SpriteTemplate gAuraSphereBlast =
-{
-	.tileTag = ANIM_TAG_CIRCLE_OF_LIGHT,
-	.paletteTag = ANIM_TAG_CIRCLE_OF_LIGHT,
-	.oam = &gUnknown_0852491C,
-	.anims = gDummySpriteAnimTable,
-	.images = NULL,
-	.affineAnims = gDummySpriteAffineAnimTable,
-	.callback = sub_810D874,
-};
-
 void unc_080B08A0(struct Sprite *sprite)
 {
     SetAnimSpriteInitialXOffset(sprite, gBattleAnimArgs[0]);
@@ -934,9 +912,9 @@ void sub_810D874(struct Sprite *sprite)
     }
 
     if (IsContest())
-        sprite->oam.matrixNum |= 0x8;
+        sprite->oam.matrixNum |= ST_OAM_HFLIP;
     else if (GetBattlerSide(battler) == B_SIDE_PLAYER)
-        sprite->oam.matrixNum |= 0x18;
+        sprite->oam.matrixNum |= (ST_OAM_HFLIP | ST_OAM_VFLIP);
 
     sprite->data[0] = 16;
     sprite->data[1] = sprite->pos1.x;
