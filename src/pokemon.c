@@ -61,7 +61,7 @@ static void EncryptBoxMon(struct BoxPokemon *boxMon);
 static void DecryptBoxMon(struct BoxPokemon *boxMon);
 static void sub_806E6CC(u8 taskId);
 static bool8 ShouldGetStatBadgeBoost(u16 flagId, u8 battlerId);
-static u32 CreateShinyPersonality(u32 otId);
+static u32 CreateShinyPersonality(u8 nature, u8 gender, u16 species, u32 otId);
 
 // EWRAM vars
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
@@ -2403,16 +2403,9 @@ void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV,
     CreateMon(mon, species, level, fixedIV, 1, personality, OT_ID_PLAYER_ID, 0);
 }
 
-void CreateShinyMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature)
+void CreateShinyMonWithGenderNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature, u8 gender)
 {
-    u32 personality;
-	
-    do
-    {
-        personality = CreateShinyPersonality(T1_READ_32(gSaveBlock2Ptr->playerTrainerId));
-	}
-    while (nature != GetNatureFromPersonality(personality));
-
+    u32 personality = CreateShinyPersonality(nature, gender, species, T1_READ_32(gSaveBlock2Ptr->playerTrainerId));
     CreateMon(mon, species, level, fixedIV, 1, personality, OT_ID_PLAYER_ID, 0);
 }
 
@@ -2737,14 +2730,6 @@ void CreateObedientMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u
 
     CreateMon(mon, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
     SetMonData(mon, MON_DATA_OBEDIENCE, &obedient);
-}
-
-void CreateShinyMon(struct Pokemon *mon, u16 species, u8 level)
-{
-    u32 personality;
-    personality = CreateShinyPersonality(T1_READ_32(gSaveBlock2Ptr->playerTrainerId));
-    CreateMon(mon, species, level, 0, 1, personality, OT_ID_PLAYER_ID, 0);
-    CalculateMonStats(mon);
 }
 
 bool8 sub_80688F8(u8 caseId, u8 battlerId)
@@ -6938,40 +6923,53 @@ void DeleteFaintedPartyPokemon(void)
     CompactPartySlots();
 }
 
-static u32 CreateShinyPersonality(u32 otId)
+static u32 CreateShinyPersonality(u8 nature, u8 gender, u16 species, u32 otId)
 {
     u32 personality;
     u16 xored_otId = (otId & 0xFFFF) ^ (otId >> 0x10); //xored_otId ^ xored_personality <= 7, so xored_personality must be the same as xored otId with the exception of last 3 bits
-    u16 personality1, personality2 = 0;
+    u16 personality1, personality2;
+    personality1 = personality2 = 0;
     u8 i;
     
     xored_otId &= ~(7);
     xored_otId |= (Random() % 8);
+    u8 ratio = gBaseStats[species].genderRatio;
 
-    for (i = 0; i < 16; i++)
+    switch (ratio)
     {
-        u16 bit = 1 << i;
-        bool8 set = Random() & 1;
-        if (xored_otId & bit) //bit is 1; 1 ^ X == 0 iff X is 1; then personality1 is 0 and personality2 is 1 or reversed
+    case MON_MALE:
+    case MON_FEMALE:
+    case MON_GENDERLESS:
+        gender = 0xFF;
+        break;
+    }
+    do
+    {
+        for (i = 0; i < 16; i++)
         {
-            if (set)
-                personality1 |= bit;
-            else
-                personality2 |= bit;
-        }
-        else //bit is 0; 0 ^ X == 0 iff X is 0; then personality1 is 0 and personality2 is 0 or personality is 1 and personality2 is 1
-        {
-            if (set)
+            u16 bit = 1 << i;
+            bool8 set = Random() & 1;
+            if (xored_otId & bit) //bit is 1; 1 ^ X == 0 iff X is 1; then personality1 is 0 and personality2 is 1 or reversed
             {
-                personality1 |= bit;
-                personality2 |= bit;
+                if (set)
+                    personality1 |= bit;
+                else
+                    personality2 |= bit;
+            }
+            else //bit is 0; 0 ^ X == 0 iff X is 0; then personality1 is 0 and personality2 is 0 or personality is 1 and personality2 is 1
+            {
+                if (set)
+                {
+                    personality1 |= bit;
+                    personality2 |= bit;
+                }
             }
         }
-    }
-    if (Random() & 1)
-        personality = (personality1) | (personality2 << 0x10);
-    else
-        personality = (personality2) | (personality1 << 0x10);
+        if (Random() & 1)
+            personality = (personality1) | (personality2 << 0x10);
+        else
+            personality = (personality2) | (personality1 << 0x10);
+    } while((nature <= 25 && nature != GetNatureFromPersonality(personality)) || (gender != 0xFF && gender != GetGender(personality, ratio)));
 
     return personality;
 }

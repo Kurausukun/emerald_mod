@@ -135,6 +135,8 @@
 #define MAX_TOTAL_EVS 510
 #define UNOWN_FORM_COUNT 28
 
+#define GetGender(pid, ratio)(((ratio) > (0xFF & pid) ? 0xFE : 0))
+
 struct PokemonSubstruct0
 {
     u16 species;
@@ -456,8 +458,7 @@ void CreateApprenticeMon(struct Pokemon *mon, const struct Apprentice *src, u8 m
 void CreateMonWithEVSpreadNatureOTID(struct Pokemon *mon, u16 species, u8 level, u8 nature, u8 fixedIV, u8 evSpread, u32 otId);
 void sub_80686FC(struct Pokemon *mon, struct BattleTowerPokemon *dest);
 void CreateObedientMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId);
-void CreateShinyMon(struct Pokemon *mon, u16 species, u8 level);
-void CreateShinyMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature);
+void CreateShinyMonWithGenderNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature, u8 gender);
 bool8 sub_80688F8(u8 caseId, u8 battlerId);
 void SetDeoxysStats(void);
 u16 sub_8068B48(void);
