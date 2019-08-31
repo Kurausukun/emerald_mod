@@ -6926,14 +6926,15 @@ void DeleteFaintedPartyPokemon(void)
 static u32 CreateShinyPersonality(u8 nature, u8 gender, u16 species, u32 otId)
 {
     u32 personality;
-    u16 xored_otId = (otId & 0xFFFF) ^ (otId >> 0x10); //xored_otId ^ xored_personality <= 7, so xored_personality must be the same as xored otId with the exception of last 3 bits
     u16 personality1, personality2;
-    personality1 = personality2 = 0;
     u8 i;
+    u8 ratio;
+    u16 xored_otId = (otId & 0xFFFF) ^ (otId >> 0x10); //xored_otId ^ xored_personality <= 7, so xored_personality must be the same as xored otId with the exception of last 3 bits
+    personality1 = personality2 = 0;
     
     xored_otId &= ~(7);
     xored_otId |= (Random() % 8);
-    u8 ratio = gBaseStats[species].genderRatio;
+    ratio = gBaseStats[species].genderRatio;
 
     switch (ratio)
     {
