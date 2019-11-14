@@ -13,7 +13,6 @@
 #include "random.h"
 #include "dma3.h"
 #include "gba/flash_internal.h"
-#include "gba/syscall.h"
 #include "load_save.h"
 #include "gpu_regs.h"
 #include "agb_flash.h"
