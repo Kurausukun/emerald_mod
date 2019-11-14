@@ -13,6 +13,7 @@
 #include "random.h"
 #include "dma3.h"
 #include "gba/flash_internal.h"
+#include "gba/syscall.h"
 #include "load_save.h"
 #include "gpu_regs.h"
 #include "agb_flash.h"
@@ -403,9 +404,7 @@ static void IntrDummy(void)
 static void WaitForVBlank(void)
 {
     gMain.intrCheck &= ~INTR_FLAG_VBLANK;
-
-    while (!(gMain.intrCheck & INTR_FLAG_VBLANK))
-        ;
+    VBlankIntrWait();
 }
 
 void SetTrainerHillVBlankCounter(u32 *counter)
